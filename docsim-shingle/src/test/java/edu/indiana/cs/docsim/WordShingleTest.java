@@ -16,7 +16,7 @@ import java.util.List;
 public class WordShingleTest
   extends TestCase {
     private static Logger logger =
-        Logger.getLogger(ShingleTokenizerWordTest.class.getName());
+        Logger.getLogger(WordShingleTest.class.getName());
     private String simpleText =
         "Adds a \"See Also\" heading with a link or text entry that points "+
         "to reference. A doc comment may contain any number of @see tags,"+
@@ -55,8 +55,7 @@ public class WordShingleTest
         logger.info("Testing by feeding simple text");
         // textLiteral = "hello   \t[ world";
         StringBuilder sb = new StringBuilder();
-        ShingleTokenizerWord tokenizer = new
-            ShingleTokenizerWord(simpleText);
+        TextTokenizerWord tokenizer = new TextTokenizerWord(simpleText);
         int pos = 0;
         while (tokenizer.hasMoreTokens()) {
             String token = tokenizer.nextToken();
