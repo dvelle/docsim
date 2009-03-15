@@ -6,15 +6,42 @@
   <packaging>jar</packaging>
   <version>0.1</version>
   <name>docsim-shingle</name>
-  <url>http://maven.apache.org</url>
+  <url>http://silo.cs.indiana.edu:9000/docsim</url>
 
   <properties>
     <deploy.altRepository></deploy.altRepository>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
-  <dependencies>
+  <!-- ====================================================================== -->
+  <!-- S C M                                                                  -->
+  <!-- ====================================================================== -->
+  <scm>
+    <connection>scm:svn:http://docsim.googlecode.com/svn/trunk</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/incubator/shindig/trunk</developerConnection>
+    <url>http://code.google.com/p/docsim/source/browse/</url>
+  </scm> 
 
+  <developers>
+    <developer>
+      <id>zhguoiub</id>
+      <name>Zhenhua</name>
+      <email>zhguoiub@gmail.com</email>
+      <!-- <url></url> -->
+      <organization>IU</organization>
+      <organizationUrl>http://cs.indiana.edu</organizationUrl>
+      <roles>
+        <role>architect</role>
+        <role>developer</role>
+      </roles>
+      <timezone>-5</timezone>
+      <!-- <properties>        -->
+      <!--   <picUrl></picUrl> -->
+      <!-- </properties>       -->
+    </developer>
+  </developers>
+
+  <dependencies>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -426,15 +453,15 @@
           <!-- <warSourceDirectory>                                            -->
           <!--   /home/zhguo/servers/apache-tomcat-6.0.18/webapps/oauthKeyDist -->
           <!-- </warSourceDirectory>                                           -->
-          <webResources>
-            <resource>
-              <directory>${basedir}/conf</directory>
-              <targetPath>WEB-INF/classes/conf</targetPath>
-              <includes>
-                <include>oauthSP.properties</include>
-              </includes>
-            </resource>
-          </webResources>
+          <!-- <webResources>                                    -->
+          <!--   <resource>                                      -->
+          <!--     <directory>${basedir}/conf</directory>        -->
+          <!--     <targetPath>WEB-INF/classes/conf</targetPath> -->
+          <!--     <includes>                                    -->
+          <!--       <include>oauthSP.properties</include>       -->
+          <!--     </includes>                                   -->
+          <!--   </resource>                                     -->
+          <!-- </webResources>                                   -->
           <archiveClasses>true</archiveClasses>
 <!--           Classes in WEB-INF/classes are not attached to the project -->
           <attachClasses>false</attachClasses>
@@ -451,20 +478,29 @@
         <artifactId>maven-jetty-plugin</artifactId>
         <version>6.1.14</version>
       </plugin>
-    </plugins>  
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>generate tag</id>
+            <phase>package</phase>
+            <configuration>
+              <tasks>
+                <echo message="Generating tag for all classes and test classes"/>
+                <exec executable="ctags">
+                  <arg line="-R ./"/>
+                </exec>
+              </tasks>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
 
-    <!-- I chose to put this resource into WEB-INF/classes instead of packing it  -->
-    <!-- into a jar file. For tomcat, it works well. For other containers, it may -->
-    <!-- not work. So I still put another copy into the jar.                      -->
-    <resources>
-      <resource>
-        <directory>${basedir}/conf/</directory>
-        <targetPath>conf</targetPath>
-        <includes>
-          <include>oauthSP.properties</include>
-        </includes>
-      </resource>
-    </resources>
+
+    </plugins>  
 
   </build>
 
@@ -855,6 +891,10 @@
             </reports>
           </reportSet>
         </reportSets>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-changelog-plugin</artifactId>
       </plugin>
 
     </plugins>

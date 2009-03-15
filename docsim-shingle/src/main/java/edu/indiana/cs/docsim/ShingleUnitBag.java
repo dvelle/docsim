@@ -8,188 +8,204 @@ import java.util.Set;
 import com.google.common.collect.Sets;
 import com.google.common.collect.Lists;
 
-public class ShingleUnitBag <SU extends ShingleUnit>
-  implements ShingleUnitMgr<SU>{
+public abstract class ShingleUnitBag <SU extends ShingleUnit>
+  implements ShingleUnitMgr<SU> {
     Logger logger = Logger.getLogger(ShingleUnitBag.class.getName());
 
     // private String rawData;
     private List<SU> shingleUnitList = Lists.newArrayList();
     private List<ShingleUnitData> shingleUnitListUnique = Lists.newArrayList();
 
-    /** 
-     * Add a shingle unit to this manager. 
-     * 
+    public abstract void addShingleUnit(String str, int pos);
+
+    /**
+     * Add a shingle unit to this manager.
+     *
      * @param shingleunit the shingle unit to be added
      * @param pos         position of appearance
      */
-    public void addShingleUnit(SU shingleunit, int pos){
+    public void addShingleUnit(SU shingleunit, int pos) {
         Iterator<ShingleUnitData> it = shingleUnitListUnique.iterator();
         boolean found = false;
-        while( it.hasNext() ){
+        while (it.hasNext()) {
             ShingleUnitData dataEntry = it.next();
-            if( dataEntry.equals(shingleunit) ){//found it
+            if (dataEntry.equals(shingleunit)) {//found it
                 dataEntry.addPos(pos);
                 found = true;
                 break;
             }
         }
-        if( !found ){
+        if (!found) {
             ShingleUnitData sud = new ShingleUnitData(shingleunit, pos);
             shingleUnitListUnique.add(sud);
         }
         shingleUnitList.add(shingleunit);
     }
 
-    /** 
-     * get number of shingle units. 
-     * 
-     * @return 
+    /**
+     * get number of shingle units.
+     *
+     * @return
      */
-    public int size(){
+    public int size() {
         return shingleUnitList.size();
     }
 
-    /** 
-     * get number of unique shingle units. 
-     * 
-     * @return 
+    /**
+     * get number of unique shingle units.
+     *
+     * @return
      */
-    public int sizeUnique(){
+    public int sizeUnique() {
         return shingleUnitListUnique.size();
     }
 
-    /** 
-     * get the shingle at the specific position. 
-     * 
-     * @param index 
-     * @return 
+    /**
+     * get the shingle at the specific position.
+     *
+     * @param index
+     * @return
      */
-    // ShingleUnit getByIndex(int index){
-    public SU getByIndex(int index){
-        try{
+    // ShingleUnit getByIndex(int index) {
+    public SU getByIndex(int index) {
+        try {
             return shingleUnitList.get(index);
-        } catch(IndexOutOfBoundsException e){
+        } catch(IndexOutOfBoundsException e) {
             logger.severe("Index " + index + " is out of bound\n" + e);
         }
         return null;
     }
 
 
-    /** 
-     * Get all unique shingle units. 
+    /**
+     * Get all unique shingle units.
      * Duplicate shingle units just appear once in the returned array.
      *
-     * @return 
+     * @return
      */
     // ShingleUnit[] getUniqueShingleUnits();
-    public SU[] getUniqueShingleUnits(){
+    public List<SU> getUniqueShingleUnits() {
         List<SU> list = Lists.newArrayList();
         Iterator<ShingleUnitData> it = shingleUnitListUnique.iterator();
-        while( it.hasNext() ){
+        while (it.hasNext()) {
             ShingleUnitData dataEntry = it.next();
             list.add(dataEntry.getShingleunit());
         }
-        return (SU[])list.toArray();
+        return list;
     }
 
-    /** 
-     * Get number of appearances of a shingle unit. 
-     * 
-     * @param shingleunit 
-     * @return 
+    /**
+     * Get number of appearances of a shingle unit.
+     *
+     * @param shingleunit
+     * @return
      */
     // int getCount(ShingleUnit shingleunit);
-    public int getCount(SU shingleunit){
+    public int getCount(SU shingleunit) {
         ShingleUnitData sud = getSUD(shingleunit);
-        if( sud == null ){
+        if (sud == null) {
             return 0;
-        } else{
+        } else {
             return sud.getCount();
         }
     }
 
-    private ShingleUnitData getSUD(SU shingleunit){
+    private ShingleUnitData getSUD(SU shingleunit) {
         Iterator<ShingleUnitData> it = shingleUnitListUnique.iterator();
-        while( it.hasNext() ){
+        while (it.hasNext()) {
             ShingleUnitData dataEntry = it.next();
-            if( dataEntry.equals(shingleunit) ){//found it
+            if (dataEntry.equals(shingleunit)) {//found it
                 return dataEntry;
             }
         }
         return null;
     }
 
-    /** 
-     * Get positions of a shingle unit. 
-     * 
-     * @param shingleunit 
-     * @return 
+    /**
+     * Get positions of a shingle unit.
+     *
+     * @param shingleunit
+     * @return
      */
     // int[] getPos(ShingleUnit shingleunit);
-    public int[] getPos(SU shingleunit){
+    public int[] getPos(SU shingleunit) {
         ShingleUnitData sud = getSUD(shingleunit);
-        if( sud == null ){
+        if (sud == null) {
             return new int[0];
-        } else{
+        } else {
             return sud.getPositions();
         }
     }
 
-    /** 
-     * Remove the specified shingle unit. 
-     * 
-     * @param shingleunit 
+    /**
+     * Remove the specified shingle unit.
+     *
+     * @param shingleunit
      */
-    public void removeShingleUnit(SU shingleunit){
+    public void removeShingleUnit(SU shingleunit) {
         shingleUnitList.remove(shingleunit);
         shingleUnitListUnique.remove(new ShingleUnitData(shingleunit, -1));
     }
 
-    class ShingleUnitData{
+    class ShingleUnitData {
         private Set<Integer> pos = Sets.newHashSet();
         private SU shingleunit;
 
-        public ShingleUnitData(SU shingleunit, int position){
+        public ShingleUnitData(SU shingleunit, int position) {
             this.shingleunit = shingleunit;
             pos.add(position);
         }
-        public void addPos(int position){
+        public void addPos(int position) {
             pos.add(position);
         }
-        
-        /** 
-         * Get position of appearances of this shingle unit. 
+
+        /**
+         * Get position of appearances of this shingle unit.
          * Users can modify the returned value WITHOUT affecting the original
-         * data. Currently, the positions are not ordered. 
+         * data. Currently, the positions are not ordered.
          * TODO: guarantee the returned positions from small to large?
          *
-         * @return 
+         * @return
          */
-        public int[] getPositions(){
+        public int[] getPositions() {
             int[] intArray = new int[pos.size()];
             Iterator<Integer> it = pos.iterator();
         int i = 0;
-            while( it.hasNext() ){
+            while (it.hasNext()) {
                 intArray[i] = it.next();
                 ++i;
             }
             return intArray;
         }
 
-        public int getCount(){
+        public int getCount() {
             return pos.size();
         }
 
-        // @Override
-        public boolean equals(ShingleUnitData sud){
+        public boolean equals(ShingleUnitData sud) {
             return this.shingleunit.equals(sud.getShingleunit());
+        }
+        public boolean equals(ShingleUnit su) {
+            return this.shingleunit.equals(su);
+        }
+
+        //TODO: to imple. Maintain the invariant: equal objects have same hash
+        //code.
+        public int hashCode(){
+            return -1;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            logger.severe("You probably should compare objects of wrong types!!!");
+            return false;
         }
 
         /**
          * get the value of shingleunit
          * @return the value of shingleunit
          */
-        public SU getShingleunit(){
+        public SU getShingleunit() {
             return this.shingleunit;
         }
         /**
