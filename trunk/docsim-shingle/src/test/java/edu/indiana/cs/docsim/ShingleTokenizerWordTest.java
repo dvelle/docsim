@@ -52,8 +52,8 @@ public class ShingleTokenizerWordTest
         logger.info("Testing by feeding simple text");
         // textLiteral = "hello   \t[ world";
         StringBuilder sb = new StringBuilder();
-        ShingleTokenizerWord tokenizer = new
-            ShingleTokenizerWord(simpleText);
+        TextTokenizerWord tokenizer = new
+            TextTokenizerWord(simpleText);
         while (tokenizer.hasMoreTokens()) {
             String token = tokenizer.nextToken();
             sb.append(" " + token);

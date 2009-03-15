@@ -12,7 +12,7 @@ public abstract class Shingle {
     protected String            rawData;
     // protected ShingleUnitMgr    suMgr;
     protected ShingleUnitBag    suMgr;
-    protected ShingleTokenizer  tokenizer;
+    protected TextTokenizer  tokenizer;
     protected int               size = 0;
 
     /**
@@ -61,14 +61,14 @@ public abstract class Shingle {
      * get the value of tokenizer
      * @return the value of tokenizer
      */
-    public ShingleTokenizer getTokenizer() {
+    public TextTokenizer getTokenizer() {
         return this.tokenizer;
     }
     /**
      * set a new value to tokenizer
      * @param tokenizer the new value to be used
      */
-    public void setTokenizer(ShingleTokenizer tokenizer) {
+    public void setTokenizer(TextTokenizer tokenizer) {
         this.tokenizer = tokenizer;
     }
 
