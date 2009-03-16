@@ -48,8 +48,11 @@ public class TextTokenizerWord
         if (this.rawData == null) { return; }
         isInit = true;
         tokens = rawData.split(regex);
-        logger.info("Length of token array is " + tokens.length);
         purify();
+        StringBuilder sb = new StringBuilder();
+        sb.append("Tokenizing:" + this.rawData);
+        sb.append("\nLength of token array is " + tokens.length);
+        logger.info(sb.toString());
     }
 
     private void purify() {
@@ -103,6 +106,8 @@ public class TextTokenizerWord
         this.cursor = 0;
         this.rawData = text;
         this.textEncoding = textEncoding;
+        this.isInit = false;
+        this.tokens = null;
         parse();
     }
 }

@@ -1,0 +1,18 @@
+ The byte-to-char methods and char-to-byte methods involve a conversion step.
+ Two methods are provided in each case, one that uses the platform default
+ encoding and the other which allows you to specify an encoding. You are
+ encouraged to always specify an encoding because relying on the platform
+ default can lead to unexpected results, for example when moving from
+ development to production.
+
+ All the methods in this class that read a stream are buffered internally.
+ This means that there is no cause to use a BufferedInputStream or
+ BufferedReader. The default buffer size of 4K has been shown to be efficient
+ in tests.
+
+ Wherever possible, the methods in this class do not flush or close the
+ stream. This is to avoid making non-portable assumptions about the streams'
+ origin and further use. Thus the caller is still responsible for closing
+ streams after use.
+
+ Origin of code: Excalibur. 

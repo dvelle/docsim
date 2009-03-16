@@ -56,31 +56,43 @@ public class ShingleTextParserTest
 
     public void testSimpleText() throws Exception {
         int shinglesize = 10;
+        String dumpStr;
         logger.info("Testing by feeding simple text");
         StringBuilder sb = new StringBuilder();
         ShingleSet shingleset = shingleTxtParser.parseText(simpleText,
                 shinglesize, textEncoding);
-        dumpeShingleSet(shingleset);
-        logger.info(sb.toString());
+        dumpStr = dumpeShingleSet(shingleset);
+        logger.info(dumpStr);
 
         shinglesize = 5;
         shingleset = shingleTxtParser.parseText(dupText, shinglesize, textEncoding);
-        dumpeShingleSet(shingleset);
-        logger.info(sb.toString());
+        dumpStr = dumpeShingleSet(shingleset);
+        logger.info(dumpStr);
     }
 
-    private void dumpeShingleSet(ShingleSet shingleset) {
+    public void testShingleTextFromFile() throws Exception {
+        int shinglesize = 10;
+        String textFile = "res://shingle.sample.1";
+        ShingleSet shingleset = shingleTxtParser.parseFile(textFile,
+                shinglesize, textEncoding);
+        String dumpStr = dumpeShingleSet(shingleset);
+        logger.info(dumpStr);
+    }
+
+    private String dumpeShingleSet(ShingleSet shingleset) {
         // List<Shingle> shingles = shingleset.getShingleList();
         List<Shingle> shingles = shingleset.getUniqueShingleList();
+        StringBuilder sb = new StringBuilder();
         for (Iterator<Shingle> it = shingles.iterator() ; it.hasNext();) {
             Shingle shingle = it.next();
-            logger.info("shingle:");
-            dumpShingle(shingle);
+            sb.append("\nshingle:\n");
+            sb.append("\t" + dumpShingle(shingle));
             int[] pos = shingleset.getPos(shingle);
-            logger.info("pos:" + serIntArray(pos));
+            sb.append("\n\tpos:" + serIntArray(pos));
         }
+        return sb.toString();
     }
-    private void dumpShingle(Shingle shingle) {
+    private String dumpShingle(Shingle shingle) {
         ShingleUnitBag sub = shingle.getSuMgr();
         List<ShingleUnit> sulist = sub.getUniqueShingleUnits();
         Iterator<ShingleUnit> it = sulist.iterator();
@@ -89,9 +101,9 @@ public class ShingleTextParserTest
             ShingleUnit su = it.next();
             int[] pos = sub.getPos(su);
             sb.append(su.value());
-            sb.append(":" + serIntArray(pos));
+            sb.append(":" + serIntArray(pos) + "; ");
         }
-        logger.info(sb.toString());
+        return sb.toString();
     }
     private String serIntArray(int[] array){
         StringBuilder sb = new StringBuilder();
@@ -99,7 +111,11 @@ public class ShingleTextParserTest
             return "";
         } else {
             for (int i = 0 ; i < array.length ; ++i) {
-                sb.append(array[i]+"-");
+                if (i == array.length-1) {
+                    sb.append(array[i]);
+                } else {
+                    sb.append(array[i]+",");
+                }
             }
         }
         return sb.toString();

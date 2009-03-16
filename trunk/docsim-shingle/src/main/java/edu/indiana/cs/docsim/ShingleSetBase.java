@@ -81,5 +81,13 @@ public interface ShingleSetBase {
     // Shingle getShingle(Shingle shingle);
 
     public int[] getPos(Shingle shingle);
+
+    /**
+     * Whether this set contains the specified shingle.
+     *
+     * @param shingle
+     * @return
+     */
+    public boolean contains(Shingle shingle);
 }
 

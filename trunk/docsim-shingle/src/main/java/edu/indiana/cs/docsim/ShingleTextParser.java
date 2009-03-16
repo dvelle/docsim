@@ -1,9 +1,13 @@
 package edu.indiana.cs.docsim;
 
 import java.io.File;
+import java.io.InputStream;
+import java.util.logging.Logger;
 
 import org.apache.commons.io.FileUtils;
-import java.util.logging.Logger;
+import org.apache.commons.io.IOUtils;
+
+import edu.indiana.cs.docsim.util.ResourceLoader;
 
 public class ShingleTextParser implements ShingleTextParserBase {
     private TextTokenizer tokenizer;
@@ -15,16 +19,19 @@ public class ShingleTextParser implements ShingleTextParserBase {
         tokenizer = new TextTokenizerWord();
     }
 
+    private void clear() {
+
+    }
     //FIXME: implementation in this method is not efficient.
     public ShingleSet parseText(String text, int shinglesize,
             String txtEncoding){
+        logger.info("Starting to parse text.");
         tokenizer.tokenize(text, txtEncoding);
         ShingleSet shingleset = new ShingleSet();
         String[] window = new String[shinglesize];
         int shinglecursor = 0, unitcursor = 0;
         Shingle shingle;
 
-        logger.info("Starting to parse text.");
         while (tokenizer.hasMoreTokens()) {
             String token = tokenizer.nextToken();
             // logger.info(unitcursor + ":" + token);
@@ -58,8 +65,10 @@ public class ShingleTextParser implements ShingleTextParserBase {
 
     public ShingleSet parseFile(String fileName, int shinglesize,
             String txtEncoding) throws Exception{
-        File file = new File(fileName);
-        String content = FileUtils.readFileToString(file, txtEncoding);
+        // File file = new File(fileName);
+        // Sring content = FileUtils.readFileToString(file, txtEncoding);
+        InputStream is = ResourceLoader.open(fileName);
+        String content = IOUtils.toString(is, txtEncoding);
         return parseText(content, shinglesize, txtEncoding);
     }
 }

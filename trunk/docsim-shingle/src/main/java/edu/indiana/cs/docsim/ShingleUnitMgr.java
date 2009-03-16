@@ -38,9 +38,15 @@ public interface ShingleUnitMgr <SU extends ShingleUnit> {
      *
      * @return
      */
-    // SU[] getUniqueShingleUnits();
     List<SU> getUniqueShingleUnits();
-    // ShingleUnit[] getUniqueShingleUnits();
+
+    /**
+     * Get all shingle units.
+     * Duplicate shingle units are not suppressed.
+     *
+     * @return
+     */
+    List<SU> getShingleUnits();
 
     /**
      * Get number of appearances of a shingle unit.
@@ -84,3 +90,4 @@ public interface ShingleUnitMgr <SU extends ShingleUnit> {
      */
     void removeShingleUnit(SU shingleunit);
 }
+
