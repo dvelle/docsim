@@ -25,6 +25,13 @@ public class ShingleUnitWord extends ShingleUnit {
             return true;
         return false;
     }
+    public boolean equals(Object object) {
+        if (object instanceof ShingleUnit) {
+            return this.equals((ShingleUnit)object);
+        }
+        return false;
+    }
+
     public double distance(ShingleUnit another) {
         return 10.0;
     }

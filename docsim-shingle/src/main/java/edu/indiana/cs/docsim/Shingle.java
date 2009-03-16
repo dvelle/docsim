@@ -10,9 +10,9 @@ import com.google.common.collect.Sets;
  */
 public abstract class Shingle {
     protected String            rawData;
-    // protected ShingleUnitMgr    suMgr;
     protected ShingleUnitBag    suMgr;
-    protected TextTokenizer  tokenizer;
+    // protected ShingleUnitMgr    suMgr;
+    protected TextTokenizer     tokenizer;
     protected int               size = 0;
 
     /**
@@ -78,5 +78,7 @@ public abstract class Shingle {
     public void parse(String text) throws Exception{
         throw new Exception("Method parse has not been implemented yet!!!");
     }
+
+    public abstract boolean equals(Shingle shingle);
 }
 

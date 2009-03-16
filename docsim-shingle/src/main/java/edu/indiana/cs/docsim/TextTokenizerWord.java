@@ -22,20 +22,33 @@ public class TextTokenizerWord
         Logger.getLogger(TextTokenizerWord.class.getName());
 
     private String          rawData;
+    private String          textEncoding;
+
+    /* Internal token array which stores results of parsing raw input */
     private String[]        tokens;
+
+    /* Position of the cursor */
     private int             cursor = 0;
 
-    public TextTokenizerWord(String str)
-      throws TextTooLongException{
-        if( str.length() > lenLimit ){
+    /* Whether this tokenzier has been initialized.
+     * Not used now.
+     */
+    private boolean         isInit = false;
+
+    public TextTokenizerWord() {
+    }
+    public TextTokenizerWord(String text, String encoding)
+      throws TextTooLongException {
+        if( text.length() > lenLimit ) {
             throw new TextTooLongException(ERROR_STR_TOOLONG);
         }
-        rawData = str;
-        parse();
+        tokenize(text, encoding);
     }
     private void parse() {
-        if (rawData == null) { return; }
+        if (this.rawData == null) { return; }
+        isInit = true;
         tokens = rawData.split(regex);
+        logger.info("Length of token array is " + tokens.length);
         purify();
     }
 
@@ -51,9 +64,9 @@ public class TextTokenizerWord
     }
 
     /**
-     * Check wheter a token is legal.
+     * Checks wheter a token is legal.
      *
-     * @param token
+     * @param token the token to be checked.
      * @return
      */
     private boolean isLegalToken(String token) {
@@ -78,19 +91,19 @@ public class TextTokenizerWord
         }
     }
 
-    /**
-     * Get next token.
-     * Note: we don't check whether next token exists!!! Users should use
-     * function hasMoreTokens first to check whether next token is available.
-     *
-     * @return
-     */
     public String nextToken() {
         if (tokens == null) {
             logger.warning("StringTokenzierWord may have not been initialized");
             return null;
         }
         return tokens[cursor++];
+    }
+
+    public void tokenize(String text, String textEncoding) {
+        this.cursor = 0;
+        this.rawData = text;
+        this.textEncoding = textEncoding;
+        parse();
     }
 }
 

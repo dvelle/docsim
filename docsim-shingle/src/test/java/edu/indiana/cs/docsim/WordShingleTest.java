@@ -1,11 +1,13 @@
 package edu.indiana.cs.docsim;
 
+import java.util.List;
 import java.util.logging.Logger;
+
+import com.google.common.collect.Lists;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import java.util.List;
 
 /**
  *
@@ -26,6 +28,7 @@ public class WordShingleTest
         "class, interface, constructor, method or field. For inserting an " +
         "in-line link within a sentence to a package, class or member.";
 
+    private String textEncoding = "UTF-8";
     private String textLiteral;
     private String textFileName;
     private WordShingle wordshingle;
@@ -47,22 +50,37 @@ public class WordShingleTest
     }
 
     @Override
-    public void setUp(){
+    public void setUp() {
         wordshingle = new WordShingle();
     }
 
-    public void testSimpleText() throws Exception{
+    public void testSimpleText() throws Exception {
         logger.info("Testing by feeding simple text");
-        // textLiteral = "hello   \t[ world";
         StringBuilder sb = new StringBuilder();
-        TextTokenizerWord tokenizer = new TextTokenizerWord(simpleText);
+        TextTokenizerWord tokenizer =
+            new TextTokenizerWord(simpleText, textEncoding);
         int pos = 0;
         while (tokenizer.hasMoreTokens()) {
             String token = tokenizer.nextToken();
+            // logger.info("token:" + token);
             wordshingle.addShingleUnit(token, pos++);
         }
         dumpWordShingle(wordshingle);
     }
+    public void testWordShingle() throws Exception {
+        logger.info("Testing WordShingle by feeding simple text");
+        StringBuilder sb = new StringBuilder();
+        TextTokenizerWord tokenizer = new TextTokenizerWord(simpleText, textEncoding);
+        int pos = 0;
+        List<String> list = Lists.newArrayList();
+        while (tokenizer.hasMoreTokens()) {
+            String token = tokenizer.nextToken();
+            list.add(token);
+        }
+        wordshingle.buildShingle(list.toArray(new String[0]));
+        dumpWordShingle(wordshingle);
+    }
+
     private void dumpWordShingle(WordShingle shingle) {
         ShingleUnitBag bag = shingle.getSuMgr();
         List<ShingleUnit> shingleunits = bag.getUniqueShingleUnits();
@@ -75,6 +93,7 @@ public class WordShingleTest
         logger.info("Data in shingle:");
         logger.info(sb.toString());
     }
+
     private String serIntArray(int[] array){
         StringBuilder sb = new StringBuilder();
         if (array == null) {
