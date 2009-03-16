@@ -1,11 +1,12 @@
 package edu.indiana.cs.docsim;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-import java.util.logging.Logger;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.Iterator;
+import java.util.logging.Logger;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 public class ShingleSet implements ShingleSetBase {
     Logger logger = Logger.getLogger(ShingleSet.class.getName());
@@ -41,13 +42,62 @@ public class ShingleSet implements ShingleSetBase {
     }
 
     //TODO: to implement
+
+    /**
+     * Calculates union of this shingle set and the passed-in shingle set.
+     * After this union operation, extra care should be taken to use the
+     * returned ShingleSet.
+     * "Unique shingle" is not well defined.
+     * So, method {@link #getUniqueShingleList} should not be used.
+     *
+     * @param set
+     * @return
+     */
     public ShingleSet union(ShingleSetBase set) {
-        return null;
+        //FIXME: here the position of the shingle does not make sense.
+        //The same shingle may appear in different places within the
+        //two shingle sets.
+        logger.info("===========    Union   =================");
+        logger.info("===========    Add one set   =================");
+        ShingleSet result = new ShingleSet();
+        for (int i = 0 ; i < shingles.size() ; ++i) {
+            Shingle shingle = shingles.get(i);
+            result.addShingle(shingle, i);
+        }
+
+        logger.info("===========    Add another set   =================");
+        List<Shingle> shingles2 = set.getShingleList();
+        for (int i = 0 ; i < shingles2.size() ; ++i) {
+            Shingle shingle = shingles2.get(i);
+            result.addShingle(shingle, i);
+        }
+        logger.info("===========    Union ends   =================");
+        return result;
     }
 
-    //TODO: to implement
+    /**
+     * Calculates intersect of this shingle set and the passed-in shingle set.
+     * After this intersect operation, extra care should be taken to use the
+     * returned ShingleSet.
+     * "Unique shingle" is not well defined.
+     * So, method {@link #getUniqueShingleList} should not be used.
+     *
+     * @param set
+     * @return
+     */
     public ShingleSet intersect(ShingleSetBase set) {
-        return null;
+        ShingleSet result = new ShingleSet();
+        List<Shingle> shingles2 = set.getShingleList();
+        for (int i = 0 ; i < shingles.size() ; ++i) {
+            Shingle shingle = shingles.get(i);
+            if (set.contains(shingle)) {
+                //FIXME: here the position of the shingle does not make sense
+                //The same shingle may appear in different places within the
+                //two shingle sets.
+                result.addShingle(shingle, i);
+            }
+        }
+        return result;
     }
 
     //TODO: to implement
@@ -89,6 +139,14 @@ public class ShingleSet implements ShingleSetBase {
         return null;
     }
 
+    public boolean contains(Shingle shingle) {
+        for (int i = 0 ; i < shingles.size() ; ++i) {
+            if (shingle.equals(shingles.get(i))) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     // public List<Shingle> getShingleListUnique() {
     // }
@@ -128,7 +186,7 @@ public class ShingleSet implements ShingleSetBase {
         }
 
         public boolean equals(ShingleData sd) {
-            return this.shingle.equals(sd.getShingle());
+            return this.equals((Shingle)sd.getShingle());
         }
 
         public boolean equals(Shingle shingle) {

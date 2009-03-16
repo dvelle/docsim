@@ -21,3 +21,4 @@ public abstract class ShingleUnit implements ShingleUnitMetric {
      */
     public abstract void update(String str);
 }
+

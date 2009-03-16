@@ -8,7 +8,7 @@ import com.google.common.collect.Sets;
  * @author
  * @version
  */
-public abstract class Shingle {
+public abstract class Shingle implements ShingleMetric{
     protected String            rawData;
     protected ShingleUnitBag    suMgr;
     // protected ShingleUnitMgr    suMgr;
@@ -77,6 +77,23 @@ public abstract class Shingle {
 
     public void parse(String text) throws Exception{
         throw new Exception("Method parse has not been implemented yet!!!");
+    }
+
+    /**
+     * This is a naive implementation of distance calculation.
+     * If two shingles are the same, return 1; else return 0.
+     * Usually subclasses should override this method to provide more
+     * customized implementation.
+     *
+     * @param another
+     * @return
+     */
+    public double distance(Shingle another) {
+        if (this.equals(another)) {
+            return 1.0;
+        } else {
+            return 0.0;
+        }
     }
 
     public abstract boolean equals(Shingle shingle);

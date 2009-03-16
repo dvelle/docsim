@@ -76,6 +76,12 @@ public abstract class ShingleUnitBag <SU extends ShingleUnit>
         return null;
     }
 
+    // TODO: How to define equility for two shingle unit bags in a meaningful
+    // way.
+    public boolean equals(ShingleUnitBag another) {
+        List<SU> sub2 = another.getShingleUnits();
+        return this == another;
+    }
 
     /**
      * Get all unique shingle units.
@@ -92,6 +98,10 @@ public abstract class ShingleUnitBag <SU extends ShingleUnit>
             list.add(dataEntry.getShingleunit());
         }
         return list;
+    }
+
+    public List<SU> getShingleUnits() {
+        return shingleUnitList;
     }
 
     /**

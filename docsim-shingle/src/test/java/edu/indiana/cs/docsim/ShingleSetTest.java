@@ -1,0 +1,222 @@
+package edu.indiana.cs.docsim;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Logger;
+
+// import edu.indiana.cs.docsim.util.ResourceLoader;
+
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+
+public class ShingleSetTest
+  extends TestCase {
+    private static Logger logger =
+        Logger.getLogger(ShingleSetTest.class.getName());
+    private String simpleText =
+        "Adds a \"See Also\" heading with a link or text entry that points "+
+        "to reference. A doc comment may contain any number of @see tags,"+
+        "which are all grouped under the same heading. The @see tag has "+
+        "three variations; the third form below is the most common." +
+        "This tag is valid in any doc comment: overview, package," +
+        "class, interface, constructor, method or field. For inserting an " +
+        "in-line link within a sentence to a package, class or member.";
+
+    private String dupText =
+        "hello world hello world hello world word hello hello world";
+
+    private String moreDupText =
+        "hello world hello world hello world hello world hello world";
+
+    private String textEncoding = "UTF-8";
+    private String textLiteral;
+    private String textFileName;
+
+    // private ShingleSet shingleSet;
+    private ShingleTextParser shingleTxtParser;
+
+    /**
+     * Create the test case
+     *
+     * @param testName name of the test case
+     */
+    public ShingleSetTest(String testName) {
+        super(testName);
+    }
+
+    /**
+     * @return the suite of tests being tested
+     */
+    public static Test suite() {
+        return new TestSuite(ShingleSetTest.class);
+    }
+
+    @Override
+    public void setUp() {
+        // shingleSet = new ShingleSet();
+        shingleTxtParser = new ShingleTextParser();
+    }
+
+    public void ttestSimpleText() throws Exception {
+        int shinglesize = 5;
+        String dumpStr;
+        logger.info("Testing by feeding simple text");
+        StringBuilder sb = new StringBuilder();
+        ShingleSet shingleset = shingleTxtParser.parseText(simpleText,
+                shinglesize, textEncoding);
+        // dumpStr = dumpeShingleSet(shingleset);
+        // logger.info(dumpStr);
+
+        shinglesize = 5;
+        ShingleSet shingleset2 = shingleTxtParser.parseText(dupText, shinglesize, textEncoding);
+        // dumpStr = dumpeShingleSet(shingleset);
+        // logger.info(dumpStr);
+
+        ShingleSet union = shingleset.union(shingleset2);
+        int size1 = shingleset.size();
+        int size2 = shingleset2.size();
+        int sizeunion = union.size();
+        dumpStr = "Union of two shingle sets.\n" + "sizes: " + size1 + "," +
+            size2 + ";" + sizeunion;
+        dumpStr += dumpeShingleSet(union);
+        logger.info(dumpStr);
+    }
+
+    public void testDupTextUnion() throws Exception {
+        logger.info("##################################################");
+        int shinglesize = 5;
+        String dumpStr;
+        logger.info("Testing by feeding simple text");
+        StringBuilder sb = new StringBuilder();
+        ShingleSet shingleset = shingleTxtParser.parseText(dupText,
+                shinglesize, textEncoding);
+        // dumpStr = dumpeShingleSet(shingleset);
+        // logger.info(dumpStr);
+
+        shinglesize = 5;
+        ShingleSet shingleset2 = shingleTxtParser.parseText(moreDupText, shinglesize, textEncoding);
+        // dumpStr = dumpeShingleSet(shingleset);
+        // logger.info(dumpStr);
+
+        ShingleSet union = shingleset.union(shingleset2);
+        int size1 = shingleset.size();
+        int size2 = shingleset2.size();
+        int sizeunion = union.size();
+        int sizeunique1 = shingleset.sizeUnique();
+        int sizeunique2 = shingleset2.sizeUnique();
+        int sizeuniqueunion = union.sizeUnique();
+        dumpStr = "Union of two shingle sets.\n" + "sizes: " + size1 + "," + size2 + ";" + sizeunion;
+        dumpStr += "\nUnique size: " + sizeunique1 + "," + sizeunique2 + ";" + sizeuniqueunion;
+        logger.info("+++++++++++++++++++++ dumping ++++++++++++++++++");
+        dumpStr += dumpeShingleSet(union);
+        logger.info(dumpStr);
+        logger.info("+++++++++++++++++++++ dumping over ++++++++++++++++++");
+    }
+
+    public void testDupTextIntersect() throws Exception {
+        logger.info("##################################################");
+        int shinglesize = 5;
+        String dumpStr;
+        logger.info("Testing by feeding simple text");
+        StringBuilder sb = new StringBuilder();
+        ShingleSet shingleset = shingleTxtParser.parseText(dupText,
+                shinglesize, textEncoding);
+        // dumpStr = dumpeShingleSet(shingleset);
+        // logger.info(dumpStr);
+
+        shinglesize = 5;
+        ShingleSet shingleset2 = shingleTxtParser.parseText(moreDupText, shinglesize, textEncoding);
+        // dumpStr = dumpeShingleSet(shingleset);
+        // logger.info(dumpStr);
+
+        ShingleSet union = shingleset.intersect(shingleset2);
+        int size1 = shingleset.size();
+        int size2 = shingleset2.size();
+        int sizeunion = union.size();
+        int sizeunique1 = shingleset.sizeUnique();
+        int sizeunique2 = shingleset2.sizeUnique();
+        int sizeuniqueunion = union.sizeUnique();
+        dumpStr = "Union of two shingle sets.\n" + "sizes: " + size1 + "," + size2 + ";" + sizeunion;
+        dumpStr += "\nUnique size: " + sizeunique1 + "," + sizeunique2 + ";" + sizeuniqueunion;
+        logger.info("+++++++++++++++++++++ dumping ++++++++++++++++++");
+        dumpStr += dumpeShingleSet(union);
+        logger.info(dumpStr);
+        logger.info("+++++++++++++++++++++ dumping over ++++++++++++++++++");
+    }
+    public void testTextIntersectFromFile() throws Exception {
+        logger.info("##################################################");
+        int shinglesize = 5;
+        String dumpStr;
+        StringBuilder sb = new StringBuilder();
+        logger.info("Testing by feeding simple text read from file");
+
+        String textFile1 = "res://shingle.sample.1";
+        ShingleSet shingleset = shingleTxtParser.parseFile(textFile1,
+                shinglesize, textEncoding);
+        // dumpStr = dumpeShingleSet(shingleset);
+        // logger.info(dumpStr);
+
+        String textFile2 = "res://shingle.sample.2";
+        ShingleSet shingleset2 = shingleTxtParser.parseFile(textFile2,
+                shinglesize, textEncoding);
+        // dumpStr = dumpeShingleSet(shingleset);
+        // logger.info(dumpStr);
+
+        ShingleSet union = shingleset.intersect(shingleset2);
+        int size1 = shingleset.size();
+        int size2 = shingleset2.size();
+        int sizeunion = union.size();
+        int sizeunique1 = shingleset.sizeUnique();
+        int sizeunique2 = shingleset2.sizeUnique();
+        int sizeuniqueunion = union.sizeUnique();
+        dumpStr = "Intersect of two shingle sets.\n" + "sizes: " + size1 + "," + size2 + ";" + sizeunion;
+        dumpStr += "\nUnique size: " + sizeunique1 + "," + sizeunique2 + ";" + sizeuniqueunion;
+        logger.info("+++++++++++++++++++++ dumping ++++++++++++++++++");
+        dumpStr += dumpeShingleSet(union);
+        logger.info(dumpStr);
+        logger.info("+++++++++++++++++++++ dumping over ++++++++++++++++++");
+    }
+
+    private String dumpeShingleSet(ShingleSet shingleset) {
+        // List<Shingle> shingles = shingleset.getShingleList();
+        List<Shingle> shingles = shingleset.getUniqueShingleList();
+        StringBuilder sb = new StringBuilder();
+        for (Iterator<Shingle> it = shingles.iterator() ; it.hasNext();) {
+            Shingle shingle = it.next();
+            sb.append("\nshingle:\n");
+            sb.append("\t" + dumpShingle(shingle));
+            int[] pos = shingleset.getPos(shingle);
+            sb.append("\n\tpos:" + serIntArray(pos));
+        }
+        return sb.toString();
+    }
+    private String dumpShingle(Shingle shingle) {
+        ShingleUnitBag sub = shingle.getSuMgr();
+        List<ShingleUnit> sulist = sub.getUniqueShingleUnits();
+        Iterator<ShingleUnit> it = sulist.iterator();
+        StringBuilder sb = new StringBuilder();
+        while (it.hasNext()) {
+            ShingleUnit su = it.next();
+            int[] pos = sub.getPos(su);
+            sb.append(su.value());
+            sb.append(":" + serIntArray(pos) + "; ");
+        }
+        return sb.toString();
+    }
+    private String serIntArray(int[] array){
+        StringBuilder sb = new StringBuilder();
+        if (array == null) {
+            return "";
+        } else {
+            for (int i = 0 ; i < array.length ; ++i) {
+                if (i == array.length-1) {
+                    sb.append(array[i]);
+                } else {
+                    sb.append(array[i]+",");
+                }
+            }
+        }
+        return sb.toString();
+    }
+}
