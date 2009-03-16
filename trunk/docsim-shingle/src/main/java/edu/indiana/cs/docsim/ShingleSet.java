@@ -20,6 +20,7 @@ public class ShingleSet implements ShingleSetBase {
             ShingleData dataEntry = it.next();
             if (dataEntry.equals(shingle)) {//found it
                 dataEntry.addPos(pos);
+                // logger.info("found it!!");
                 found = true;
                 break;
             }
@@ -57,6 +58,37 @@ public class ShingleSet implements ShingleSetBase {
     public List<Shingle> getShingleList() {
         return shingles;
     }
+
+    public List<Shingle> getUniqueShingleList() {
+        List<Shingle> list = Lists.newArrayList();
+        Iterator<ShingleData> it = shinglesUnique.iterator();
+        while (it.hasNext()) {
+            ShingleData dataEntry = it.next();
+            list.add(dataEntry.getShingle());
+        }
+        return list;
+    }
+
+    public int[] getPos(Shingle shingle) {
+        ShingleData sd = getSD(shingle);
+        if (sd == null) {
+            return new int[0];
+        } else {
+            return sd.getPositions();
+        }
+    }
+
+    private ShingleData getSD(Shingle shingle) {
+        Iterator<ShingleData> it = shinglesUnique.iterator();
+        while (it.hasNext()) {
+            ShingleData dataEntry = it.next();
+            if (dataEntry.equals(shingle)) {//found it
+                return dataEntry;
+            }
+        }
+        return null;
+    }
+
 
     // public List<Shingle> getShingleListUnique() {
     // }
@@ -102,6 +134,16 @@ public class ShingleSet implements ShingleSetBase {
         public boolean equals(Shingle shingle) {
             return this.shingle.equals(shingle);
         }
+        public boolean equals(Object object) {
+            if (object instanceof ShingleData) {
+                return this.equals((ShingleData)object);
+            } else if (object instanceof Shingle) {
+                return this.equals((Shingle)object);
+            } else {
+                logger.severe("You probably should compare objects of wrong types!!!");
+                return false;
+            }
+        }
 
         //TODO: to imple. Maintain the invariant: equal objects have same hash
         //code.
@@ -109,11 +151,6 @@ public class ShingleSet implements ShingleSetBase {
             return -1;
         }
 
-        @Override
-        public boolean equals(Object obj) {
-            logger.severe("You probably should compare objects of wrong types!!!");
-            return false;
-        }
 
         /**
          * get the value of shingleunit

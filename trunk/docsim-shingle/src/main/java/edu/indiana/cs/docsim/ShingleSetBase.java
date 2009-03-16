@@ -46,6 +46,12 @@ public interface ShingleSetBase {
     // public abstract List<Shingle> getShingleList();
 
     /**
+     * Get all unique shingles in this set.
+     * @return
+     */
+    List<Shingle> getUniqueShingleList();
+
+    /**
      * Add a shingle to this set.
      *
      * @param shingle the shingle to be added to this set.
@@ -74,5 +80,6 @@ public interface ShingleSetBase {
      */
     // Shingle getShingle(Shingle shingle);
 
+    public int[] getPos(Shingle shingle);
 }
 
