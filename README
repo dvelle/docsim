@@ -1,2 +1,8 @@
 
 This is for our course project.
+
+docsim-shingle:
+    Implementation of shingle algorithm
+
+docsim-html-proc:
+    Html processing utilities.
