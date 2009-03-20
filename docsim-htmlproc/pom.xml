@@ -478,20 +478,28 @@
         <artifactId>maven-jetty-plugin</artifactId>
         <version>6.1.14</version>
       </plugin>
+
       <plugin>
         <artifactId>maven-antrun-plugin</artifactId>
+        <configuration>
+          <tasks>
+            <echo message="Generating tag for all classes and test classes"/>
+            <exec executable="ctags">
+              <arg line="-R ./"/>
+            </exec>
+          </tasks>
+        </configuration>
         <executions>
           <execution>
             <id>generate tag</id>
-            <phase>package</phase>
-            <configuration>
-              <tasks>
-                <echo message="Generating tag for all classes and test classes"/>
-                <exec executable="ctags">
-                  <arg line="-R ./"/>
-                </exec>
-              </tasks>
-            </configuration>
+            <phase>compile</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>generate tag 2</id>
+            <phase>test-compile</phase>
             <goals>
               <goal>run</goal>
             </goals>
