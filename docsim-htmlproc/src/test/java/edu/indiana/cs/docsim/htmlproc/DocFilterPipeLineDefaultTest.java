@@ -51,7 +51,8 @@ public class DocFilterPipeLineDefaultTest
     }
 
     public void testPipeLineRemote() throws Exception{
-        String strUrl = "http://cs.indiana.edu";
+        // String strUrl = "http://cs.indiana.edu";
+        String strUrl = "http://www.informatics.indiana.edu/";
         String charset = "UTF-8";
         URL url = new URL(strUrl);
         String result = docFilterPipeLine.filter(url);

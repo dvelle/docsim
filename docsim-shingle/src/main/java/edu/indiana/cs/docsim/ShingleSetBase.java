@@ -52,9 +52,14 @@ public interface ShingleSetBase {
     List<Shingle> getUniqueShingleList();
 
     /**
-     * Add a shingle to this set.
+     * Add a shingle to this shingle set.
+     * If the shingle already exists at the specified location, the position
+     * information would be added to the existing shingle data strcuture.
      *
-     * @param shingle the shingle to be added to this set.
+     * @param shingle shingle to be added
+     * @param pos     the position of the shingle in original document.
+     *                <code>pos</code> parameter is NOT the position where the
+     *                shingle would be put in this shingle set.
      */
     void addShingle(Shingle shingle, int pos);
 

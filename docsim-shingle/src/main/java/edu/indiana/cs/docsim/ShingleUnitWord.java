@@ -6,20 +6,25 @@ public class ShingleUnitWord extends ShingleUnit {
         this.update(str);
     }
 
+    @Override
     public String value() {
         return word;
     }
     // public void valueOf(String str) {
     //     this.word = str;
     // }
+
+    @Override
     public void update(String str) {
         this.word = str;
     }
 
+    @Override
     public int length() {
         if( word == null ) return 0;
         return word.length();
     }
+
     public boolean equals(ShingleUnit another) {
         if(this.word.equals(another.value()))
             return true;

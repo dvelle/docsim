@@ -66,6 +66,7 @@ public class HtmlTagRemover {
 
     private String tagRemove(URL url) {
         try {
+            logger.info("URI is this:" + url);
             Page page = webClient.getPage(url);
             if (page instanceof HtmlPage) {
                 return tagRemoveBody((HtmlPage)page);
