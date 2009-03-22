@@ -9,7 +9,19 @@ import org.apache.commons.io.IOUtils;
 
 import edu.indiana.cs.docsim.util.ResourceLoader;
 
+/**
+ * This class receives string input, tokenizes it, and build shingle set.
+ *
+ * @author
+ * @version
+ */
 public class ShingleTextParser implements ShingleTextParserBase {
+
+    /**
+     * Tokenizer which splits the whole chunk of text into meaningful pieces.
+     * For example, the split can be based on word, phase, sentence...
+     * Default tokenizer uses word as unit.
+     */
     private TextTokenizer tokenizer;
 
     private static Logger logger =
@@ -22,13 +34,27 @@ public class ShingleTextParser implements ShingleTextParserBase {
     private void clear() {
 
     }
+
     //FIXME: implementation in this method is not efficient.
+
+    /**
+     * Everytime a new shingle set is returned.
+     * So this method can be invoked multiple times with different data passed
+     * in.
+     *
+     * @param text
+     * @param shinglesize
+     * @param txtEncoding
+     * @return
+     */
     public ShingleSet parseText(String text, int shinglesize,
             String txtEncoding){
-        logger.info("Starting to parse text.");
+
+        // First tokenize the input text
         tokenizer.tokenize(text, txtEncoding);
+
         ShingleSet shingleset = new ShingleSet();
-        String[] window = new String[shinglesize];
+        String[] window = new String[shinglesize]; //store a shingle
         int shinglecursor = 0, unitcursor = 0;
         Shingle shingle;
 
@@ -51,6 +77,8 @@ public class ShingleTextParser implements ShingleTextParserBase {
                 window[unitcursor-1] = token;
             }
         }
+
+        // If data size < shingle size
         if (shinglecursor == 0) {//text length < shingle size
             shingle = new WordShingle();
             String[] newArray = new String[unitcursor];
@@ -70,5 +98,20 @@ public class ShingleTextParser implements ShingleTextParserBase {
         InputStream is = ResourceLoader.open(fileName);
         String content = IOUtils.toString(is, txtEncoding);
         return parseText(content, shinglesize, txtEncoding);
+    }
+
+    /**
+     * get the value of tokenizer
+     * @return the value of tokenizer
+     */
+    public TextTokenizer getTokenizer(){
+        return this.tokenizer;
+    }
+    /**
+     * set a new value to tokenizer
+     * @param tokenizer the new value to be used
+     */
+    public void setTokenizer(TextTokenizer tokenizer) {
+        this.tokenizer=tokenizer;
     }
 }

@@ -8,7 +8,7 @@ public class DocFilterPipeLineDefault {
 
     public DocFilterPipeLineDefault() throws Exception{
         pipeline.add(new HtmlTagRemoverFilter());
-        pipeline.add(new PaiceStemmerWrapper());
+        // pipeline.add(new PaiceStemmerWrapper());
     }
 
     public String filter(URL url) throws Exception{

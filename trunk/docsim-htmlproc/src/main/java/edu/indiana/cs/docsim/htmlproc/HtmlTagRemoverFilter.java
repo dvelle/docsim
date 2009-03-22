@@ -14,7 +14,7 @@ public class HtmlTagRemoverFilter extends DocFilterBase {
         // This is a ugly workaournd. HtmlTagRemover does not accept a string
         // as input document. So we first write the string to a temp file and
         // then feed that file to HtmlTagRemover.
-        File tmpfile = File.createTempFile("doc-preprocess", null);
+        File tmpfile = File.createTempFile("doc-preprocess", ".html");
         String charset = "UTF-8";
         FileOutputStream fos = new FileOutputStream(tmpfile);
         fos.write(doc.getBytes(charset));

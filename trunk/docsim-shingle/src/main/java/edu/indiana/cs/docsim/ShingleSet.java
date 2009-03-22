@@ -8,12 +8,28 @@ import java.util.logging.Logger;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
+/**
+ * Represents a shingle set.
+ *
+ * @author
+ * @version
+ */
 public class ShingleSet implements ShingleSetBase {
     Logger logger = Logger.getLogger(ShingleSet.class.getName());
 
     private List<Shingle> shingles = Lists.newArrayList();
     private List<ShingleData> shinglesUnique = Lists.newArrayList();
 
+    /**
+     * Add a shingle to this shingle set.
+     * If the shingle already exists at the specified location, the position
+     * information would be added to the existing shingle data strcuture.
+     *
+     * @param shingle shingle to be added
+     * @param pos     the position of the shingle in original document.
+     *                <code>pos</code> parameter is NOT the position where the
+     *                shingle would be put in this shingle set.
+     */
     public void addShingle(Shingle shingle, int pos) {
         Iterator<ShingleData> it = shinglesUnique.iterator();
         boolean found = false;
@@ -41,8 +57,6 @@ public class ShingleSet implements ShingleSetBase {
         return shinglesUnique.size();
     }
 
-    //TODO: to implement
-
     /**
      * Calculates union of this shingle set and the passed-in shingle set.
      * After this union operation, extra care should be taken to use the
@@ -57,21 +71,17 @@ public class ShingleSet implements ShingleSetBase {
         //FIXME: here the position of the shingle does not make sense.
         //The same shingle may appear in different places within the
         //two shingle sets.
-        logger.info("===========    Union   =================");
-        logger.info("===========    Add one set   =================");
         ShingleSet result = new ShingleSet();
         for (int i = 0 ; i < shingles.size() ; ++i) {
             Shingle shingle = shingles.get(i);
             result.addShingle(shingle, i);
         }
 
-        logger.info("===========    Add another set   =================");
         List<Shingle> shingles2 = set.getShingleList();
         for (int i = 0 ; i < shingles2.size() ; ++i) {
             Shingle shingle = shingles2.get(i);
             result.addShingle(shingle, i);
         }
-        logger.info("===========    Union ends   =================");
         return result;
     }
 
@@ -91,9 +101,9 @@ public class ShingleSet implements ShingleSetBase {
         for (int i = 0 ; i < shingles.size() ; ++i) {
             Shingle shingle = shingles.get(i);
             if (set.contains(shingle)) {
-                //FIXME: here the position of the shingle does not make sense
-                //The same shingle may appear in different places within the
-                //two shingle sets.
+                // FIXME: here the position of the shingle does not make sense
+                // The same shingle may appear in different places within the
+                // two shingle sets.
                 result.addShingle(shingle, i);
             }
         }
