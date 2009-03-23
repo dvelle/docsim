@@ -4,11 +4,15 @@ import edu.indiana.cs.docsim.htmlproc.stem.PaiceStemmerWrapper;
 import java.net.URL;
 
 public class DocFilterPipeLineDefault {
-    private DocFilterPipeLine pipeline = new DocFilterPipeLine();
+    protected DocFilterPipeLine pipeline = new DocFilterPipeLine();
+
+    protected void init() throws Exception {
+        pipeline.add(new HtmlTagRemoverFilter());
+        pipeline.add(new PaiceStemmerWrapper());
+    }
 
     public DocFilterPipeLineDefault() throws Exception{
-        pipeline.add(new HtmlTagRemoverFilter());
-        // pipeline.add(new PaiceStemmerWrapper());
+        init();
     }
 
     public String filter(URL url) throws Exception{
@@ -19,3 +23,4 @@ public class DocFilterPipeLineDefault {
         return pipeline.filter(fileName, charset);
     }
 }
+

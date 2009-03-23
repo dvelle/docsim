@@ -69,9 +69,9 @@ public class HtmlProcDemo {
         int nodecount = nodels.getLength();
         for (int i = 0 ; i < nodecount ; ++i) {
             Node node = nodels.item(i);
-            logger.info("ele node type:" + Node.ELEMENT_NODE);
-            logger.info("type:" + node.getNodeName() + ":" +
-                    node.getNodeType() + ";" + node.toString());
+            // logger.info("ele node type:" + Node.ELEMENT_NODE);
+            // logger.info("type:" + node.getNodeName() + ":" +
+            //         node.getNodeType() + ";" + node.toString());
             switch (node.getNodeType()) {
                 case Node.ELEMENT_NODE:
                     parseElement((HtmlElement)node);
@@ -88,7 +88,7 @@ public class HtmlProcDemo {
         if (tagName.compareToIgnoreCase("div") == 0) {
             HtmlDivision div = (HtmlDivision)element;
             String value = div.getAttribute(infoattrname);
-            logger.info("div size:" + value);
+            // logger.info("div size:" + value);
         }
 
         // String value = element.getAttribute(infoattrname);
