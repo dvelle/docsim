@@ -1,4 +1,5 @@
 package edu.indiana.cs.docsim;
+
 import java.util.List;
 
 /**
@@ -41,6 +42,13 @@ public interface ShingleUnitMgr <SU extends ShingleUnit> {
     List<SU> getUniqueShingleUnits();
 
     /**
+     * Get ShingleUnitData of all shingle units.
+     *
+     * @return
+     */
+    List<ShingleUnitData<SU>> getShingleUnitsData();
+
+    /**
      * Get all shingle units.
      * Duplicate shingle units are not suppressed.
      *
@@ -81,6 +89,15 @@ public interface ShingleUnitMgr <SU extends ShingleUnit> {
      */
     void addShingleUnit(SU shingleunit, int position);
     // void addShingleUnit(ShingleUnit shingleunit, int position);
+
+    /**
+     * Add a shingle unit built from passed-in <code>str</code> to this
+     * manager.
+     *
+     * @param str
+     * @param pos
+     */
+    void addShingleUnit(String str, int pos);
 
     /**
      * Remove the specified shingle unit.

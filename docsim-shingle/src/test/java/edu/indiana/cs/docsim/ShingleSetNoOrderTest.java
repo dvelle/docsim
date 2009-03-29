@@ -13,10 +13,10 @@ import junit.framework.TestSuite;
 import static edu.indiana.cs.docsim.TestUtil.dumpShingleSet;
 import static edu.indiana.cs.docsim.TestUtil.dumpShingle;
 
-public class ShingleSetTest
+public class ShingleSetNoOrderTest
   extends TestCase {
     private static Logger logger =
-        Logger.getLogger(ShingleSetTest.class.getName());
+        Logger.getLogger(ShingleSetNoOrderTest.class.getName());
     private String simpleText =
         "Adds a \"See Also\" heading with a link or text entry that points "+
         "to reference. A doc comment may contain any number of @see tags,"+
@@ -37,14 +37,14 @@ public class ShingleSetTest
     private String textFileName;
 
     // private ShingleSet shingleSet;
-    private ShingleTextParser shingleTxtParser;
+    private ShingleTextParserNoOrder shingleTxtParser;
 
     /**
      * Create the test case
      *
      * @param testName name of the test case
      */
-    public ShingleSetTest(String testName) {
+    public ShingleSetNoOrderTest(String testName) {
         super(testName);
     }
 
@@ -52,13 +52,13 @@ public class ShingleSetTest
      * @return the suite of tests being tested
      */
     public static Test suite() {
-        return new TestSuite(ShingleSetTest.class);
+        return new TestSuite(ShingleSetNoOrderTest.class);
     }
 
     @Override
     public void setUp() {
         // shingleSet = new ShingleSet();
-        shingleTxtParser = new ShingleTextParser();
+        shingleTxtParser = new ShingleTextParserNoOrder();
     }
 
     public void testSimpleText() throws Exception {
@@ -66,16 +66,16 @@ public class ShingleSetTest
         String dumpStr;
         StringBuilder sb = new StringBuilder();
 
-        ShingleSet shingleset = shingleTxtParser.parseText(simpleText,
-                shinglesize, textEncoding);
+        ShingleSet<WordShingleNoOrder> shingleset =
+            shingleTxtParser.parseText(simpleText, shinglesize, textEncoding);
         dumpStr = dumpShingleSet(shingleset);
 
-        ShingleSet shingleset2 = shingleTxtParser.parseText(dupText,
-                shinglesize, textEncoding);
+        ShingleSet<WordShingleNoOrder> shingleset2 =
+            shingleTxtParser.parseText(dupText, shinglesize, textEncoding);
         dumpStr = dumpShingleSet(shingleset);
 
         // Union of two shingle sets
-        ShingleSet union = shingleset.union(shingleset2);
+        ShingleSet<WordShingleNoOrder> union = shingleset.union(shingleset2);
         dumpStr = dumpShingleSet(union);
         int size1 = shingleset.size();
         int size2 = shingleset2.size();
@@ -117,12 +117,14 @@ public class ShingleSetTest
 
         // String textFile1 = "res://shingle.sample.1";
         String textFile1 = "res://doc1.txt";
-        ShingleSet shingleset = shingleTxtParser.parseFile(textFile1, shinglesize, textEncoding);
+        ShingleSet<WordShingleNoOrder> shingleset =
+            shingleTxtParser.parseFile(textFile1, shinglesize, textEncoding);
         dumpStr = dumpShingleSet(shingleset);
 
         // String textFile2 = "res://shingle.sample.2";
         String textFile2 = "res://doc2.txt";
-        ShingleSet shingleset2 = shingleTxtParser.parseFile(textFile2, shinglesize, textEncoding);
+        ShingleSet<WordShingleNoOrder> shingleset2 =
+            shingleTxtParser.parseFile(textFile2, shinglesize, textEncoding);
         dumpStr = dumpShingleSet(shingleset2);
 
         sb.append("File 1: " + textFile1);

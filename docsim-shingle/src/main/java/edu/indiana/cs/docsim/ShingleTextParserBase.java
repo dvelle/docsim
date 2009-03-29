@@ -3,7 +3,7 @@ package edu.indiana.cs.docsim;
 /**
  * Given a string input or a file, build shingle set for the data.
  */
-interface ShingleTextParserBase {
+interface ShingleTextParserBase <S extends Shingle> {
     /**
      *
      * @param text        text to be processed
@@ -11,7 +11,7 @@ interface ShingleTextParserBase {
      * @param txtEncoding charset of <code>text</code>
      * @return
      */
-    ShingleSet parseText(String text, int shinglesize, String txtEncoding);
+    ShingleSet<S> parseText(String text, int shinglesize, String txtEncoding);
 
     /**
      * Reads data from the file, processes it and build shingle set.
@@ -21,6 +21,6 @@ interface ShingleTextParserBase {
      * @param txtEncoding   charset of data in the file.
      * @return
      */
-    ShingleSet parseFile(String fileName, int shinglesize, String txtEncoding)
+    ShingleSet<S> parseFile(String fileName, int shinglesize, String txtEncoding)
         throws Exception;
 }

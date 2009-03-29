@@ -11,10 +11,10 @@ import java.util.Iterator;
 import static edu.indiana.cs.docsim.TestUtil.dumpShingleSet;
 import static edu.indiana.cs.docsim.TestUtil.dumpShingle;
 
-public class ShingleTextParserTest
+public class ShingleTextParserNoOrderTest
   extends TestCase {
     private static Logger logger =
-        Logger.getLogger(ShingleTextParserTest.class.getName());
+        Logger.getLogger(ShingleTextParserNoOrderTest.class.getName());
     private String simpleText =
         "Adds a \"See Also\" heading with a link or text entry that points "+
         "to reference. A doc comment may contain any number of @see tags,"+
@@ -34,14 +34,14 @@ public class ShingleTextParserTest
     private String textLiteral;
     private String textFileName;
 
-    private ShingleTextParser shingleTxtParser;
+    private ShingleTextParserNoOrder shingleTxtParser;
 
     /**
      * Create the test case
      *
      * @param testName name of the test case
      */
-    public ShingleTextParserTest(String testName) {
+    public ShingleTextParserNoOrderTest(String testName) {
         super(testName);
     }
 
@@ -49,29 +49,29 @@ public class ShingleTextParserTest
      * @return the suite of tests being tested
      */
     public static Test suite() {
-        return new TestSuite(ShingleTextParserTest.class);
+        return new TestSuite(ShingleTextParserNoOrderTest.class);
     }
 
     @Override
     public void setUp() {
-        shingleTxtParser = new ShingleTextParser();
+        shingleTxtParser = new ShingleTextParserNoOrder();
     }
 
     public void testSimpleText() throws Exception {
         int shinglesize = 10;
         String dumpStr;
         StringBuilder sb = new StringBuilder();
-        sb.append("- Text:\n" + simpleText);
         ShingleSet shingleset = shingleTxtParser.parseText(simpleText,
                 shinglesize, textEncoding);
         dumpStr = dumpShingleSet(shingleset);
+        sb.append("- Text:\n" + simpleText);
         sb.append("\n- shingle size:" + shinglesize);
         sb.append("\n- Shingle set:\n" + dumpStr);
 
         shinglesize = 5;
         shingleset = shingleTxtParser.parseText(dupText, shinglesize, textEncoding);
         dumpStr = dumpShingleSet(shingleset);
-        sb.append("\n\n- Text:\n" + dupText);
+        sb.append("\n- Text:\n" + dupText);
         sb.append("\n- shingle size:" + shinglesize);
         sb.append("\n- Shingle set:\n" + dumpStr);
         logger.info(sb.toString());
@@ -80,12 +80,13 @@ public class ShingleTextParserTest
     public void testShingleTextFromFile() throws Exception {
         int shinglesize = 10;
         String textFile = "res://shingle.sample.1";
-        StringBuilder sb = new StringBuilder();
-        sb.append("- File: " + textFile);
-        sb.append("\n- shingle size: " + shinglesize);
         ShingleSet shingleset = shingleTxtParser.parseFile(textFile,
                 shinglesize, textEncoding);
         String dumpStr = dumpShingleSet(shingleset);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("- File:" + textFile);
+        sb.append("\n- shingle size:" + shinglesize);
         sb.append("\n- Shingle set:\n" + dumpStr);
         logger.info(sb.toString());
     }

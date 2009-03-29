@@ -8,27 +8,44 @@ import java.util.Set;
 import com.google.common.collect.Sets;
 import com.google.common.collect.Lists;
 
+/**
+ * Represents a shingle unit bag.
+ *
+ * @author
+ * @version
+ */
 public abstract class ShingleUnitBag <SU extends ShingleUnit>
   implements ShingleUnitMgr<SU> {
-    Logger logger = Logger.getLogger(ShingleUnitBag.class.getName());
+    private static Logger logger =
+        Logger.getLogger(ShingleUnitBag.class.getName());
 
     // private String rawData;
-    private List<SU> shingleUnitList = Lists.newArrayList();
-    private List<ShingleUnitData> shingleUnitListUnique = Lists.newArrayList();
 
-    public abstract void addShingleUnit(String str, int pos);
+    // All shingle units are stored in this variable. The order is the same as
+    // the order in which those shingle units are inserted.
+    private List<SU> shingleUnitList = Lists.newArrayList();
+
+    // Just store the unique shingle units. It means duplicate shingle units
+    // are stored as one element. But the cardinality is still preserved.
+    private List<ShingleUnitData<SU>> shingleUnitListUnique = Lists.newArrayList();
+
+    // public abstract void addShingleUnit(String str, int pos);
+
+    public List<ShingleUnitData<SU>> getShingleUnitsData () {
+        return this.shingleUnitListUnique;
+    }
 
     /**
      * Add a shingle unit to this manager.
      *
      * @param shingleunit the shingle unit to be added
-     * @param pos         position of appearance
+     * @param pos         position of appearance of the shingle unit
      */
     public void addShingleUnit(SU shingleunit, int pos) {
-        Iterator<ShingleUnitData> it = shingleUnitListUnique.iterator();
+        Iterator<ShingleUnitData<SU>> it = shingleUnitListUnique.iterator();
         boolean found = false;
         while (it.hasNext()) {
-            ShingleUnitData dataEntry = it.next();
+            ShingleUnitData<SU> dataEntry = it.next();
             if (dataEntry.equals(shingleunit)) {//found it
                 dataEntry.addPos(pos);
                 found = true;
@@ -36,7 +53,7 @@ public abstract class ShingleUnitBag <SU extends ShingleUnit>
             }
         }
         if (!found) {
-            ShingleUnitData sud = new ShingleUnitData(shingleunit, pos);
+            ShingleUnitData<SU> sud = new ShingleUnitData<SU>(shingleunit, pos);
             shingleUnitListUnique.add(sud);
         }
         shingleUnitList.add(shingleunit);
@@ -78,7 +95,7 @@ public abstract class ShingleUnitBag <SU extends ShingleUnit>
 
     // TODO: How to define equility for two shingle unit bags in a meaningful
     // way.
-    public boolean equals(ShingleUnitBag another) {
+    public boolean equals(ShingleUnitBag<SU> another) {
         List<SU> sub2 = another.getShingleUnits();
         return this == another;
     }
@@ -92,9 +109,9 @@ public abstract class ShingleUnitBag <SU extends ShingleUnit>
     // ShingleUnit[] getUniqueShingleUnits();
     public List<SU> getUniqueShingleUnits() {
         List<SU> list = Lists.newArrayList();
-        Iterator<ShingleUnitData> it = shingleUnitListUnique.iterator();
+        Iterator<ShingleUnitData<SU>> it = shingleUnitListUnique.iterator();
         while (it.hasNext()) {
-            ShingleUnitData dataEntry = it.next();
+            ShingleUnitData<SU> dataEntry = it.next();
             list.add(dataEntry.getShingleunit());
         }
         return list;
@@ -120,10 +137,10 @@ public abstract class ShingleUnitBag <SU extends ShingleUnit>
         }
     }
 
-    private ShingleUnitData getSUD(SU shingleunit) {
-        Iterator<ShingleUnitData> it = shingleUnitListUnique.iterator();
+    public ShingleUnitData getSUD(SU shingleunit) {
+        Iterator<ShingleUnitData<SU>> it = shingleUnitListUnique.iterator();
         while (it.hasNext()) {
-            ShingleUnitData dataEntry = it.next();
+            ShingleUnitData<SU> dataEntry = it.next();
             if (dataEntry.equals(shingleunit)) {//found it
                 return dataEntry;
             }
@@ -153,78 +170,8 @@ public abstract class ShingleUnitBag <SU extends ShingleUnit>
      * @param shingleunit
      */
     public void removeShingleUnit(SU shingleunit) {
-        shingleUnitList.remove(shingleunit);
-        shingleUnitListUnique.remove(new ShingleUnitData(shingleunit, -1));
-    }
-
-    class ShingleUnitData {
-        private Set<Integer> pos = Sets.newHashSet();
-        private SU shingleunit;
-
-        public ShingleUnitData(SU shingleunit, int position) {
-            this.shingleunit = shingleunit;
-            pos.add(position);
-        }
-        public void addPos(int position) {
-            pos.add(position);
-        }
-
-        /**
-         * Get position of appearances of this shingle unit.
-         * Users can modify the returned value WITHOUT affecting the original
-         * data. Currently, the positions are not ordered.
-         * TODO: guarantee the returned positions from small to large?
-         *
-         * @return
-         */
-        public int[] getPositions() {
-            int[] intArray = new int[pos.size()];
-            Iterator<Integer> it = pos.iterator();
-        int i = 0;
-            while (it.hasNext()) {
-                intArray[i] = it.next();
-                ++i;
-            }
-            return intArray;
-        }
-
-        public int getCount() {
-            return pos.size();
-        }
-
-        public boolean equals(ShingleUnitData sud) {
-            return this.shingleunit.equals(sud.getShingleunit());
-        }
-        public boolean equals(ShingleUnit su) {
-            return this.shingleunit.equals(su);
-        }
-
-        //TODO: to imple. Maintain the invariant: equal objects have same hash
-        //code.
-        public int hashCode(){
-            return -1;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            logger.severe("You probably should compare objects of wrong types!!!");
-            return false;
-        }
-
-        /**
-         * get the value of shingleunit
-         * @return the value of shingleunit
-         */
-        public SU getShingleunit() {
-            return this.shingleunit;
-        }
-        /**
-         * set a new value to shingleunit
-         * @param shingleunit the new value to be used
-         */
-        public void setShingleunit(SU shingleunit) {
-            this.shingleunit=shingleunit;
-        }
+        while(shingleUnitList.remove(shingleunit)){}
+        while(shingleUnitListUnique.remove(new ShingleUnitData<SU>(shingleunit, -1))){}
     }
 }
 

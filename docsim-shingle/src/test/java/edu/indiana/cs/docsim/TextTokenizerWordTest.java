@@ -66,8 +66,8 @@ public class TextTokenizerWordTest
      * @throws Exception
      */
     public void testSimpleTextInOrder() throws Exception{
-        logger.info("Testing TextTokenizer by feeding simple text");
         StringBuilder sb = new StringBuilder();
+        // sb.append("Text:\n" + simpleText);
         TextTokenizerWord tokenizer = new
             TextTokenizerWord(simpleText, textEncoding);
         int index = 0;
@@ -95,7 +95,7 @@ public class TextTokenizerWordTest
             tokenmap.put(token, count);
         }
 
-        logger.info("Testing TextTokenizer by feeding simple text");
+        // logger.info("Testing TextTokenizer by feeding simple text");
         StringBuilder sb = new StringBuilder();
         TextTokenizerWord tokenizer = new
             TextTokenizerWord(simpleText, textEncoding);
@@ -112,3 +112,4 @@ public class TextTokenizerWordTest
         }
     }
 }
+

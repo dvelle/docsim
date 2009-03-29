@@ -9,7 +9,7 @@ package edu.indiana.cs.docsim;
  * @version
  */
 interface ShingleUnitMetric {
-    double  distance(ShingleUnit another);
+    Double  distance(ShingleUnit another);
     boolean equals(ShingleUnit another);
 }
 

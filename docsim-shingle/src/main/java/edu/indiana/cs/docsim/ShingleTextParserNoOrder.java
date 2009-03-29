@@ -15,8 +15,8 @@ import edu.indiana.cs.docsim.util.ResourceLoader;
  * @author
  * @version
  */
-public class ShingleTextParser
-  implements ShingleTextParserBase<WordShingle> {
+public class ShingleTextParserNoOrder
+  implements ShingleTextParserBase<WordShingleNoOrder> {
 
     /**
      * Tokenizer which splits the whole chunk of text into meaningful pieces.
@@ -26,9 +26,9 @@ public class ShingleTextParser
     private TextTokenizer tokenizer;
 
     private static Logger logger =
-        Logger.getLogger(ShingleTextParser.class.getName());
+        Logger.getLogger(ShingleTextParserNoOrder.class.getName());
 
-    public ShingleTextParser() {
+    public ShingleTextParserNoOrder() {
         tokenizer = new TextTokenizerWord();
     }
 
@@ -48,16 +48,16 @@ public class ShingleTextParser
      * @param txtEncoding
      * @return
      */
-    public ShingleSet<WordShingle> parseText(String text, int shinglesize,
+    public ShingleSet<WordShingleNoOrder> parseText(String text, int shinglesize,
             String txtEncoding){
 
         // First tokenize the input text
         tokenizer.tokenize(text, txtEncoding);
 
-        ShingleSet<WordShingle> shingleset = new ShingleSet();
+        ShingleSet<WordShingleNoOrder> shingleset = new ShingleSet();
         String[] window = new String[shinglesize]; //store a shingle
         int shinglecursor = 0, unitcursor = 0;
-        WordShingle shingle;
+        WordShingleNoOrder shingle;
 
         while (tokenizer.hasMoreTokens()) {
             String token = tokenizer.nextToken();
@@ -70,7 +70,7 @@ public class ShingleTextParser
                     }
                 }
                 window[shinglesize-1] = token;
-                shingle = new WordShingle();
+                shingle = new WordShingleNoOrder();
                 shingle.buildShingle(window);
                 shingleset.addShingle(shingle, shinglecursor);
                 ++shinglecursor;
@@ -81,7 +81,7 @@ public class ShingleTextParser
 
         // If data size < shingle size
         if (shinglecursor == 0) {//text length < shingle size
-            shingle = new WordShingle();
+            shingle = new WordShingleNoOrder();
             String[] newArray = new String[unitcursor];
             System.arraycopy(window, 0, newArray, 0, newArray.length);
             shingle.buildShingle(newArray);
@@ -92,7 +92,7 @@ public class ShingleTextParser
         return shingleset;
     }
 
-    public ShingleSet<WordShingle> parseFile(String fileName, int shinglesize,
+    public ShingleSet<WordShingleNoOrder> parseFile(String fileName, int shinglesize,
             String txtEncoding) throws Exception{
         // File file = new File(fileName);
         // Sring content = FileUtils.readFileToString(file, txtEncoding);
