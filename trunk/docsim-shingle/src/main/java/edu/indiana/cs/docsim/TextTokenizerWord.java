@@ -52,7 +52,7 @@ public class TextTokenizerWord
         StringBuilder sb = new StringBuilder();
         sb.append("Tokenizing:" + this.rawData);
         sb.append("\nLength of token array is " + tokens.length);
-        logger.info(sb.toString());
+        // logger.info(sb.toString());
     }
 
     private void purify() {

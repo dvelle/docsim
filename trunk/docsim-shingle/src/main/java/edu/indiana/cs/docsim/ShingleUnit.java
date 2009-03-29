@@ -12,7 +12,7 @@ public abstract class ShingleUnit implements ShingleUnitMetric {
      * Get length of this shingle unit.
      * @return
      */
-    public abstract int    length();
+    public abstract int length();
 
     /**
      * Build a shingle unit according to the input string.

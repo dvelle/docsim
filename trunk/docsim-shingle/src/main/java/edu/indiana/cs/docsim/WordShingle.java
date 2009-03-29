@@ -10,14 +10,16 @@ import java.util.logging.Logger;
  * @author
  * @version
  */
-public class WordShingle extends Shingle {
+// public class WordShingle <SU extends ShingleUnit> extends Shingle {
+public class WordShingle extends Shingle<ShingleUnitWord> {
     private static Logger logger =
         Logger.getLogger(WordShingle.class.getName());
 
     public WordShingle() {
         suMgr = new ShingleUnitWordBag();
     }
-    public void buildShingle(String []tokens) {
+
+    public void buildShingle(String[] tokens) {
         if (tokens == null || tokens.length == 0) {
             logger.warning("The parameter tokens is null or length " +
                     "of the array is 0. Maybe this is unexpected.");
@@ -45,11 +47,16 @@ public class WordShingle extends Shingle {
     }
 
     //TODO: to implement
-    public boolean equals(Shingle shingle) {
-        double dist = distance(shingle);
-        if (doubleEquals(dist, 0.0)) {
-            // logger.info("found equal shingles: " + this.getRawData() + ":" + shingle.getRawData());
-            return true;
+    public boolean equals(Shingle<ShingleUnitWord> shingle) {
+    // public boolean equals(Shingle shingle) {
+        if (shingle instanceof WordShingle) {
+            double dist = distance(shingle);
+            if (doubleEquals(dist, 0.0)) {
+                // logger.info("found equal shingles: " + this.getRawData() + ":" + shingle.getRawData());
+                return true;
+            } else {
+                return false;
+            }
         } else {
             return false;
         }
@@ -63,15 +70,26 @@ public class WordShingle extends Shingle {
                 "objects whose types are Object.");
         return false;
     }
-    private boolean doubleEquals(double d1, double d2) {
+    protected boolean doubleEquals(double d1, double d2) {
         double epsilon = 1e-5;
         return Math.abs(d1-d2) < epsilon ? true : false;
     }
 
     @Override
-    public double distance(Shingle another) {
-        ShingleUnitMgr suMgr2 = another.getSuMgr();
-        return distanceOriginal(this.getSuMgr(), suMgr2);
+    public Double distance(Shingle<ShingleUnitWord> another) {
+        if (another instanceof WordShingle) {
+            ShingleUnitMgr suMgr2 = another.getSuMgr();
+            if (suMgr2 instanceof ShingleUnitWordBag) {
+                return distanceOriginal((ShingleUnitWordBag)this.getSuMgr(),
+                        (ShingleUnitWordBag)suMgr2);
+            } else {
+                return 1.0;
+            }
+
+        } else {
+            return 1.0;
+            // return Double.POSITIVE_INFINITY;
+        }
     }
 
     /**
@@ -82,11 +100,13 @@ public class WordShingle extends Shingle {
      * @return return 0.0 if the two shingle unit managers are exactly same.
      * else return 1.0.
      */
-    private static double distanceOriginal(
-            ShingleUnitMgr sumgr1, ShingleUnitMgr sumgr2) {
-        List<ShingleUnit> suls1 = sumgr1.getShingleUnits();
-        List<ShingleUnit> suls2 = sumgr2.getShingleUnits();
-        if (suls1.size() != suls1.size()) {
+    private static Double distanceOriginal(
+            // ShingleUnitMgr sumgr1, ShingleUnitMgr sumgr2) {
+            ShingleUnitWordBag sumgr1, ShingleUnitWordBag sumgr2) {
+        // List<ShingleUnit> suls1 = sumgr1.getShingleUnits();
+        List<ShingleUnitWord> suls1 = sumgr1.getShingleUnits();
+        List<ShingleUnitWord> suls2 = sumgr2.getShingleUnits();
+        if (suls1.size() != suls2.size()) {
             return 1.0;
         } else {
             for (int i = 0 ; i < suls1.size() ; ++i) {

@@ -9,6 +9,8 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import static edu.indiana.cs.docsim.TestUtil.dumpWordShingle;
+
 /**
  *
  *
@@ -54,22 +56,23 @@ public class WordShingleTest
         wordshingle = new WordShingle();
     }
 
-    public void testSimpleText() throws Exception {
-        logger.info("Testing by feeding simple text");
+    public void testAddSUOnebyOne() throws Exception {
         StringBuilder sb = new StringBuilder();
+        sb.append("- Text:\n" + simpleText);
         TextTokenizerWord tokenizer =
             new TextTokenizerWord(simpleText, textEncoding);
         int pos = 0;
         while (tokenizer.hasMoreTokens()) {
             String token = tokenizer.nextToken();
-            // logger.info("token:" + token);
             wordshingle.addShingleUnit(token, pos++);
         }
-        dumpWordShingle(wordshingle);
+        sb.append("\n- Word Shingle:\n" + dumpWordShingle(wordshingle));
+        logger.info(sb.toString());
     }
-    public void testWordShingle() throws Exception {
-        logger.info("Testing WordShingle by feeding simple text");
+
+    public void testAddSUListOnce() throws Exception {
         StringBuilder sb = new StringBuilder();
+        sb.append("- Text:\n" + simpleText);
         TextTokenizerWord tokenizer = new TextTokenizerWord(simpleText, textEncoding);
         int pos = 0;
         List<String> list = Lists.newArrayList();
@@ -78,31 +81,8 @@ public class WordShingleTest
             list.add(token);
         }
         wordshingle.buildShingle(list.toArray(new String[0]));
-        dumpWordShingle(wordshingle);
-    }
-
-    private void dumpWordShingle(WordShingle shingle) {
-        ShingleUnitBag bag = shingle.getSuMgr();
-        List<ShingleUnit> shingleunits = bag.getUniqueShingleUnits();
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0 ; i < shingleunits.size() ; ++i) {
-            ShingleUnit su = shingleunits.get(i);
-            int[] pos = bag.getPos(su);
-            sb.append("\n" + su.value() + serIntArray(pos));
-        }
-        logger.info("Data in shingle:");
+        sb.append("\n- Word Shingle:\n" + dumpWordShingle(wordshingle));
         logger.info(sb.toString());
     }
-
-    private String serIntArray(int[] array){
-        StringBuilder sb = new StringBuilder();
-        if (array == null) {
-            return "";
-        } else {
-            for (int i = 0 ; i < array.length ; ++i) {
-                sb.append("-" + array[i]);
-            }
-        }
-        return sb.toString();
-    }
 }
+

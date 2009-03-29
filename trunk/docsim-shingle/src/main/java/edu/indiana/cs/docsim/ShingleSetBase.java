@@ -3,20 +3,20 @@ package edu.indiana.cs.docsim;
 import java.util.List;
 
 /**
- *
+ * Represents a shingle set.
  *
  * @author
  * @version
  */
 // public abstract class ShingleSetBase {
-public interface ShingleSetBase {
+public interface ShingleSetBase <S extends Shingle> {
     /**
      * Calculate union of this set and passed set.
      *
      * @param set another set.
      * @return A new ShingleSet object which contains the result.
      */
-    ShingleSet union(ShingleSetBase set);
+    ShingleSetBase<S> union(ShingleSetBase<S> set);
     // public abstract ShingleSet union(ShingleSetBase set);
 
     /**
@@ -25,7 +25,7 @@ public interface ShingleSetBase {
      * @param set another set
      * @return A new ShingleSet object which contains the result.
      */
-    ShingleSet intersect(ShingleSetBase set);
+    ShingleSetBase<S> intersect(ShingleSetBase<S> set);
     // public abstract ShingleSet intersect(ShingleSetBase set);
 
     /**
@@ -34,7 +34,7 @@ public interface ShingleSetBase {
      * @param set
      * @return <This set> - <passed set>
      */
-    ShingleSet difference(ShingleSetBase set);
+    ShingleSetBase<S> difference(ShingleSetBase<S> set);
     // public abstract ShingleSet difference(ShingleSetBase set);
 
     /**
@@ -42,14 +42,21 @@ public interface ShingleSetBase {
      *
      * @return A list that includes all shingles.
      */
-    List<Shingle> getShingleList();
-    // public abstract List<Shingle> getShingleList();
+    // List<Shingle> getShingleList();
+    List<S> getShingleList();
 
     /**
      * Get all unique shingles in this set.
      * @return
      */
-    List<Shingle> getUniqueShingleList();
+    // List<Shingle> getUniqueShingleList();
+    List<S> getUniqueShingleList();
+
+    /**
+     *
+     * @return
+     */
+    List<ShingleData<S>> getShingleData();
 
     /**
      * Add a shingle to this shingle set.
@@ -61,7 +68,8 @@ public interface ShingleSetBase {
      *                <code>pos</code> parameter is NOT the position where the
      *                shingle would be put in this shingle set.
      */
-    void addShingle(Shingle shingle, int pos);
+    // void addShingle(Shingle shingle, int pos);
+    void addShingle(S shingle, int pos);
 
     /**
      * Get number of shingles in this set.
@@ -83,9 +91,8 @@ public interface ShingleSetBase {
      * @param shingle
      * @return
      */
-    // Shingle getShingle(Shingle shingle);
-
-    public int[] getPos(Shingle shingle);
+    // public int[] getPos(Shingle shingle);
+    public int[] getPos(S shingle);
 
     /**
      * Whether this set contains the specified shingle.
@@ -93,6 +100,7 @@ public interface ShingleSetBase {
      * @param shingle
      * @return
      */
-    public boolean contains(Shingle shingle);
+    // public boolean contains(Shingle shingle);
+    public boolean contains(S shingle);
 }
 

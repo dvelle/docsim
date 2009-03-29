@@ -8,12 +8,13 @@ import com.google.common.collect.Sets;
  * @author
  * @version
  */
-public abstract class Shingle implements ShingleMetric{
-    protected String            rawData;
-    protected ShingleUnitBag    suMgr;
-    // protected ShingleUnitMgr    suMgr;
-    protected TextTokenizer     tokenizer;
-    protected int               size = 0;
+public abstract class Shingle <SU extends ShingleUnit>
+  implements ShingleMetric<Shingle<SU>> {
+    protected String                rawData;
+    // protected ShingleUnitBag        suMgr;
+    protected ShingleUnitMgr<SU>    suMgr;
+    protected TextTokenizer         tokenizer;
+    protected int                   size = 0;
 
     /**
      * get the value of size
@@ -43,20 +44,26 @@ public abstract class Shingle implements ShingleMetric{
     public void setRawData(String rawData) {
         this.rawData = rawData;
     }
+
     /**
      * get the value of suMgr
      * @return the value of suMgr
      */
-    public ShingleUnitBag getSuMgr() {
+    // public ShingleUnitBag getSuMgr() {
+    // public ShingleUnitMgr getSuMgr() {
+    public ShingleUnitMgr<SU> getSuMgr() {
         return this.suMgr;
     }
     /**
      * set a new value to suMgr
      * @param suMgr the new value to be used
      */
-    public void setSuMgr(ShingleUnitBag suMgr) {
+    // public void setSuMgr(ShingleUnitBag suMgr) {
+    // public void setSuMgr(ShingleUnitMgr suMgr) {
+    public void setSuMgr(ShingleUnitMgr<SU> suMgr) {
         this.suMgr = suMgr;
     }
+
     /**
      * get the value of tokenizer
      * @return the value of tokenizer
@@ -64,6 +71,7 @@ public abstract class Shingle implements ShingleMetric{
     public TextTokenizer getTokenizer() {
         return this.tokenizer;
     }
+
     /**
      * set a new value to tokenizer
      * @param tokenizer the new value to be used
@@ -71,9 +79,6 @@ public abstract class Shingle implements ShingleMetric{
     public void setTokenizer(TextTokenizer tokenizer) {
         this.tokenizer = tokenizer;
     }
-
-    public abstract void buildShingle(String []tokens);
-    public abstract void addShingleUnit(String token, int pos);
 
     public void parse(String text) throws Exception{
         throw new Exception("Method parse has not been implemented yet!!!");
@@ -88,7 +93,7 @@ public abstract class Shingle implements ShingleMetric{
      * @param another
      * @return
      */
-    public double distance(Shingle another) {
+    public Double distance(Shingle<SU> another) {
         if (this.equals(another)) {
             return 1.0;
         } else {
@@ -96,6 +101,9 @@ public abstract class Shingle implements ShingleMetric{
         }
     }
 
-    public abstract boolean equals(Shingle shingle);
+    public abstract void buildShingle(String []tokens);
+    public abstract void addShingleUnit(String token, int pos);
+
+    public abstract boolean equals(Shingle<SU> shingle);
 }
 
