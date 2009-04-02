@@ -29,8 +29,16 @@ public class HtmlTagListenerFilter extends DocFilterBase {
         webClient.setJavaScriptEnabled(false);
     }
 
+    public void clear() {
+        listenersReg.clear();
+    }
+
     public HtmlTagListenerFilter (DomTagListenerRegistry reg) {
         listenersReg = reg;
+    }
+
+    public void registerListener(DomTagListener listener) {
+        listenersReg.register(listener);
     }
 
     public String filter(String doc) throws Exception {
@@ -60,7 +68,8 @@ public class HtmlTagListenerFilter extends DocFilterBase {
         try {
             Page page = webClient.getPage(url);
             if (page instanceof HtmlPage) {
-                traverseDom(((HtmlPage)page).getBody());
+                // traverseDom(((HtmlPage)page).getBody());
+                traverseDom(((HtmlPage)page).getDocumentElement());
             } else {
                 logger.severe("You should pass in a html page");
             }

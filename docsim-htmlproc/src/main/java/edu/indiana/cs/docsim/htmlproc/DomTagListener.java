@@ -3,6 +3,15 @@ package edu.indiana.cs.docsim.htmlproc;
 import org.w3c.dom.Element;
 import java.util.Collection;
 
+/**
+ * Represents a tag listener.
+ * Each tag listener listens to some number of tags in the DOM tree. The
+ * internal data stored in each tag listener depends on the corresponding
+ * implementation.
+ *
+ * @author
+ * @version
+ */
 public interface DomTagListener extends TagSelector {
 
     /**

@@ -7,11 +7,11 @@ import org.w3c.dom.Element;
  * tags.
  *
  */
-public class DomTagListenerEmphTags extends DomTagListenerTagName {
+public class DomTagListenerTitleTag extends DomTagListenerTagName {
 
-    private static String[] tagNames = { "b", "em"};
+    private static String[] tagNames = { "title" };
 
-    public DomTagListenerEmphTags() {
+    public DomTagListenerTitleTag() {
         super(tagNames);
     }
 
