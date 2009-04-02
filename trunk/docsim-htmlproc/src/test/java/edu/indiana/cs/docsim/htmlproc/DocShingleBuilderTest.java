@@ -58,24 +58,28 @@ public class DocShingleBuilderTest
         String filename = "res://augmented_page.html";
         String charset = "UTF-8";
         String result = docFilterPipeLine.filter(filename, charset);
-        logger.info("Get data from file \"" + filename + "\" result:\n" + result);
+        StringBuilder sb = new StringBuilder();
+        sb.append("Get data from file '" + filename + "'");
+        sb.append("\nResult:\n" + result);
 
         int shinglesize = 5;
-        String dumpStr;
-        logger.info("Testing by feeding simple text");
-        ShingleSet shingleset = shingleTxtParser.parseText(result, shinglesize, charset);
-        // dumpStr = dumpeShingleSet(shingleset);
-        // logger.info(dumpStr);
+        sb.append("\nFeed the text to shingle builder. shingle size:" + shinglesize);
 
+        ShingleSet shingleset = shingleTxtParser.parseText(result, shinglesize, charset);
         ShingleSet shingleset2 = shingleTxtParser.parseText(result, shinglesize, charset);
+
         ShingleSet union = shingleset.union(shingleset2);
         ShingleSet intersect = shingleset.intersect(shingleset2);
 
         int size1 = union.sizeUnique();
         int size2 = intersect.sizeUnique();
-        logger.info("union size:" + size1 + ";intersect size:" + size2);
-        // dumpStr = dumpeShingleSet(shingleset);
-        // logger.info(dumpStr);
+        sb.append("\nCalculate union and intersect of two shingle set " +
+                "built from the same text");
+        sb.append("\nunion size:" + size1 + ";intersect size:" + size2);
+
+        logger.info(sb.toString());
+
+        assertEquals(size1, size2);
     }
 
     public void testShingleTextFromURL() throws Exception {
@@ -85,68 +89,26 @@ public class DocShingleBuilderTest
         URL url2 = new URL(strUrl2);
 
         String charset = "UTF-8";
-        String result = docFilterPipeLine.filter(url1);
-        logger.info("Get data from url \"" + strUrl1 + "\" result:\n" + result);
 
         int shinglesize = 5;
-        logger.info("Testing by feeding simple text");
+        StringBuilder sb = new StringBuilder();
+
+        String result = docFilterPipeLine.filter(url1);
+        sb.append("\nGet data from url(1) \"" + strUrl1 + "\"\n After filtering, result:\n" + result);
+        assertNotNull(result);
         ShingleSet shingleset = shingleTxtParser.parseText(result, shinglesize, charset);
-        // dumpStr = dumpeShingleSet(shingleset);
-        // logger.info(dumpStr);
 
         result = docFilterPipeLine.filter(url2);
-        logger.info("Get data from url \"" + strUrl2 + "\" result:\n" + result);
+        sb.append("\nGet data from url(2) \"" + strUrl2 + "\"\n After filtering, result is:\n" + result);
+        assertNotNull(result);
         ShingleSet shingleset2 = shingleTxtParser.parseText(result, shinglesize, charset);
+
         ShingleSet union = shingleset.union(shingleset2);
         ShingleSet intersect = shingleset.intersect(shingleset2);
 
         int size1 = union.sizeUnique();
         int size2 = intersect.sizeUnique();
-        logger.info("union size:" + size1 + ";intersect size:" + size2);
-        //
-        // dumpStr = dumpeShingleSet(shingleset);
-        // logger.info(dumpStr);
-    }
-
-    private String dumpeShingleSet(ShingleSet shingleset) {
-        // List<Shingle> shingles = shingleset.getShingleList();
-        List<Shingle> shingles = shingleset.getUniqueShingleList();
-        StringBuilder sb = new StringBuilder();
-        for (Iterator<Shingle> it = shingles.iterator() ; it.hasNext();) {
-            Shingle shingle = it.next();
-            sb.append("\nshingle:\n");
-            sb.append("\t" + dumpShingle(shingle));
-            int[] pos = shingleset.getPos(shingle);
-            sb.append("\n\tpos:" + serIntArray(pos));
-        }
-        return sb.toString();
-    }
-    private String dumpShingle(Shingle shingle) {
-        ShingleUnitBag sub = shingle.getSuMgr();
-        List<ShingleUnit> sulist = sub.getUniqueShingleUnits();
-        Iterator<ShingleUnit> it = sulist.iterator();
-        StringBuilder sb = new StringBuilder();
-        while (it.hasNext()) {
-            ShingleUnit su = it.next();
-            int[] pos = sub.getPos(su);
-            sb.append(su.value());
-            sb.append(":" + serIntArray(pos) + "; ");
-        }
-        return sb.toString();
-    }
-    private String serIntArray(int[] array){
-        StringBuilder sb = new StringBuilder();
-        if (array == null) {
-            return "";
-        } else {
-            for (int i = 0 ; i < array.length ; ++i) {
-                if (i == array.length-1) {
-                    sb.append(array[i]);
-                } else {
-                    sb.append(array[i]+",");
-                }
-            }
-        }
-        return sb.toString();
+        sb.append("\nunion size:" + size1 + ";intersect size:" + size2);
+        logger.info(sb.toString());
     }
 }

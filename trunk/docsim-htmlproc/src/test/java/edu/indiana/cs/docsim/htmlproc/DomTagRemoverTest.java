@@ -93,3 +93,4 @@ public class DomTagRemoverTest
         return cl.getResourceAsStream(fileName.trim());
     }
 }
+

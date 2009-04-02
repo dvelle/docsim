@@ -3,9 +3,13 @@ package edu.indiana.cs.docsim.htmlproc;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Logger;
+
 import org.w3c.dom.Element;
 
 public class DomTagListenerRegistry {
+    private static Logger logger =
+        Logger.getLogger(DomTagListenerRegistry.class.getName());
     // private List<ListenerEntry> listeners = new ArrayList<ListenerEntry>();
     private List<DomTagListener> listeners = new ArrayList<DomTagListener>();
 

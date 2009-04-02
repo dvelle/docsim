@@ -17,6 +17,7 @@ import org.w3c.dom.Element;
  * @version
  */
 public abstract class DomTagListenerTagName implements DomTagListener {
+
     private static Logger logger =
         Logger.getLogger(DomTagListenerTagName.class.getName());
 
@@ -52,7 +53,10 @@ public abstract class DomTagListenerTagName implements DomTagListener {
     public void handle(Element element) {
         // String data = element.getNodeValue();
         try {
-            this.datals.add(tagRemover.tagRemove(element));
+            String data = tagRemover.tagRemove(element).trim();
+            if (data != null && data.length() > 0) {
+                this.datals.add(data);
+            }
         } catch(Exception ex) {
             logger.severe("Error occurs during dom tag removal in method" +
                     DomTagListenerTagName.class.getName() + "#handle");

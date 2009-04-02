@@ -19,7 +19,6 @@ public class DomTagListenerTest
 
     private DomTagListenerRegistry listenerReg = new DomTagListenerRegistry();
     private HtmlTagListenerFilter  listenerFilter = new HtmlTagListenerFilter(listenerReg);
-    // private DocFilterPipeLineDefault filterPipeLine = null;
     private DocFilterPipeLineDefault filterPipeLine;
 
     {
@@ -81,6 +80,17 @@ public class DomTagListenerTest
         String output = "heading listener:\n" + seralizeList(dataobj);
         logger.info(output);
     }
+
+    public void testTitleTagListeners() throws Exception {
+        String filename = "res://augmented_page.html";
+        String charset = "UTF-8";
+        DomTagListener listenerTitle = new DomTagListenerTitleTag();
+        listenerReg.register(listenerTitle);
+        filterPipeLine.filter(filename, charset);
+        Object dataobj = listenerTitle.getData();
+        String output = "Title listener:\n" + seralizeList(dataobj);
+        logger.info(output);
+    }
     private String seralizeList(Object dataobj) {
         StringBuilder sb = new StringBuilder();
         if (dataobj instanceof List) {
@@ -95,5 +105,4 @@ public class DomTagListenerTest
         return sb.toString();
     }
 }
-
 

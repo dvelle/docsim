@@ -41,13 +41,16 @@ public class HtmlTagRemoverTest
     public void testTagRemoverFromFile() throws Exception{
         String filename = "augmented_page.html";
         String result = tagRemover.tagRemoveFromFile(filename);
-        logger.info("result:\n" + result);
+        logger.info("Get data from file: " + filename +
+                "\nAfter removing tags, result is :\n" + result);
     }
+
     public void testTagRemoverFromURL() throws Exception{
         String urlstr = "http://cs.indiana.edu";
         URL url = new URL(urlstr);
         String result = tagRemover.tagRemoveFromURL(url);
-        logger.info("result:\n" + result);
+        logger.info("Get data from URL: " + urlstr +
+                "\nAfter removing tags, result is :\n" + result);
     }
 }
 

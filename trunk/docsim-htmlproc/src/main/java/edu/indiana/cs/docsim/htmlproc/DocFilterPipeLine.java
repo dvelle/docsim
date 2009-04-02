@@ -20,14 +20,26 @@ import org.apache.commons.httpclient.params.HttpMethodParams;
 import edu.indiana.cs.docsim.htmlproc.util.ResourceLoader;
 import java.io.InputStream;
 
-public class DocFilterPipeLine extends DocFilterBase{
+public class DocFilterPipeLine extends DocFilterBase {
     private static Logger logger =
         Logger.getLogger(DocFilterPipeLine.class.getName());
 
     private List<DocFilter> filters = new ArrayList<DocFilter>();
 
-    public void add(DocFilter filter) throws Exception{
+    public void add(DocFilter filter) throws Exception {
         filters.add(filter);
+    }
+
+    public void clear() {
+        filters.clear();
+    }
+
+    public void addHead(DocFilter filter) throws Exception {
+        if (filters.size() == 0) {
+            filters.add(filter);
+        } else {
+            filters.add(0, filter);
+        }
     }
 
     public DocFilter remove(int i) throws Exception {
@@ -171,3 +183,4 @@ public class DocFilterPipeLine extends DocFilterBase{
     public void setControlAttribute(String key, String value) {
     }
 }
+
