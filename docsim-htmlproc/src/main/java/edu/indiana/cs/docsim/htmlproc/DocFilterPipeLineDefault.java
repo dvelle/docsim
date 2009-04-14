@@ -3,7 +3,23 @@ package edu.indiana.cs.docsim.htmlproc;
 import java.net.URL;
 
 import edu.indiana.cs.docsim.htmlproc.stem.PaiceStemmerWrapper;
+import edu.indiana.cs.docsim.htmlproc.stopword.PossessiveFilter;
+import edu.indiana.cs.docsim.htmlproc.stopword.StopWordFilter;
 
+/**
+ * Default document filter pipe line.
+ * Currently it includes
+ *   (*) a html tag remover
+ *   (*) a possessive remover
+ *   (*) stop word remover
+ *   (*) a stemmer
+ *
+ * If this configuration does not satisfy your requirement, you could create a
+ * subclass and override method <code>init</code>.
+ *
+ * @author
+ * @version
+ */
 public class DocFilterPipeLineDefault {
     protected DocFilterPipeLine pipeline = new DocFilterPipeLine();
     // protected HtmlTagListenerFilter  listenerFilter;
@@ -15,6 +31,8 @@ public class DocFilterPipeLineDefault {
 
         beforeInit();
         pipeline.add(new HtmlTagRemoverFilter());
+        pipeline.add(new PossessiveFilter());
+        pipeline.add(new StopWordFilter(true));
         pipeline.add(new PaiceStemmerWrapper());
         afterInit();
     }
