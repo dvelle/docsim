@@ -80,7 +80,7 @@ public class ShingleTextParser
         }
 
         // If data size < shingle size
-        if (shinglecursor == 0) {//text length < shingle size
+        if (shinglecursor == 0) { //text length < shingle size
             shingle = new WordShingle();
             String[] newArray = new String[unitcursor];
             System.arraycopy(window, 0, newArray, 0, newArray.length);

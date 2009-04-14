@@ -1,0 +1,89 @@
+package edu.indiana.cs.docsim.htmlproc.stopword;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.HashSet;
+import java.util.Set;
+
+import edu.indiana.cs.docsim.htmlproc.DocFilterBase;
+
+import edu.indiana.cs.docsim.htmlproc.util.TextTokenizerWord;
+
+class StringIgnoreCase {
+    private String data;
+
+    public String getData() {
+        return data;
+    }
+
+    public StringIgnoreCase(String another) {
+        data = another;
+    }
+
+    @Override
+    public boolean equals(Object another) {
+        if (data == another) return true;
+        if (another instanceof String) {
+            return data.equalsIgnoreCase((String)another);
+        } else if (another instanceof StringIgnoreCase) {
+            return data.equalsIgnoreCase(((StringIgnoreCase)another).getData());
+        } else {
+            return false;
+        }
+    }
+
+    public int hashCode() {
+        return data.toLowerCase().hashCode();
+    }
+}
+
+class StopWordRepository {
+
+    private Set<StringIgnoreCase> stopWords = new HashSet<StringIgnoreCase>();
+
+    public void add(String stopWord) {
+        StringIgnoreCase sis = new StringIgnoreCase(stopWord);
+        stopWords.add(sis);
+    }
+    public boolean contains(String word) {
+        return stopWords.contains(new StringIgnoreCase(word));
+    }
+}
+
+/**
+ * This filter removes stop words.
+ *
+ * @author
+ * @version
+ */
+public class StopWordFilter extends DocFilterBase {
+    private static StopWordRepository stopWords;
+    private static TextTokenizerWord  tokenizer;
+    static {
+        tokenizer = new TextTokenizerWord();
+        stopWords = new StopWordRepository();
+        // stopWords.add("hello");
+        // stopWords.add("world");
+    }
+
+    public StopWordFilter() { }
+    public StopWordFilter(String strWordFile) {
+    }
+
+    public void addStopWord(String stopword) {
+        stopWords.add(stopword);
+    }
+
+    public String filter(String doc) throws Exception {
+        tokenizer.tokenize(doc);
+        StringBuilder sb = new StringBuilder();
+        while (tokenizer.hasMoreTokens()) {
+            String token = tokenizer.nextToken();
+            if (!stopWords.contains(token)) {
+                sb.append(token + " ");
+            }
+        }
+        return sb.toString().trim();
+    }
+}
+
