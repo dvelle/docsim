@@ -19,6 +19,7 @@
 
 package edu.indiana.cs.docsim.htmlproc.util;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
 import java.io.File;
@@ -51,15 +52,32 @@ public class ResourceLoader {
   }
 
   public static String getAbsolutePath(String fileName) throws Exception {
+      InputStream is = open(fileName);
+      File tmpFile = File.createTempFile("docsim", "stem");
+      IOUtils.copy(is, FileUtils.openOutputStream(tmpFile));
+      IOUtils.closeQuietly(is);
+      return tmpFile.getAbsolutePath();
+      /*
     if (fileName.startsWith("res://")) {
         ClassLoader cl = ResourceLoader.class.getClassLoader();
-        URL url = cl.getResource(fileName.substring(6).trim());
-        File file = new File(url.toURI());
+        // URL url = cl.getResource(fileName.substring(6).trim());
+        URL url = cl.getResource(fileName.substring(6));
+        // URI uri = url.toURI();
+        String filename = url.toString();
+        int idx = filename.indexOf(":/") ;
+        File file = null;
+        if (idx != -1) {
+            filename = filename.substring(idx+1);
+            file = new File(filename);
+        }
+        // File file = FileUtils.toFile(url);
+        // File file = new File(filename);
         return file.getAbsolutePath();
     } else {
         File file = new File(fileName);
         return file.getAbsolutePath();
     }
+    */
   }
 
   /**

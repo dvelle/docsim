@@ -21,6 +21,7 @@ import edu.indiana.cs.docsim.htmlproc.util.ResourceLoader;
 import java.io.InputStream;
 
 public class DocFilterPipeLine extends DocFilterBase {
+
     private static Logger logger =
         Logger.getLogger(DocFilterPipeLine.class.getName());
 
@@ -141,14 +142,14 @@ public class DocFilterPipeLine extends DocFilterBase {
             if (page != null) {
                 return filter(page);
             } else {
-                return null;
+                throw new Exception("could not get page from '" +
+                        url + "'");
             }
         } else if (protocol.compareToIgnoreCase("file") == 0) {
             String fileName = url.getFile();
             return filter(new File(fileName), charset);
         } else {
-            logger.severe("unsupported protocol type");
-            return null;
+            throw new Exception("unsupported protocol type");
         }
     }
 

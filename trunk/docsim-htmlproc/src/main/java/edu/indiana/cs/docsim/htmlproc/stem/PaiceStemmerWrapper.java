@@ -27,9 +27,9 @@ public class PaiceStemmerWrapper extends DocFilterBase {
         try {
             this.setRuleFile(defaultRuleFile);
             this.setStrPrefixStrip(defaultPrefixStrip);
-        }
-        catch(Exception ex) {
-            logger.severe("Failed to initialize PaiceStemmerWrapper");
+        } catch(Exception ex) {
+            logger.severe("Failed to initialize PaiceStemmerWrapper." + ex);
+            ex.printStackTrace();
         }
     }
 
