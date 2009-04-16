@@ -74,7 +74,8 @@ public class HtmlTagRemover {
                 logger.severe("You should pass in a html page");
             }
         } catch(Exception ex) {
-            logger.severe("error in method 'demo'" + ex);
+            logger.severe("error in method " + this.getClass().getName() +
+                    "#tagRemoveBody" + ex);
         }
         return null;
     }
@@ -96,3 +97,4 @@ public class HtmlTagRemover {
         }
     }
 }
+

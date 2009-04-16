@@ -42,7 +42,7 @@ public class HtmlTagListenerFilter extends DocFilterBase {
     }
 
     public String filter(String doc) throws Exception {
-        // This is a ugly workaournd. HtmlTagRemover does not accept a string
+        // This is an ugly workaournd. HtmlTagRemover does not accept a string
         // as input document. So we first write the string to a temp file and
         // then feed that file to HtmlTagRemover.
         File tmpfile = File.createTempFile("doc-preprocess", ".html");
@@ -58,15 +58,22 @@ public class HtmlTagListenerFilter extends DocFilterBase {
         // String filename = tmpfile.getAbsolutePath();
         // String result = tagRemover.tagRemoveFromURL(filename);
 
+        logger.info("temp file:" + tmpfile);
         traverseHtml(tmpfile.toURI().toURL());
-        tmpfile.delete();
+        // tmpfile.delete();
 
         return doc;
     }
 
     private void traverseHtml(URL url) {
         try {
+            if (url == null) {
+                throw new Exception("parameter url should not be null");
+            }
             Page page = webClient.getPage(url);
+            if (page == null) {
+                throw new Exception("the page is null at '" + url + "'");
+            }
             if (page instanceof HtmlPage) {
                 // traverseDom(((HtmlPage)page).getBody());
                 traverseDom(((HtmlPage)page).getDocumentElement());
@@ -75,6 +82,7 @@ public class HtmlTagListenerFilter extends DocFilterBase {
             }
         } catch(Exception ex) {
             logger.severe(""+ex);
+            ex.printStackTrace();
         }
     }
 

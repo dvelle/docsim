@@ -27,9 +27,46 @@ class TagBlackList {
 
     public static TagBlackList getInstance() {
         if (instance == null) {
-            String[] tags = {"script", "noscript"};
+            String[] tags = {"script", "noscript", "img", "embed", "object", "style"};
             instance = new TagBlackList();
             // TODO: Add more tags in balck list
+            instance.add(tags);
+        }
+        return instance;
+    }
+
+    public void add(String tag) {
+        if (!contains(tag))
+            tagls.add(tag);
+    }
+
+    public void add(String[] tags) {
+        for (int i = 0 ; i < tags.length ; ++i) {
+            add(tags[i]);
+        }
+    }
+
+    public boolean contains(String tag) {
+        for (Iterator<String>it = tagls.iterator(); it.hasNext(); ) {
+            String taginlist = (String)it.next();
+            if (tag.compareToIgnoreCase(taginlist) == 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+class TagWhiteList {
+    private List<String> tagls = new ArrayList<String>();
+
+    private static TagWhiteList instance  = null;
+
+    public static TagWhiteList getInstance() {
+        if (instance == null) {
+            String[] tags = {"p", "span", "a"};
+            instance = new TagWhiteList();
+            // TODO: Add more tags in white list
             instance.add(tags);
         }
         return instance;
@@ -64,6 +101,9 @@ public class DomTagRemover {
     private static int DefaultMaxTxtLength = 1024 * 1024;// 1 M
     private static String  DefaultEncoding = "UTF-8";
     private static TagBlackList tagBlackList = TagBlackList.getInstance();
+    private static TagWhiteList tagWhiteList = TagWhiteList.getInstance();
+
+    // private boolean useBlack = true;    //use blacklist or white list
 
     // maximum length of output of tag removal operation
     private int     maxTxtLength;
@@ -187,7 +227,7 @@ public class DomTagRemover {
       throws Exception {
         count = 0;
         StringBuilder sb = new StringBuilder();
-        tagRemoveRecursive(element, writer, sb);
+        tagRemoveRecursive(element, writer, sb, false);
         writer.write(filter(sb.toString()).trim());
         writer.flush();
         count = 0;
@@ -200,12 +240,17 @@ public class DomTagRemover {
      * @param writer
      */
     private void tagRemoveRecursive(Element element, Writer writer,
-            StringBuilder sb)
+            StringBuilder sb, boolean interesting)
       throws Exception{
 
         // check whether the element is blocked
         if (tagBlackList.contains(element.getTagName())) {
             return;
+        }
+        boolean isInteresting = interesting;
+        if (tagWhiteList.contains(element.getTagName())) {
+            if (!isInteresting)
+                isInteresting = true;
         }
 
         NodeList children = element.getChildNodes();
@@ -216,9 +261,11 @@ public class DomTagRemover {
         for (int i = 0 ; i < children.getLength() ; ++i) {
             Node node = children.item(i);
             switch (node.getNodeType()) {
+
                 case Node.ELEMENT_NODE:
-                    tagRemoveRecursive((Element)node, writer, sb);
+                    tagRemoveRecursive((Element)node, writer, sb, isInteresting);
                     break;
+
                 case Node.TEXT_NODE:
                     String value = node.getNodeValue();
                     count += value.length();
@@ -226,7 +273,9 @@ public class DomTagRemover {
                         throw new Exception("Exceeds max allowed output " +
                                 "of tag removal");
                     }
-                    sb.append(filter(value));
+                    // logger.info((isInteresting?"!!!":"") + "interesting text:" + value);
+                    if (isInteresting)
+                        sb.append(filter(value));
                     break;
                 default:
             }
