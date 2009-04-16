@@ -1,0 +1,64 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.6	//
+PageRepository	./src/main/java/edu/indiana/cs/docsim/data/PageRepository.java	/^    public PageRepository(String fileName) throws IOException{$/;"	m	class:PageRepository
+PageRepository	./src/main/java/edu/indiana/cs/docsim/data/PageRepository.java	/^    public PageRepository(boolean useDefault) throws IOException {$/;"	m	class:PageRepository
+PageRepository	./src/main/java/edu/indiana/cs/docsim/data/PageRepository.java	/^public class PageRepository {$/;"	c
+PageRepositoryTest	./src/test/java/edu/indiana/cs/docsim/data/PageRepositoryTest.java	/^    public PageRepositoryTest(String testName) {$/;"	m	class:PageRepositoryTest
+PageRepositoryTest	./src/test/java/edu/indiana/cs/docsim/data/PageRepositoryTest.java	/^public class PageRepositoryTest extends TestCase {$/;"	c
+QueryEntry	./src/main/java/edu/indiana/cs/docsim/data/QueryEntry.java	/^class QueryEntry {$/;"	c
+ResourceLoader	./src/main/java/edu/indiana/cs/docsim/data/ResourceLoader.java	/^public class ResourceLoader {$/;"	c
+SearchResultEntry	./src/main/java/edu/indiana/cs/docsim/data/SearchResultEntry.java	/^    public SearchResultEntry(String title, String url) {$/;"	m	class:SearchResultEntry
+SearchResultEntry	./src/main/java/edu/indiana/cs/docsim/data/SearchResultEntry.java	/^class SearchResultEntry {$/;"	c
+add	./src/main/java/edu/indiana/cs/docsim/data/PageRepository.java	/^    public void add(QueryEntry entry) {$/;"	m	class:PageRepository
+addSearchResultEntry	./src/main/java/edu/indiana/cs/docsim/data/QueryEntry.java	/^    public void addSearchResultEntry(SearchResultEntry entry) {$/;"	m	class:QueryEntry
+buildQueryEntry	./src/main/java/edu/indiana/cs/docsim/data/QueryEntry.java	/^    public static QueryEntry buildQueryEntry(String entryData)$/;"	m	class:QueryEntry
+dataFileName	./src/main/java/edu/indiana/cs/docsim/data/PageRepository.java	/^    private String dataFileName;$/;"	f	class:PageRepository	file:
+defaultDataFileName	./src/main/java/edu/indiana/cs/docsim/data/PageRepository.java	/^    private static String defaultDataFileName = "res:\/\/searchResult.txt";$/;"	f	class:PageRepository	file:
+edu.indiana.cs.docsim.data	./src/main/java/edu/indiana/cs/docsim/data/PageRepository.java	/^package edu.indiana.cs.docsim.data;$/;"	p
+edu.indiana.cs.docsim.data	./src/main/java/edu/indiana/cs/docsim/data/QueryEntry.java	/^package edu.indiana.cs.docsim.data;$/;"	p
+edu.indiana.cs.docsim.data	./src/main/java/edu/indiana/cs/docsim/data/ResourceLoader.java	/^package edu.indiana.cs.docsim.data;$/;"	p
+edu.indiana.cs.docsim.data	./src/main/java/edu/indiana/cs/docsim/data/SearchResultEntry.java	/^package edu.indiana.cs.docsim.data;$/;"	p
+edu.indiana.cs.docsim.data	./src/test/java/edu/indiana/cs/docsim/data/PageRepositoryTest.java	/^package edu.indiana.cs.docsim.data;$/;"	p
+equals	./src/main/java/edu/indiana/cs/docsim/data/SearchResultEntry.java	/^    public boolean equals(Object another) {$/;"	m	class:SearchResultEntry
+getAbsolutePath	./src/main/java/edu/indiana/cs/docsim/data/ResourceLoader.java	/^  public static String getAbsolutePath(String fileName) throws Exception {$/;"	m	class:ResourceLoader
+getContent	./src/main/java/edu/indiana/cs/docsim/data/ResourceLoader.java	/^  public static String getContent(File file) throws IOException {$/;"	m	class:ResourceLoader
+getContent	./src/main/java/edu/indiana/cs/docsim/data/ResourceLoader.java	/^  public static String getContent(String resource) throws IOException {$/;"	m	class:ResourceLoader
+getQuery	./src/main/java/edu/indiana/cs/docsim/data/QueryEntry.java	/^    public String getQuery(){$/;"	m	class:QueryEntry
+getQueryEntries	./src/main/java/edu/indiana/cs/docsim/data/PageRepository.java	/^    public List<QueryEntry> getQueryEntries(){$/;"	m	class:PageRepository
+getResultCount	./src/main/java/edu/indiana/cs/docsim/data/QueryEntry.java	/^    public int getResultCount(){$/;"	m	class:QueryEntry
+getResults	./src/main/java/edu/indiana/cs/docsim/data/QueryEntry.java	/^    public List<SearchResultEntry> getResults(){$/;"	m	class:QueryEntry
+getSearchService	./src/main/java/edu/indiana/cs/docsim/data/PageRepository.java	/^    public String getSearchService(){$/;"	m	class:PageRepository
+getTitle	./src/main/java/edu/indiana/cs/docsim/data/SearchResultEntry.java	/^    public String getTitle(){$/;"	m	class:SearchResultEntry
+getUrl	./src/main/java/edu/indiana/cs/docsim/data/SearchResultEntry.java	/^    public String getUrl(){$/;"	m	class:SearchResultEntry
+hashCode	./src/main/java/edu/indiana/cs/docsim/data/SearchResultEntry.java	/^    public int hashCode() {$/;"	m	class:SearchResultEntry
+init	./src/main/java/edu/indiana/cs/docsim/data/PageRepository.java	/^    private void init(boolean useDefault, String fileName) throws IOException {$/;"	m	class:PageRepository	file:
+keyQuery	./src/main/java/edu/indiana/cs/docsim/data/QueryEntry.java	/^    public static String keyQuery = "Query";$/;"	f	class:QueryEntry
+keyTitle	./src/main/java/edu/indiana/cs/docsim/data/QueryEntry.java	/^    public static String keyTitle = "Title";$/;"	f	class:QueryEntry
+keyTotalResult	./src/main/java/edu/indiana/cs/docsim/data/QueryEntry.java	/^    public static String keyTotalResult = "TotalResult";$/;"	f	class:QueryEntry
+keyUrl	./src/main/java/edu/indiana/cs/docsim/data/QueryEntry.java	/^    public static String keyUrl   = "Url";$/;"	f	class:QueryEntry
+loadData	./src/main/java/edu/indiana/cs/docsim/data/PageRepository.java	/^    private void loadData() throws IOException {$/;"	m	class:PageRepository	file:
+logger	./src/test/java/edu/indiana/cs/docsim/data/PageRepositoryTest.java	/^    private static Logger logger =$/;"	f	class:PageRepositoryTest	file:
+open	./src/main/java/edu/indiana/cs/docsim/data/ResourceLoader.java	/^  public static InputStream open(String path) throws IOException {$/;"	m	class:ResourceLoader
+openResource	./src/main/java/edu/indiana/cs/docsim/data/ResourceLoader.java	/^  public static InputStream openResource(String resource) throws IOException {$/;"	m	class:ResourceLoader
+pageRepo	./src/test/java/edu/indiana/cs/docsim/data/PageRepositoryTest.java	/^    private PageRepository pageRepo;$/;"	f	class:PageRepositoryTest	file:
+query	./src/main/java/edu/indiana/cs/docsim/data/QueryEntry.java	/^    private String  query;$/;"	f	class:QueryEntry	file:
+queryEntries	./src/main/java/edu/indiana/cs/docsim/data/PageRepository.java	/^    private List<QueryEntry> queryEntries = new ArrayList<QueryEntry>();$/;"	f	class:PageRepository	file:
+resultCount	./src/main/java/edu/indiana/cs/docsim/data/QueryEntry.java	/^    private int     resultCount;$/;"	f	class:QueryEntry	file:
+results	./src/main/java/edu/indiana/cs/docsim/data/QueryEntry.java	/^    private List<SearchResultEntry> results = new ArrayList<SearchResultEntry>();$/;"	f	class:QueryEntry	file:
+searchService	./src/main/java/edu/indiana/cs/docsim/data/PageRepository.java	/^    private String searchService;$/;"	f	class:PageRepository	file:
+setQuery	./src/main/java/edu/indiana/cs/docsim/data/QueryEntry.java	/^    public void setQuery(String query) {$/;"	m	class:QueryEntry
+setQueryEntries	./src/main/java/edu/indiana/cs/docsim/data/PageRepository.java	/^    public void setQueryEntries(List<QueryEntry> queryEntries) {$/;"	m	class:PageRepository
+setResultCount	./src/main/java/edu/indiana/cs/docsim/data/QueryEntry.java	/^    public void setResultCount(int resultCount) {$/;"	m	class:QueryEntry
+setResults	./src/main/java/edu/indiana/cs/docsim/data/QueryEntry.java	/^    public void setResults(List<SearchResultEntry> results) {$/;"	m	class:QueryEntry
+setSearchService	./src/main/java/edu/indiana/cs/docsim/data/PageRepository.java	/^    public void setSearchService(String searchService) {$/;"	m	class:PageRepository
+setTitle	./src/main/java/edu/indiana/cs/docsim/data/SearchResultEntry.java	/^    public void setTitle(String title) {$/;"	m	class:SearchResultEntry
+setUp	./src/test/java/edu/indiana/cs/docsim/data/PageRepositoryTest.java	/^    public void setUp() { }$/;"	m	class:PageRepositoryTest
+setUrl	./src/main/java/edu/indiana/cs/docsim/data/SearchResultEntry.java	/^    public void setUrl(String url) {$/;"	m	class:SearchResultEntry
+suite	./src/test/java/edu/indiana/cs/docsim/data/PageRepositoryTest.java	/^    public static Test suite() {$/;"	m	class:PageRepositoryTest
+testWithLoadingDefaultData	./src/test/java/edu/indiana/cs/docsim/data/PageRepositoryTest.java	/^    public void testWithLoadingDefaultData() throws Exception {$/;"	m	class:PageRepositoryTest
+title	./src/main/java/edu/indiana/cs/docsim/data/SearchResultEntry.java	/^    private String title;$/;"	f	class:SearchResultEntry	file:
+url	./src/main/java/edu/indiana/cs/docsim/data/SearchResultEntry.java	/^    private String url;$/;"	f	class:SearchResultEntry	file:
