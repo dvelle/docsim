@@ -2,7 +2,7 @@ package edu.indiana.cs.docsim.data;
 
 import com.google.common.base.Objects;
 
-class SearchResultEntry {
+public class SearchResultEntry {
     private String title;
     private String url;
 
