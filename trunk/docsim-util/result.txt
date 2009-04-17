@@ -1,0 +1,537 @@
+Query: Conquest Vacations shuts down
+Original data: Conquest Vacations shuts down
+Purified data: Conquest%20Vacations%20shuts%20down
+TotalResult: 5
+Title: Conquest Vacations shuts down
+Url: http://www.globeinvestor.com/servlet/story/RTGAM.20090415.wconquest0415/GIStory/
+Title: Conquest Vacations shuts down tour operations
+Url: http://www.cbc.ca/canada/new-brunswick/story/2009/04/15/conquest-vacations-ceas.html?ref=rss
+Title: CONQUEST VACATIONS SHUTS DOWN OPERATIONS
+Url: http://www.cfrb.com/conquest
+Title: Conquest Vacations shuts down
+Url: http://www.torontosun.com/news/torontoandgta/2009/04/15/9122671.html
+Title: Conquest Vacations shuts down
+Url: http://www.globaltv.com/globaltv/national/story.html?id=1499209
+
+Query: G20 Gives $1 Trillion to Fight Global Crisis
+Original data: G20 Gives $1 Trillion to Fight Global Crisis
+Purified data: G20%20Gives%20%241%20Trillion%20to%20Fight%20Global%20Crisis
+TotalResult: 3
+Title: World Bank: cautiously optimistic about G20 follow-up
+Url: http://english.people.com.cn/90001/90776/90883/6637896.html
+Title: Remarks: Obama At Georgetown University
+Url: http://www.cbsnews.com/stories/2009/04/14/politics/main4944006.shtml?source=RSSattr=Politics_4944006
+Title: B.C. NDP on defensive over plan to scrap carbon tax
+Url: http://www.nationalpost.com/story.html?id=1495582
+
+Query: French warship captures pirates
+Original data: French warship captures pirates
+Purified data: French%20warship%20captures%20pirates
+TotalResult: 5
+Title: French warship captures pirates
+Url: http://news.bbc.co.uk/go/rss/-/1/hi/world/africa/8000447.stm
+Title: French warship captures pirates
+Url: http://www.kbc.co.ke/story.asp?ID=56801
+Title: French warship captures 11 pirates off Kenya: ministry
+Url: http://www.todayonline.com/articles/313957.asp
+Title: French warship captures 11 pirates
+Url: http://news.yahoo.com/s/afp/20090415/wl_africa_afp/somaliapiracyshippingfrancearrest_20090415155941
+Title: French warship captures 11 Somalian pirates
+Url: http://www.cbc.ca/world/story/2009/04/15/somalia-pirates.html?ref=rss
+
+Query: anti tax tea party
+Original data: anti tax tea party
+Purified data: anti%20tax%20tea%20party
+TotalResult: 5
+Title: Anti-Tax 'Tea Party' Protesters Rally On Capitol Steps In Olympia
+Url: http://opbnews.org/article/4776-anti-tax-tea-party-protesters-rally-capitol-steps-olympia/
+Title: Anti-tax tea party rallies draw crowds despite rain, setbacks
+Url: http://www.washingtonexaminer.com/politics/43051552.html
+Title: Anti-Tax 'Tea Party' Held In Market Square
+Url: http://www.thepittsburghchannel.com/news/19189413/detail.html
+Title: Anti-Obama 'tea party' protests mark US tax day
+Url: http://news.yahoo.com/s/afp/20090415/pl_afp/uspoliticstaxprotest3rd_20090415205857
+Title: Tea Party anti-tax protesters turn out around the nation
+Url: http://recordonline.com/apps/pbcs.dll/article?AID=/20090415/NEWS/90415031
+
+Query: Nuclear watchdog asked to leave N.Korea
+Original data: Nuclear watchdog asked to leave N.Korea
+Purified data: Nuclear%20watchdog%20asked%20to%20leave%20N%2eKorea
+TotalResult: 5
+Title: IAEA Inspectors Leave N Korea Nuclear Facility - Diplomat
+Url: http://www.nasdaq.com/aspxcontent/NewsStory.aspx?cpath=20090415%5cACQDJON200904151030DOWJONESDJONLINE000521.htm&&mypage=newsheadlines&title=IAEA%20Inspectors%20Leave%20N%20Korea%20Nuclear%20Facility%20-%20Diplomat
+Title: N Korea boots inspectors, quits talks
+Url: http://www.news.com.au/heraldsun/story/0,21985,25336725-5005961,00.html?from=public_rss
+Title: IAEA: N Korea Says 'Immediately' Ending All Cooperation
+Url: http://www.nasdaq.com/aspxcontent/NewsStory.aspx?cpath=20090414%5cACQDJON200904141415DOWJONESDJONLINE000456.htm&&mypage=newsheadlines&title=IAEA:%20N%20Korea%20Says%20'Immediately'%20Ending%20All%20Cooperation
+Title: N Korea orders UN inspectors to leave (AAP)
+Url: http://au.rd.yahoo.com/news/rss/world/*http://au.news.yahoo.com/a/-/world/5498294
+Title: N Korea orders UN inspectors to leave
+Url: http://bigpondnews.com/articles/World/2009/04/15/N_Korea_orders_UN_inspectors_to_leave_322226.html
+
+Query: U.N. condemns North Korean rocket launch
+Original data: U.N. condemns North Korean rocket launch
+Purified data: U%2eN%2e%20condemns%20North%20Korean%20rocket%20launch
+TotalResult: 5
+Title: U.N. condemns North Korean rocket launch
+Url: http://www.cnn.com/2009/WORLD/asiapcf/04/13/north.korea.un/index.html?section=cnn_latest
+Title: U.N. Security Council condemns North Korea rocket launch
+Url: http://nhregister.com/articles/2009/04/14/news/a5-korea.txt
+Title: U.N. draft "condemns" North Korea launch
+Url: http://news.yahoo.com/s/nm/20090411/wl_nm/us_korea_north_un_8
+Title: U.N. Security Council condemns North Korea launch
+Url: http://deseretnews.com/article/0,5143,705297198,00.html
+Title: UN Security Council condemns NKorea rocket launch
+Url: http://news.yahoo.com/s/ap/20090413/ap_on_re_as/un_un_nkorea_missile_4
+
+Query: Nazi war crimes suspect granted emergency stay
+Original data: Nazi war crimes suspect granted emergency stay
+Purified data: Nazi%20war%20crimes%20suspect%20granted%20emergency%20stay
+TotalResult: 4
+Title: Nazi war crimes suspect granted emergency stay
+Url: http://www.cnn.com/2009/CRIME/04/14/us.nazi.suspect/index.html?section=cnn_latest
+Title: Nazi suspect in custody, wins stay
+Url: http://www.cnn.com/2009/CRIME/04/14/us.nazi.suspect/index.html?eref=rss_crime
+Title: Nazi suspect's deportation appeal rejected
+Url: http://www.cnn.com/2009/CRIME/04/10/nazi.suspect.deportation/index.html?section=cnn_latest
+Title: Nazi suspect's appeal rejected
+Url: http://www.cnn.com/2009/CRIME/04/10/nazi.suspect.deportation/index.html?eref=rss_crime
+
+Query: Taliban executes eloping lovers
+Original data: Taliban executes eloping lovers
+Purified data: Taliban%20executes%20eloping%20lovers
+TotalResult: 2
+Title: Police: Taliban executes eloping lovers
+Url: http://www.cnn.com/2009/WORLD/asiapcf/04/14/afghan.lovers/index.html?section=cnn_latest
+Title: Taliban executes 14yearold girl for planning to elope
+Url: http://www.telegraph.co.uk/news/worldnews/asia/afghanistan/5153056/Taliban-executes-14-year-old-girl-for-planning-to-elope.html
+
+Query: Intel profit
+Original data: Intel profit
+Purified data: Intel%20profit
+TotalResult: 5
+Title: Intel says PC sales improving; profit beats Street
+Url: http://news.yahoo.com/s/ap/20090414/ap_on_hi_te/earns_intel_16
+Title: Intel profit keeps them guessing
+Url: http://www.nzherald.co.nz/technology/news/article.cfm?c_id=5&objectid=10566839&ref=rss
+Title: Intel profit falls, beats the street
+Url: http://money.cnn.com/rssclick/2009/04/14/technology/intel_earnings/index.htm?section=money_latest
+Title: Intel Q1 profit beats Streets prediction
+Url: http://www.financialexpress.com/news/Intel-Q1-profit-beats-Streets-prediction/447334/
+Title: Intel exceeds profit forecast
+Url: http://bigpondnews.com/articles/Finance/2009/04/15/Intel_exceeds_profit_forecast_322230.html
+
+Query: ebay skype
+Original data: ebay skype
+Purified data: ebay%20skype
+TotalResult: 5
+Title: eBay to spin off Skype in 2010
+Url: http://news.yahoo.com/s/macworld/20090415/tc_macworld/ebaytospinoffskypein2010_1
+Title: EBay to say goodbye to Skype
+Url: http://news.yahoo.com/s/nm/20090415/tc_nm/us_ebay_skype_8
+Title: Legal Skirmish a Hurdle for eBay’s Skype Plans
+Url: http://dealbook.blogs.nytimes.com/2009/04/15/legal-skirmish-a-hurdle-for-ebays-skype-plans/
+Title: eBay Will Spin Off Skype and Make an IPO in 2010.
+Url: http://news.yahoo.com/s/nf/20090415/tc_nf/65982
+Title: EBay Unveils Skype IPO Plans
+Url: http://www.businessweek.com/technology/content/apr2009/tc20090414_635963.htm?campaign_id=rss_as
+
+Query: AT&T pushing to keep iPhone exclusive through 2011
+Original data: AT&T pushing to keep iPhone exclusive through 2011
+Purified data: AT%26T%20pushing%20to%20keep%20iPhone%20exclusive%20through%202011
+TotalResult: 0
+
+Query: Apple posts third iPhone OS 3.0 beta with minor API changes
+Original data: Apple posts third iPhone OS 3.0 beta with minor API changes
+Purified data: Apple%20posts%20third%20iPhone%20OS%203%2e0%20beta%20with%20minor%20API%20changes
+TotalResult: 0
+
+Query: Former Google, eBay Leaders to Start Fund to Tackle Global Problems
+Original data: Former Google, eBay Leaders to Start Fund to Tackle Global Problems
+Purified data: Former%20Google%2c%20eBay%20Leaders%20to%20Start%20Fund%20to%20Tackle%20Global%20Problems
+TotalResult: 0
+
+Query: EU Criticizes UK's Oversight Of Web Privacy
+Original data: EU Criticizes UK's Oversight Of Web Privacy
+Purified data: EU%20Criticizes%20UK's%20Oversight%20Of%20Web%20Privacy
+TotalResult: 0
+
+Query: Obama Still Seeing Economic "Glimmers of Hope"
+Original data: Obama Still Seeing Economic "Glimmers of Hope"
+Purified data: Obama%20Still%20Seeing%20Economic%20%22Glimmers%20of%20Hope%22
+TotalResult: 5
+Title: Glimmers of hope, but tough times still ahead: US
+Url: http://news.yahoo.com/s/afp/20090414/ts_afp/uspoliticseconomyobamahope_20090414171701
+Title: Obama sees economy's 'glimmers of hope'
+Url: http://www.guardian.co.uk/world/2009/apr/10/obama-economy-recovery
+Title: Obama sees ‘glimmers of hope’ in economy
+Url: http://www.themalaysianinsider.com/index.php/business/22955-obama-sees-glimmers-of-hope-in-economy
+Title: President Obama sounds optimistic note on economy, citing 'glimmers of hope'
+Url: http://www.nydailynews.com/news/politics/2009/04/11/2009-04-11_president_obama_sounds_optimistic_note_on_economy_citing_glimmers_of_hope.html
+Title: Obama sees 'glimmers of hope' toward economic recovery
+Url: http://u.tv/News/Obama-sees-glimmers-of-hope-toward-economic-recovery/2003ab88-a311-4785-8cbd-08f92ed1b28c
+
+Query: Crying Calif mom arraigned on murder, rape charges
+Original data: Crying Calif mom arraigned on murder, rape charges
+Purified data: Crying%20Calif%20mom%20arraigned%20on%20murder%2c%20rape%20charges
+TotalResult: 5
+Title: Crying Calif mom arraigned on murder, rape charges
+Url: http://news.yahoo.com/s/ap/20090415/ap_on_re_us/girl_in_suitcase_63
+Title: Crying Calif mom arraigned on murder, rape charges
+Url: http://www.bostonherald.com/news/national/west/view.bg?articleid=1165819&srvc=rss
+Title: Crying California mom arraigned on murder, rape charges
+Url: http://www.canadaeast.com/rss/article/636122
+Title: Crying Calif Mom Arraigned On Murder, Rape Charges
+Url: http://wcco.com/national/sandra.cantu.charges.2.984642.html
+Title: Crying Calif mom arraigned on murder, rape charges
+Url: http://www.sfgate.com/cgi-bin/article.cgi?f=/n/a/2009/04/13/national/a132726D67.DTL&amp;feed=rss.business
+
+Query: NY company's ship damaged in Somali pirate attack
+Original data: NY company's ship damaged in Somali pirate attack
+Purified data: NY%20company's%20ship%20damaged%20in%20Somali%20pirate%20attack
+TotalResult: 5
+Title: Crying Calif mom arraigned on murder, rape charges
+Url: http://news.yahoo.com/s/ap/20090415/ap_on_re_us/girl_in_suitcase_63
+Title: Crying Calif mom arraigned on murder, rape charges
+Url: http://www.bostonherald.com/news/national/west/view.bg?articleid=1165819&srvc=rss
+Title: Crying California mom arraigned on murder, rape charges
+Url: http://www.canadaeast.com/rss/article/636122
+Title: Crying Calif Mom Arraigned On Murder, Rape Charges
+Url: http://wcco.com/national/sandra.cantu.charges.2.984642.html
+Title: Crying Calif mom arraigned on murder, rape charges
+Url: http://www.sfgate.com/cgi-bin/article.cgi?f=/n/a/2009/04/13/national/a132726D67.DTL&amp;feed=rss.business
+
+Query: Scientist: First cloned camel born in Dubai
+Original data: Scientist: First cloned camel born in Dubai
+Purified data: Scientist%3a%20First%20cloned%20camel%20born%20in%20Dubai
+TotalResult: 5
+Title: Scientist: First cloned camel born in Dubai
+Url: http://news.yahoo.com/s/ap/20090414/ap_on_re_mi_ea/ml_dubai_camel_cloned_5
+Title: Scientist: First cloned camel born in Dubai
+Url: http://www.msnbc.msn.com/id/30212386/
+Title: Scientist: First cloned camel born in Dubai
+Url: http://www.sfgate.com/cgi-bin/article.cgi?f=/n/a/2009/04/14/international/i084843D07.DTL&amp;feed=rss.business
+Title: Scientist: First cloned camel born in Dubai
+Url: http://www.bostonherald.com/news/international/middle_east/view.bg?articleid=1165629&srvc=rss
+Title: Scientist: First cloned camel born in Dubai
+Url: http://www.cbs8.com/global/story.asp?s=10180660
+
+Query: Recession fueling right-wing extremism
+Original data: Recession fueling right-wing extremism
+Purified data: Recession%20fueling%20right%2dwing%20extremism
+TotalResult: 5
+Title: Report Says Recession Is Fueling Right-Wing Extremism
+Url: http://arkansasmatters.com/content/fulltext/news?cid=211622
+Title: Recession fueling right-wing extremism, U.S. says
+Url: http://news.yahoo.com/s/nm/20090414/lf_nm_life/us_usa_security_extremists_3
+Title: Right-wing extremism may be on rise, report says
+Url: http://www.cnn.com/2009/POLITICS/04/14/extremism.report/index.html?section=cnn_latest
+Title: (AFX UK Focus) 2009-04-14 20:29 Recession fueling right-wing extremism, U.S. says
+Url: http://www.iii.co.uk/news/?type=afxnews&articleid=7269292&subject=economic&action=article
+Title: Report warns of rise of right-wing extremists
+Url: http://blogs.usatoday.com/ondeadline/2009/04/report-warns-of-rise-of-rightwing-extremists-.html?csp=34
+
+Query: Rod Blagojevich pleads not guilty
+Original data: Rod Blagojevich pleads not guilty
+Purified data: Rod%20Blagojevich%20pleads%20not%20guilty
+TotalResult: 5
+Title: Ex-Ill. Gov. Rod Blagojevich pleads not guilty
+Url: http://www.lcsun-news.com/ci_12145886
+Title: Ex-Ill. Gov. Rod Blagojevich pleads not guilty
+Url: http://news.yahoo.com/s/ap/20090415/ap_on_re_us/blagojevich_indicted_16
+Title: Former Ill. Gov. Rod Blagojevich pleads not guilty
+Url: http://news.yahoo.com/s/ap/20090415/ap_on_re_us/blagojevich_indicted_19
+Title: Rod Blagojevich pleads not guilty at arraignment
+Url: http://www.bostonherald.com/news/national/midwest/view.bg?articleid=1165588&srvc=rss
+Title: Rod Blagojevich: Former governor pleads not guilty at his arraignment
+Url: http://www.chicagotribune.com/news/local/chi-rod-blagojevich-arraigmentapr15,0,7069132.story?track=rss
+
+Query: george harrison star
+Original data: george harrison star
+Purified data: george%20harrison%20star
+TotalResult: 5
+Title: George Harrison gets Hollywood Walk of Fame star
+Url: http://news.yahoo.com/s/ap/20090415/ap_en_mu/george_harrison_star_3
+Title: Hollywood gives George Harrison his star
+Url: http://www.cnn.com/2009/SHOWBIZ/Music/04/14/george.harrison.star/index.html?section=cnn_latest
+Title: George Harrison gets star on Walk of Fame
+Url: http://www.upi.com/Entertainment_News/2009/04/15/George-Harrison-gets-star-on-Walk-of-Fame/UPI-88761239807085/
+Title: George Harrison gets posthumous Hollywood star
+Url: http://news.yahoo.com/s/afp/20090414/en_afp/entertainmentusmusicbeatlesharrison_20090414221556
+Title: George Harrison honoured with star on Hollywood Walk of Fame
+Url: http://www.nationalpost.com/rss/story.html?id=1499591
+
+Query: Michael Jackson auction
+Original data: Michael Jackson auction
+Purified data: Michael%20Jackson%20auction
+TotalResult: 5
+Title: Michael Jackson auction called off: official
+Url: http://news.yahoo.com/s/afp/20090415/ts_afp/entertainmentusmusicauctionjackson_20090415032412
+Title: Auction of Michael Jackson items called off
+Url: http://www.cnn.com/2009/SHOWBIZ/Music/04/14/jackson.auction/index.html?section=cnn_latest
+Title: Michael Jackson Auction Canceled
+Url: http://www.mtv.com/news/articles/1609292/20090415/index.jhtml?rsspartner=rssYahooNewscrawler
+Title: Michael Jackson auction canceled, exhibit continues
+Url: http://news.yahoo.com/s/nm/20090414/en_nm/us_jackson_2
+Title: Michael Jackson auction called off
+Url: http://www.newsday.com/entertainment/news/celebrity/ny-etjack0416,0,5595089.story?track=rss
+
+Query: Dancing With The Stars
+Original data: Dancing With The Stars
+Purified data: Dancing%20With%20The%20Stars
+TotalResult: 5
+Title: 'Dancing With the Stars': Hit the road, Jack(ass)
+Url: http://www.latimes.com/entertainment/news/la-et-dancing-stars-15apr15-link,0,3723234.storylink?track=rss
+Title: Stephen "Steve-O" Glover grateful for 'Dancing with the Stars' experience
+Url: http://www.realitytvworld.com/news/stephen-steve-o-glover-grateful-for-dancing-with-stars-experience-8810.php
+Title: Marie Osmond: Laughter Is The Best Remedy
+Url: http://www.cbsnews.com/stories/2009/04/15/earlyshow/leisure/celebspot/main4946728.shtml?source=RSSattr=Entertainment_4946728
+Title: Steve-O is booted from 'Dancing With the Stars'
+Url: http://news.yahoo.com/s/ap/20090415/ap_on_en_tv/tv_dancing_with_the_stars_5
+Title: Julianne Hough still set to skip 'Dancing with the Stars' next season
+Url: http://www.realitytvworld.com/news/julianne-hough-still-set-skip-dancing-with-stars-next-season-8758.php
+
+Query: Ending Somali piracy: few options for US forces
+Original data: Ending Somali piracy: few options for US forces
+Purified data: Ending%20Somali%20piracy%3a%20few%20options%20for%20US%20forces
+TotalResult: 5
+Title: Ending Somali piracy: few options for US forces
+Url: http://news.yahoo.com/s/ap/20090415/ap_on_re_af/piracy_few_options_2
+Title: Ending Somali piracy: few options for US forces
+Url: http://www.sfgate.com/cgi-bin/article.cgi?f=/n/a/2009/04/14/international/i142629D84.DTL&amp;feed=rss.news
+Title: Ending Somali piracy: few options for U.S. forces
+Url: http://www.timesrepublican.com/page/content.detail/id/515973.html
+Title: CNN - 'Robust Action' Could Curtail Piracy, Expert Says
+Url: http://www.cnn.com/2009/POLITICS/04/15/pirates.action/index.html?eref=ib_topstories
+Title: Daring Rescue Mission Leads to Freeing of U.S. Captain Off Somali Coast
+Url: http://www.pbs.org/newshour/rss/redir/http://www.pbs.org/newshour/updates/terrorism/jan-june09/pirates_04-13.html
+
+Query: Consumer prices dip unexpectedly in March
+Original data: Consumer prices dip unexpectedly in March
+Purified data: Consumer%20prices%20dip%20unexpectedly%20in%20March
+TotalResult: 5
+Title: Consumer prices dip unexpectedly in March
+Url: http://malaysia.news.yahoo.com/ap/20090416/twl-economy-1be00ca.html
+Title: Consumer prices in United States dip unexpectedly in March
+Url: http://finance.sympatico.msn.ca/investing/news/businessnews/article.aspx?cp-documentid=19218173
+Title: Consumer prices dip unexpectedly in March
+Url: http://news.yahoo.com/s/ap/20090415/ap_on_bi_go_ec_fi/economy_46
+Title: Consumer prices dip unexpectedly in March
+Url: http://www.blueridgenow.com/article/20090415/news/904159985
+Title: Consumer prices dip unexpectedly in March
+Url: http://www.denverpost.com/business/ci_12146370?source=rss
+
+Query: Charles Schwab's Profit Falls 29%
+Original data: Charles Schwab's Profit Falls 29%
+Purified data: Charles%20Schwab's%20Profit%20Falls%2029%25
+TotalResult: 5
+Title: Consumer prices dip unexpectedly in March
+Url: http://malaysia.news.yahoo.com/ap/20090416/twl-economy-1be00ca.html
+Title: Consumer prices in United States dip unexpectedly in March
+Url: http://finance.sympatico.msn.ca/investing/news/businessnews/article.aspx?cp-documentid=19218173
+Title: Consumer prices dip unexpectedly in March
+Url: http://news.yahoo.com/s/ap/20090415/ap_on_bi_go_ec_fi/economy_46
+Title: Consumer prices dip unexpectedly in March
+Url: http://www.blueridgenow.com/article/20090415/news/904159985
+Title: Consumer prices dip unexpectedly in March
+Url: http://www.denverpost.com/business/ci_12146370?source=rss
+
+Query: Thai protest arrests police
+Original data: Thai protest arrests police
+Purified data: Thai%20protest%20arrests%20police
+TotalResult: 5
+Title: Thai summit protest leader arrested: police
+Url: http://news.yahoo.com/s/afp/20090412/ts_afp/thailandpoliticsprotestarrest_20090412063659
+Title: Arrests begin as Thai PM declares emergency
+Url: http://www.smh.com.au/world/arrests-begin-as-thai-pm-declares-emergency-20090413-a43q.html
+Title: Thai protest leader arrested
+Url: http://bigpondnews.com/articles/World/2009/04/12/Thai_protest_leader_arrested_321225.html
+Title: State of emergency in Bangkok, protest arrests
+Url: http://news.yahoo.com/s/afp/20090412/wl_afp/thailandpoliticsprotestarrest_20090412080119
+Title: State pf emergency in Bangkok, protest arrests
+Url: http://news.yahoo.com/s/afp/20090412/wl_afp/thailandpoliticsprotestarrest_20090412073924
+
+Query: US Industrial Production Drops More Than Forecast
+Original data: US Industrial Production Drops More Than Forecast
+Purified data: US%20Industrial%20Production%20Drops%20More%20Than%20Forecast
+TotalResult: 5
+Title: U.S. Industrial Production Drops More Than Forecast (Update2)
+Url: http://www.bloomberg.com/apps/news?pid=20601068&sid=a2TKpE7UEkGc
+Title: US consumer prices, industrial output drop
+Url: http://news.yahoo.com/s/afp/20090415/bs_afp/useconomyinflationoutput_20090415172137
+Title: No end in sight
+Url: http://onlinejournal.com/artman/publish/article_4580.shtml
+Title: US STOCKS-Wall St sets 5th weekly gain on banks, Boeing off late
+Url: http://ph.news.yahoo.com/rtrs/20090409/tbs-markets-stocks-7318940.html
+Title: Shankar Acharya: Spring fever
+Url: http://www.business-standard.com/india/news/shankar-acharya-spring-fever/354516/
+
+Query: Trial of Mumbai gunman delayed
+Original data: Trial of Mumbai gunman delayed
+Purified data: Trial%20of%20Mumbai%20gunman%20delayed
+TotalResult: 5
+Title: Mumbai gunman's trial delayed
+Url: http://www.abc.net.au/news/stories/2009/04/15/2543871.htm
+Title: Mumbai attack trial delayed after lawyer for suspect dismissed
+Url: http://www.honoluluadvertiser.com/article/20090415/BREAKING/90415029/-1/RSS01?source=rss_breaking
+Title: Mumbai terror trial delayed by lawyer's axing
+Url: http://www.nzherald.co.nz/world/news/article.cfm?c_id=2&objectid=10566865&ref=rss
+Title: Lawyer for surviving Mumbai attack gunman barred from court at start of trial
+Url: http://u.tv/News/Lawyer-for-surviving-Mumbai-attack-gunman-barred-from-court-at-start-of-trial/497daf44-aee4-440e-9948-04d4da0f0a9b
+Title: Mumbai terror trial delayed by lawyer's axing
+Url: http://www.nzherald.co.nz/world/news/article.cfm?c_id=2&objectid=10566865
+
+Query: Intel PC market hit bottom
+Original data: Intel PC market hit bottom
+Purified data: Intel%20PC%20market%20hit%20bottom
+TotalResult: 5
+Title: Intel says PC market hit bottom but shares slide
+Url: http://news.yahoo.com/s/nm/20090415/tc_nm/us_intel_13
+Title: Intel says PC market hit bottom but shares slide
+Url: http://www.ciol.com/Global-News/News-Reports/Intel-says-PC-market-hit-bottom-but-shares-slide/15409118409/0/
+Title: Intel says PC market has reached the bottom
+Url: http://www.itp.net/news/552748-intel-says-pc-market-has-reached-the-bottom
+Title: Intel calls 'bottom' but market says hold on
+Url: http://www.eetimes.com/news/semi/rss/showArticle.jhtml?articleID=216500805&cid=RSSfeed_eetimes_semiRSS
+Title: Intel says PC market hit bottom but shares slide
+Url: http://sg.news.yahoo.com/rtrs/20090415/tbs-business-us-intel-7318940.html
+
+Query: Gingrich White House
+Original data: Gingrich White House
+Purified data: Gingrich%20White%20House
+TotalResult: 5
+Title: Gingrich eyes possible White House run in 2012
+Url: http://news.yahoo.com/s/ap/20090415/ap_on_re_us/newt_s_next_step_6
+Title: Gingrich eyes possible White House run in 2012
+Url: http://www.boston.com/news/nation/articles/2009/04/15/gingrich_eyes_possible_white_house_run_in_2012
+Title: Gingrich eyes possible White House run in 2012
+Url: http://sg.news.yahoo.com/ap/20090415/twl-newt-s-next-step-1be00ca.html
+Title: Gingrich eyes possible White House run in 2012
+Url: http://www.journalstandard.com/news/x1099000833/Gingrich-eyes-possible-White-House-run-in-2012
+Title: Protesters Throw Apparent Tea Bags At White House
+Url: http://wcbstv.com/politics/tea.parties.tax.2.985245.html
+
+Query: bridge collapses in Peru
+Original data: bridge collapses in Peru
+Purified data: bridge%20collapses%20in%20Peru
+TotalResult: 5
+Title: Peru bridge collapses, killing 8 and injuring 70
+Url: http://news.yahoo.com/s/ap/20090414/ap_on_re_la_am_ca/lt_peru_bridge_collapse_1
+Title: Peru bridge collapses, killing 8 and injuring 70
+Url: http://www.kxxv.com/global/story.asp?s=10176972
+Title: Peru bridge collapses, killing eight and injuring 70
+Url: http://www.9wsyr.com/news/world/story/Peru-bridge-collapses-killing-eight-and-injuring/8R-lKOXRkECeaPZZXsRlSQ.cspx?rss=115
+Title: Children fall to their deaths as school bridge collapses in Peru
+Url: http://www.timesonline.co.uk/tol/news/world/us_and_americas/article6089043.ece
+Title: Nine killed, dozens hurt as bridge collapses
+Url: http://www.iol.co.za/widgets/rss_redirect.php?artid=nw20090414045238531C488275&setid=1&sectid=3&url=iol&vne=0&csect=World
+
+Query: Fiji takeover
+Original data: Fiji takeover
+Purified data: Fiji%20takeover
+TotalResult: 5
+Title: Fiji devalues currency amid turmoil
+Url: http://news.yahoo.com/s/ap/20090415/ap_on_re_as/as_fiji_3
+Title: Fiji Devalues Dollar as Military Tightens Control (Update1)
+Url: http://www.bloomberg.com/apps/news?pid=20601068&sid=an6gxNGMGGGs
+Title: Fiji Devalues Dollar to Boost Tourism Damaged by Coup (Update1)
+Url: http://www.bloomberg.com/apps/news?pid=20601081&sid=aGcTgCW5GpaA
+Title: Govt urged to keep Aussies out of Fiji (AAP)
+Url: http://au.rd.yahoo.com/news/rss/world/*http://au.news.yahoo.com/a/-/world/5500026
+Title: Fiji Faces ‘Inevitable’ Commonwealth Suspension, Australia Says
+Url: http://www.bloomberg.com/apps/news?pid=20601081&sid=acr1iNUAt4AU
+
+Query: Two dead in Michigan college shooting
+Original data: Two dead in Michigan college shooting
+Purified data: Two%20dead%20in%20Michigan%20college%20shooting
+TotalResult: 5
+Title: Two killed in Michigan college shooting
+Url: http://www.cnn.com/2009/CRIME/04/10/mich.college.shooting/index.html?eref=rss_crime
+Title: Two killed in Michigan college shooting
+Url: http://www.cnn.com/2009/CRIME/04/10/mich.college.shooting/index.html?section=cnn_latest
+Title: Two killed in Michigan college murder-suicide
+Url: http://english.people.com.cn/90001/90777/90852/6634813.html
+Title: Two dead at Michigan college
+Url: http://theworldlink.com/articles/2009/04/13/news/doc49e048592acdc942467182.txt
+Title: Two dead in shooting at Michigan college
+Url: http://www.thestarpress.com/article/20090410/NEWS06/90410028/1002/rss
+
+Query: Nintendo Wii sales decrease
+Original data: Nintendo Wii sales decrease
+Purified data: Nintendo%20Wii%20sales%20decrease
+TotalResult: 2
+Title: Nintendo
+Url: http://www.gamesindustry.biz/articles/iwata-wii-in-most-unhealthy-condition-in-japan
+Title: Analysts predict flat software sales for March
+Url: http://www.gamesindustry.biz/articles/analysts-predict-flat-software-sales-for-march
+
+Query: At least 3 police officers killed in Pittsburgh shootings
+Original data: At least 3 police officers killed in Pittsburgh shootings
+Purified data: At%20least%203%20police%20officers%20killed%20in%20Pittsburgh%20shootings
+TotalResult: 5
+Title: A portrait of contrasts emerges from those who knew Poplawski
+Url: http://www.post-gazette.com/pg/09102/962297-53.stm?cmpid=neighborhoods.xml
+Title: Deadly product will never be pulled
+Url: http://www.pittsburghlive.com/x/pittsburghtrib/news/columns/seate/s_620475.html
+Title: Americans stick to their guns as firearms sales surge
+Url: http://www.guardian.co.uk/world/2009/apr/13/guns-nra-america-obama-virginia
+Title: A farewell salute to fallen officers
+Url: http://www.post-gazette.com/pg/09100/961933-53.stm?cmpid=neighborhoods.xml
+Title: A sampling of editorials from NC newspapers
+Url: http://www.rockymounttelegram.com/news/state/a-sampling-of-editorials-from-nc-newspapers-536935.html
+
+Query: US unemployment rate reaches
+Original data: US unemployment rate reaches
+Purified data: US%20unemployment%20rate%20reaches
+TotalResult: 5
+Title: EUR/USD: Trading the U.S. Housing Starts Report
+Url: http://biz.yahoo.com/fxcm/090415/1239794935614.html?.v=1
+Title: Demand for oil drops as outlook for G7 remains grim
+Url: http://www.guardian.co.uk/business/2009/apr/10/oil-oilandgascompanies
+Title: Can Black Men Survive Falling U.S. Economy?
+Url: http://news.newamericamedia.org/news/view_article.html?article_id=1b76b37913a7db730289b1b867744b56&from=rss
+Title: EUR/USD: Trading the U.S. Advance Retail Sales Report
+Url: http://www.dailyfx.com/story/trading_reports/trading_news_reports/EUR_USD__Trading_the_U_S__Advance_1239621784777.html
+Title: ‘History will not define this period as a depression’
+Url: http://www.nashvillecitypaper.com/news.php?viewStory=67448
+
+Query: Gunman massacres at least 12 at New York immigration center
+Original data: Gunman massacres at least 12 at New York immigration center
+Purified data: Gunman%20massacres%20at%20least%2012%20at%20New%20York%20immigration%20center
+TotalResult: 0
+
+Query: U.S. lifting Cuba travel ban
+Original data: U.S. lifting Cuba travel ban
+Purified data: U%2eS%2e%20lifting%20Cuba%20travel%20ban
+TotalResult: 5
+Title: U.S. eases travel, money ban on Cuban-Americans
+Url: http://www.tulsaworld.com/site/articlepath.aspx?pg=news&articleid=20090414_13_A4_WhiteH736851&subjectid=16
+Title: Retired Military Officers Urge Ending Cuba Travel Ban
+Url: http://news.yahoo.com/s/usnw/20090414/pl_usnw/retired_military_officers_urge_ending_cuba_travel_ban
+Title: Obama takes first steps on modernizing U.S.-Cuba policy, but hard work still left to do
+Url: http://www.sun-sentinel.com/news/local/cuba/sfl-cuba-obama-travel-editaf-m04sbapr15,0,1600663.story?track=rss
+Title: Obama lifts limits on travel to Cuba by Cuban Americans
+Url: http://news.yahoo.com/s/mcclatchy/20090413/wl_mcclatchy/3211599_1
+Title: Cuba shift draws criticisms from all sides
+Url: http://politicom.moldova.org/news/cuba-shift-draws-criticisms-from-all-sides-196719-eng.html
+
+Query: Helicopter crash in Louisiana
+Original data: Helicopter crash in Louisiana
+Purified data: Helicopter%20crash%20in%20Louisiana
+TotalResult: 0
+
+Query: Rockets fired into northern Israel from Lebanon
+Original data: Rockets fired into northern Israel from Lebanon
+Purified data: Rockets%20fired%20into%20northern%20Israel%20from%20Lebanon
+TotalResult: 5
+Title: Israel-US confrontation feared over peace process
+Url: http://www.mmorning.com/ArticleC.asp?Article=6735&CategoryID=6
+Title: Rocket Stoppers Are Ready
+Url: http://www.strategypage.com/htmw/htart/articles/20090414.aspx
+Title: Army's ethics chief says Israel fought fair in three-week Gaza war
+Url: http://ca.news.yahoo.com/s/capress/090409/world/israel_war_debate_1
+Title: Army's ethics chief: Israel fought fair in Gaza
+Url: http://ph.news.yahoo.com/ap/20090410/twl-ml-israel-war-debate-38359fb.html
+Title: Army's ethics chief: Israel fought fair in Gaza
+Url: http://www.lcsun-news.com/ci_12107135
+
