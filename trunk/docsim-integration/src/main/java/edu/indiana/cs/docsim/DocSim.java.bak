@@ -1,0 +1,229 @@
+package edu.indiana.cs.docsim;
+
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Logger;
+
+import org.apache.commons.io.IOUtils;
+
+import edu.indiana.cs.docsim.Shingle;
+import edu.indiana.cs.docsim.ShingleSet;
+import edu.indiana.cs.docsim.ShingleTextParserNoOrder;
+import edu.indiana.cs.docsim.ShingleUnit;
+import edu.indiana.cs.docsim.ShingleUnitBag;
+import java.io.IOException;
+
+import edu.indiana.cs.docsim.data.PageRepository;
+import edu.indiana.cs.docsim.data.QueryEntry;
+import edu.indiana.cs.docsim.data.SearchResultEntry;
+
+/**
+ * Main class.
+ *
+ * @author
+ * @version
+ */
+public class DocSim {
+
+    private static Logger logger = Logger.getLogger(DocSim.class.getName());
+
+    // private DocFilterPipeLineDefault docFilterPipeLine;
+
+    public void testPipeLineAndShingleLocal() throws Exception {
+        String filename = "res://augmented_page.html";
+        // First apply pipe line of filters
+        String result = filter(filename);
+        assertNotNull(result);
+
+        ShingleTextParserNoOrder shingleTxtParser = new ShingleTextParserNoOrder();
+
+        // build shingle set
+        StringBuilder sb = new StringBuilder();
+        String charset = "UTF-8";
+        int shinglesize = 5;
+        ShingleSet shingleset = shingleTxtParser.parseText(result, shinglesize, charset);
+        int size = shingleset.sizeUnique();
+        sb.append("\nShingle size: " + shinglesize);
+        sb.append("\nSize of shingle set: " + size);
+        logger.info(sb.toString());
+    }
+
+    public String filter(String src) throws Exception {
+        final DomTagListener listenerHeading = new DomTagListenerHeadingTags();
+        final DomTagListener listenerTitle = new DomTagListenerTitleTag();
+        final DomTagListener listenerEmph = new DomTagListenerEmphTags();
+
+        final DomTagListenerRegistry listenerReg = new DomTagListenerRegistry();
+        final HtmlTagListenerFilter listenerFilter = new HtmlTagListenerFilter(listenerReg);
+
+        listenerReg.register(listenerHeading);
+        listenerReg.register(listenerEmph);
+        listenerReg.register(listenerTitle);
+
+        try {
+            docFilterPipeLine = new DocFilterPipeLineDefault() {
+                protected void beforeInit() {
+                    try {
+                        pipeline.add(listenerFilter);
+                    } catch(Exception ex) {
+                    }
+                }
+            };
+        } catch(Exception ex) {
+            logger.severe("Exception in creating DocFilterPipeLineDefault " +
+                    ex);
+            throw ex;
+        }
+
+
+        StringBuilder sb = new StringBuilder();
+        String charset = "UTF-8";
+        String result = null;
+        if (src.startsWith("res://")) {
+            String filename = src;
+            result = docFilterPipeLine.filter(filename, charset);
+            sb.append("\nGet data from file \"" + filename + "\" result:\n" + result);
+        } else {
+            try {
+                URL url = new URL(src);
+                result = docFilterPipeLine.filter(url);
+                sb.append("\nGet data from url \"" + url + "\" result:\n" + result);
+            } catch (Exception e) {
+                String filename = src;
+                result = docFilterPipeLine.filter(filename, charset);
+                sb.append("\nGet data from file \"" + filename + "\" result:\n" + result);
+            }
+        }
+
+
+        Object dataobj = listenerHeading.getData();
+        String output = "Heading listener:\n" + seralizeList(dataobj);
+        sb.append("\n" + output);
+
+        dataobj = listenerTitle.getData();
+        output = "Title listener:\n" + seralizeList(dataobj);
+        sb.append("\n" + output);
+
+        dataobj = listenerEmph.getData();
+        output = "Emph listener:\n" + seralizeList(dataobj);
+        sb.append("\n" + output);
+
+        logger.info(sb.toString());
+        return result;
+    }
+
+    public void applyShingling (String trainingConfigFile)
+      throws IOException, InvalidConfigFormatException {
+        DocSimTrainingConfig trainingConfig =
+            new DocSimTrainingConfig(true, null);
+        applyShingling(trainingConfig);
+    }
+
+    private void applyShingling(DocSimTrainingConfig trainingConfig) {
+        Config config = trainingConfig.getConfig();
+        PageRepository pageRepo = trainingConfig.getPageRepo();
+        List<QueryEntry> queryEntries = pageRepo.getQueryEntries();
+
+        int shingleSizeStart = config.getSizeStart();
+        int shingleSizeStep  = config.getSizeStep();
+        int shingleSizeStop  = config.getStopword();
+
+        DocSimLatticeStatistics allStat = new DocSimLatticeStatistics();
+
+        for (Iterator<QueryEntry> it = queryEntries.iterator();
+             it.hasNext(); ) {
+            QueryEntry entry = it.next();
+            String query = entry.getQuery();
+            int resultCount = entry.getResultCount();
+            List<SearchResultEntry> results = entry.getResults();
+            if (resultCount < 2 ) {
+                continue;
+            }
+            SearchResultEntry result1 = results.get(0);
+            SearchResultEntry result2 = results.get(1);
+            for ( int shinglesize = shingleSizeStart;
+                  shinglesize <= shingleSizeStop;
+                  shinglesize += shingleSizeStep ){
+            DocSimPairStatistics statistics =
+                applyShingleNoOrderRemote(result1.getUrl(), result2.getUrl(), shinglesize);
+        }
+    }
+
+    /**
+     *
+     *
+     * @param strUrl1
+     * @param strUrl2
+     * @param shinglesize
+     * @return
+     * @throws Exception
+     */
+    public DocSimPairStatistics applyShingleNoOrderRemote
+        (String strUrl1, String strUrl2, int shinglesize)
+        throws Exception {
+
+        DocSimPairStatistics statistics = new DocSimPairStatistics();
+        ShingleTextParserNoOrder shingleTxtParser = new ShingleTextParserNoOrder();
+
+        // String strUrl1 = "http://cs.indiana.edu";
+        // String strUrl2 = "http://www.informatics.indiana.edu/";
+        String result1 = filter(strUrl1);
+        String result2 = filter(strUrl2);
+
+        String charset = "UTF-8";
+
+        ShingleSet shingleset1 = shingleTxtParser.parseText(result1, shinglesize, charset);
+        ShingleSet shingleset2 = shingleTxtParser.parseText(result2, shinglesize, charset);
+        ShingleSet union = shingleset1.union(shingleset2);
+        ShingleSet intersect = shingleset1.intersect(shingleset2);
+
+        int size1 = shingleset1.sizeUnique();
+        int size2 = shingleset2.sizeUnique();
+        int sizeunion = union.sizeUnique();
+        int sizeintersect = intersect.sizeUnique();
+
+        statistics.setDocSrc1(strUrl1);
+        statistics.setDocSrc2(strUrl2);
+        statistics.setShingleSize(shinglesize);
+        statistics.setDocShingleSetSize1(size1);
+        statistics.setDocShingleSetSize2(size2);
+        statistics.setDocShingleSetUnionSizeUnique(sizeunion);
+        statistics.setDocShingleSetIntersectSizeUnique(sizeintersect);
+
+        return statistics;
+    }
+
+    public void testPipeLineAndShingleRemote() throws Exception {
+        // String strUrl = "http://cs.indiana.edu";
+        String strUrl = "http://www.informatics.indiana.edu/";
+        String result = filter(strUrl);
+        ShingleTextParserNoOrder shingleTxtParser = new ShingleTextParserNoOrder();
+
+        // build shingle set
+        StringBuilder sb = new StringBuilder();
+        String charset = "UTF-8";
+        int shinglesize = 5;
+        ShingleSet shingleset = shingleTxtParser.parseText(result, shinglesize, charset);
+        int size = shingleset.sizeUnique();
+        sb.append("\nShingle size: " + shinglesize);
+        sb.append("\nSize of shingle set: " + size);
+        logger.info(sb.toString());
+    }
+
+    private String seralizeList(Object dataobj) {
+        StringBuilder sb = new StringBuilder();
+        if (dataobj instanceof List) {
+            List<String> datals = (List<String>)dataobj;
+            for (Iterator<String> it = datals.iterator(); it.hasNext();) {
+                sb.append(it.next() + "\n");
+            }
+        } else {
+            logger.severe("A list is expected!!!");
+            return "";
+        }
+        return sb.toString();
+    }
+}
+

@@ -1,0 +1,117 @@
+package edu.indiana.cs.docsim;
+
+import java.io.IOException;
+import java.util.Properties;
+import java.util.Set;
+import java.util.HashSet;
+import java.io.InputStream;
+
+import edu.indiana.cs.docsim.data.util.ResourceLoader;
+
+public class DocSimTestingConfig {
+
+    private static String defaultConfigFile = "res://training.config";
+    private String configFile;
+    private Config config;
+
+    private void load() throws IOException {
+        if (configFile != null) {
+            Properties properties = new Properties();
+            InputStream is = ResourceLoader.open(configFile);
+            properties.load(is);
+            config = new Config(properties);
+        }
+    }
+
+    private void init(boolean useDefault, String fileName) {
+        if (useDefault) {
+            configFile = defaultConfigFile;
+        } else if (fileName != null) {
+            configFile = fileName;
+        }
+    }
+
+    public DocSimTestingConfig(boolean useDefault, String fileName)
+      throws IOException {
+        init(useDefault, fileName);
+        load();
+    }
+
+    public String getDataFile() {
+        if (config != null) {
+            return config.getDataFile();
+        } else {
+            return null;
+        }
+    }
+
+    public ShingleAlgorithm getShingleAlg() {
+        if (config != null) {
+            return config.getShingleAlg();
+        } else {
+            return null;
+        }
+    }
+}
+
+class Config {
+    private static String keyDataFile = "datafile";
+    private static String keyShingle = "shingle-method";
+
+    private String dataFile;
+    private String shingleAlgRaw;
+    private ShingleAlgorithm shingleAlg;
+
+    /**
+     * get the value of shingleAlg
+     * @return the value of shingleAlg
+     */
+    public ShingleAlgorithm getShingleAlg(){
+        return this.shingleAlg;
+    }
+    /**
+     * set a new value to shingleAlg
+     * @param shingleAlg the new value to be used
+     */
+    public void setShingleAlg(ShingleAlgorithm shingleAlg) {
+        this.shingleAlg=shingleAlg;
+    }
+    /**
+     * get the value of shingleAlgRaw
+     * @return the value of shingleAlgRaw
+     */
+    public String getShingleAlgRaw(){
+        return this.shingleAlgRaw;
+    }
+    /**
+     * set a new value to shingleAlgRaw
+     * @param shingleAlgRaw the new value to be used
+     */
+    public void setShingleAlgRaw(String shingleAlgRaw) {
+        this.shingleAlgRaw=shingleAlgRaw;
+    }
+    /**
+     * get the value of dataFile
+     * @return the value of dataFile
+     */
+    public String getDataFile(){
+        return this.dataFile;
+    }
+    /**
+     * set a new value to dataFile
+     * @param dataFile the new value to be used
+     */
+    public void setDataFile(String dataFile) {
+        this.dataFile=dataFile;
+    }
+
+
+    public Config(Properties properties) {
+        dataFile = properties.getProperty(keyDataFile);
+        shingleAlgRaw = properties.getProperty(keyShingle);
+        shingleAlg = ShingleAlgorithm.getValue(shingleAlgRaw);
+        if (shingleAlg == null) {
+            shingleAlg = ShingleAlgorithm.defaultAlg();
+        }
+    }
+}
