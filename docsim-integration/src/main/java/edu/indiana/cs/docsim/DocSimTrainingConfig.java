@@ -8,10 +8,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import edu.indiana.cs.docsim.data.PageRepository;
 import edu.indiana.cs.docsim.data.util.ResourceLoader;
-import java.util.logging.Logger;
 
 public class DocSimTrainingConfig {
 
@@ -20,7 +20,7 @@ public class DocSimTrainingConfig {
     private Config config;
     private PageRepository pageRepo;
 
-    private void load() throws IOException, InvalidConfigFormatException {
+    private void load() throws IOException, InvalidConfigFormatException, Exception {
         if (configFile != null) {
             Properties properties = new Properties();
             InputStream is = ResourceLoader.open(configFile);
@@ -35,11 +35,13 @@ public class DocSimTrainingConfig {
             configFile = defaultConfigFile;
         } else if (fileName != null) {
             configFile = fileName;
+        } else {
+            configFile = defaultConfigFile;
         }
     }
 
     public DocSimTrainingConfig(boolean useDefault, String fileName)
-      throws IOException, InvalidConfigFormatException {
+      throws IOException, InvalidConfigFormatException, Exception {
         init(useDefault, fileName);
         load();
     }
@@ -52,13 +54,6 @@ public class DocSimTrainingConfig {
         }
     }
 
-    public ShingleAlgorithm getShingleAlg() {
-        if (config != null) {
-            return config.getShingleAlg();
-        } else {
-            return null;
-        }
-    }
     /**
      * get the value of pageRepo
      * @return the value of pageRepo
@@ -106,7 +101,7 @@ class Config {
 
     private String dataFile;
     private String shingleAlgRaw;
-    private ShingleAlgorithm shingleAlg;
+    // private ShingleAlgorithm shingleAlg;
     private String stopword;
     private String stemmer;
     private String filters;
@@ -117,6 +112,24 @@ class Config {
     private int sizeStart;
     private int sizeStep;
     private int sizeStop;
+
+    private List<ShingleAlgorithm> shingleAlgLs =
+        new ArrayList<ShingleAlgorithm>();
+
+    /**
+     * get the value of shingleAlgLs
+     * @return the value of shingleAlgLs
+     */
+    public List<ShingleAlgorithm> getShingleAlgLs(){
+        return this.shingleAlgLs;
+    }
+    /**
+     * set a new value to shingleAlgLs
+     * @param shingleAlgLs the new value to be used
+     */
+    public void setShingleAlgLs(List<ShingleAlgorithm> shingleAlgLs) {
+        this.shingleAlgLs=shingleAlgLs;
+    }
     /**
      * get the value of tagRemoval
      * @return the value of tagRemoval
@@ -233,20 +246,6 @@ class Config {
     }
 
     /**
-     * get the value of shingleAlg
-     * @return the value of shingleAlg
-     */
-    public ShingleAlgorithm getShingleAlg(){
-        return this.shingleAlg;
-    }
-    /**
-     * set a new value to shingleAlg
-     * @param shingleAlg the new value to be used
-     */
-    public void setShingleAlg(ShingleAlgorithm shingleAlg) {
-        this.shingleAlg=shingleAlg;
-    }
-    /**
      * get the value of shingleAlgRaw
      * @return the value of shingleAlgRaw
      */
@@ -278,12 +277,6 @@ class Config {
     public Config(Properties properties)
       throws InvalidConfigFormatException {
         dataFile = properties.getProperty(keyDataFile);
-        shingleAlgRaw = properties.getProperty(keyShingle);
-        shingleAlg = ShingleAlgorithm.getValue(shingleAlgRaw);
-        if (shingleAlg == null) {
-            shingleAlg = ShingleAlgorithm.defaultAlg();
-            shingleAlgRaw = ShingleAlgorithm.original;
-        }
         stopword = properties.getProperty(keyStopWord);
         stemmer = properties.getProperty(keyStemmer);
         filters = properties.getProperty(keyFilters);
@@ -294,6 +287,19 @@ class Config {
                 filter = filter.trim();
                 if (filter.length() == 0) continue;
                 this.getFilterLs().add(filter);
+            }
+        }
+        shingleAlgRaw = properties.getProperty(keyShingle);
+        if (shingleAlgRaw != null) {
+            String[] algs = shingleAlgRaw.split(filterSep);
+            for (int i = 0 ; i < algs.length ; ++i) {
+                String alg = algs[i];
+                alg = alg.trim();
+                if (alg.length() == 0) continue;
+                ShingleAlgorithm shingleAlg =
+                    ShingleAlgorithm.getValue(alg);
+                if (shingleAlg == null) continue;
+                this.getShingleAlgLs().add(shingleAlg);
             }
         }
         String sizeRange = properties.getProperty(keyShingleSizeRange);

@@ -558,6 +558,55 @@
   </repositories>
 
   <profiles>
+
+    <profile>
+      <id>analyze</id>
+      <build>
+        <defaultGoal>exec:java</defaultGoal>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>java</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <mainClass>edu.indiana.cs.docsim.DocSimStatTest</mainClass>
+              <classpathScope>test</classpathScope>
+            </configuration>
+          </plugin> 
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>shingle</id>
+      <build>
+        <defaultGoal>exec:java</defaultGoal>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>java</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <mainClass>edu.indiana.cs.docsim.DocSimTest</mainClass>
+              <classpathScope>test</classpathScope>
+            </configuration>
+          </plugin> 
+        </plugins>
+      </build>
+    </profile>
+
     <profile>
       <id>run</id>
 <!--       <dependencies>                            -->

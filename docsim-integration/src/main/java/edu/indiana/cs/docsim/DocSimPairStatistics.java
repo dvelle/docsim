@@ -15,6 +15,7 @@ public class DocSimPairStatistics {
     private int     docShingleSetUnionSizeUnique        = -1;
     private int     docShingleSetIntersectSize          = -1;
     private int     docShingleSetIntersectSizeUnique    = -1;
+    private boolean positive                            = true;
 
     // private Double  docShinglingRatio;
 
@@ -201,5 +202,19 @@ public class DocSimPairStatistics {
      */
     public void setShingleAlg(ShingleAlgorithm shingleAlg) {
         this.shingleAlg=shingleAlg;
+    }
+    /**
+     * get the value of positive
+     * @return the value of positive
+     */
+    public boolean getPositive(){
+        return this.positive;
+    }
+    /**
+     * set a new value to positive
+     * @param positive the new value to be used
+     */
+    public void setPositive(boolean positive) {
+        this.positive=positive;
     }
 }
