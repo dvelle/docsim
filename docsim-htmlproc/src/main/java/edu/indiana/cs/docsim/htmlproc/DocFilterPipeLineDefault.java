@@ -5,6 +5,7 @@ import java.net.URL;
 import edu.indiana.cs.docsim.htmlproc.stem.PaiceStemmerWrapper;
 import edu.indiana.cs.docsim.htmlproc.stopword.PossessiveFilter;
 import edu.indiana.cs.docsim.htmlproc.stopword.StopWordFilter;
+import java.io.File;
 
 /**
  * Default document filter pipe line.
@@ -30,6 +31,7 @@ public class DocFilterPipeLineDefault {
         // pipeline.addHead(listenerFilter);
 
         beforeInit();
+        pipeline.add(new LowerCaseFilter());
         pipeline.add(new HtmlTagRemoverFilter());
         pipeline.add(new PossessiveFilter());
         pipeline.add(new StopWordFilter(true));
@@ -52,6 +54,10 @@ public class DocFilterPipeLineDefault {
         init();
     }
 
+    public String filter(String content) throws Exception {
+        return pipeline.filter(content);
+    }
+
     public String filter(URL url) throws Exception{
         String charset = "UTF-8";
         return pipeline.filter(url, charset);
@@ -59,6 +65,9 @@ public class DocFilterPipeLineDefault {
 
     public String filter(String fileName, String charset) throws Exception{
         return pipeline.filter(fileName, charset);
+    }
+    public String filter(File file, String charset) throws Exception{
+        return pipeline.filter(file, charset);
     }
 }
 

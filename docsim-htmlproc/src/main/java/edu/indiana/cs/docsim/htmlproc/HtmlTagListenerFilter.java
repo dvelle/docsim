@@ -1,31 +1,38 @@
 package edu.indiana.cs.docsim.htmlproc;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.net.URL;
+import java.util.logging.Logger;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-import java.io.File;
-import java.io.FileOutputStream;
-
+import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.Page;
 import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.WebConnection;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import java.net.URL;
-import java.util.logging.Logger;
+
+import edu.indiana.cs.docsim.htmlproc.util.HtmlUtil;
+import edu.indiana.cs.docsim.htmlproc.util.WebConnectionWrapperNoExternal;
 
 public class HtmlTagListenerFilter extends DocFilterBase {
     private static Logger logger =
         Logger.getLogger(HtmlTagListenerFilter.class.getName());
 
     private DomTagListenerRegistry listenersReg;
-    private WebClient webClient = new WebClient();
+    private WebClient webClient = new WebClient(BrowserVersion.FIREFOX_3);
     {
         webClient.setCssEnabled(false);
+        webClient.setTimeout(1000 *  20);
         webClient.setAppletEnabled(false);
         webClient.setPopupBlockerEnabled(true);
-        webClient.setCookiesEnabled(false);
+        // webClient.setCookiesEnabled(false);
+        webClient.getCookieManager().setCookiesEnabled(false);
         webClient.setJavaScriptEnabled(false);
     }
 
@@ -48,6 +55,8 @@ public class HtmlTagListenerFilter extends DocFilterBase {
         File tmpfile = File.createTempFile("doc-preprocess", ".html");
         String charset = "UTF-8";
         FileOutputStream fos = new FileOutputStream(tmpfile);
+        doc = HtmlUtil.removeIFrame(doc);
+        doc = HtmlUtil.removeMeta(doc);
         fos.write(doc.getBytes(charset));
         fos.close();
 
@@ -58,7 +67,7 @@ public class HtmlTagListenerFilter extends DocFilterBase {
         // String filename = tmpfile.getAbsolutePath();
         // String result = tagRemover.tagRemoveFromURL(filename);
 
-        logger.info("temp file:" + tmpfile);
+        // logger.info("temp file:" + tmpfile);
         traverseHtml(tmpfile.toURI().toURL());
         // tmpfile.delete();
 
@@ -70,6 +79,14 @@ public class HtmlTagListenerFilter extends DocFilterBase {
             if (url == null) {
                 throw new Exception("parameter url should not be null");
             }
+            // logger.info("URI is this: <" + this.getClass().getName() + "> " + url);
+            // WebConnection conn = webClient.getWebConnection();
+            // if (conn instanceof WebConnectionWrapperNoExternal) {
+            // } else {
+            //     WebConnectionWrapperNoExternal conn1 = new WebConnectionWrapperNoExternal(webClient);
+            //     conn1.setAllowedURL(url.toExternalForm());
+            //     webClient.setWebConnection(conn1);
+            // }
             Page page = webClient.getPage(url);
             if (page == null) {
                 throw new Exception("the page is null at '" + url + "'");

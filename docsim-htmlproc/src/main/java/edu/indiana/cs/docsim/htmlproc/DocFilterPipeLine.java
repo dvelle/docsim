@@ -1,9 +1,9 @@
 package edu.indiana.cs.docsim.htmlproc;
 
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -16,9 +16,10 @@ import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
+import org.apache.commons.io.IOUtils;
 
+import edu.indiana.cs.docsim.htmlproc.util.HttpUtil;
 import edu.indiana.cs.docsim.htmlproc.util.ResourceLoader;
-import java.io.InputStream;
 
 public class DocFilterPipeLine extends DocFilterBase {
 
@@ -138,7 +139,7 @@ public class DocFilterPipeLine extends DocFilterBase {
     public String filter(URL url, String charset) throws Exception {
         String protocol = url.getProtocol();
         if (protocol.compareToIgnoreCase("http") == 0) {
-            String page = fetchPageHTTP(url);
+            String page = HttpUtil.fetchPageHTTP(url);
             if (page != null) {
                 return filter(page);
             } else {
@@ -151,33 +152,6 @@ public class DocFilterPipeLine extends DocFilterBase {
         } else {
             throw new Exception("unsupported protocol type");
         }
-    }
-
-    private String fetchPageHTTP (URL url) {
-
-        String page = null;
-        HttpClient client = new HttpClient();
-        GetMethod method = new GetMethod(url.toString());
-        method.getParams().setParameter(HttpMethodParams.RETRY_HANDLER,
-                new DefaultHttpMethodRetryHandler(3, false));
-
-        try {
-            int statusCode = client.executeMethod(method);
-
-            if (statusCode != HttpStatus.SC_OK) {
-                logger.severe("Method failed: " + method.getStatusLine());
-            }
-
-            page = method.getResponseBodyAsString();
-
-        } catch (HttpException e) {
-            logger.severe("Fatal protocol violation: " + e);
-        } catch (IOException e) {
-            logger.severe("Fatal transport error: " + e);
-        } finally {
-            method.releaseConnection();
-        }
-        return page;
     }
 
     @Override

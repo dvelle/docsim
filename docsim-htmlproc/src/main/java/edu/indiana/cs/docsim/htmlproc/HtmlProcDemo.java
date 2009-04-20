@@ -25,7 +25,8 @@ public class HtmlProcDemo {
         webClient.setCssEnabled(false);
         webClient.setAppletEnabled(false);
         webClient.setPopupBlockerEnabled(true);
-        webClient.setCookiesEnabled(false);
+        // webClient.setCookiesEnabled(false);
+        webClient.getCookieManager().setCookiesEnabled(false);
         webClient.setJavaScriptEnabled(false);
 
         // webClient.setPrintContentOnFailingStatusCode(false);

@@ -3,6 +3,8 @@ package edu.indiana.cs.docsim.htmlproc;
 import java.io.File;
 import java.io.FileOutputStream;
 
+import edu.indiana.cs.docsim.htmlproc.util.HtmlUtil;
+
 public class HtmlTagRemoverFilter extends DocFilterBase {
     private HtmlTagRemover tagRemover;
 
@@ -17,6 +19,8 @@ public class HtmlTagRemoverFilter extends DocFilterBase {
         File tmpfile = File.createTempFile("doc-preprocess", ".html");
         String charset = "UTF-8";
         FileOutputStream fos = new FileOutputStream(tmpfile);
+        doc = HtmlUtil.removeIFrame(doc);
+        doc = HtmlUtil.removeMeta(doc);
         fos.write(doc.getBytes(charset));
         fos.close();
 

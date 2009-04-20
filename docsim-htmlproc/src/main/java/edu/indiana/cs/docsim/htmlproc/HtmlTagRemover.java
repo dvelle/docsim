@@ -8,10 +8,14 @@ import org.w3c.dom.NodeList;
 
 import com.gargoylesoftware.htmlunit.Page;
 import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.WebConnection;
+import com.gargoylesoftware.htmlunit.html.HtmlBody;
 import com.gargoylesoftware.htmlunit.html.HtmlDivision;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import com.gargoylesoftware.htmlunit.html.HtmlBody;
+
+import edu.indiana.cs.docsim.htmlproc.util.WebConnectionWrapperNoExternal;
+import com.gargoylesoftware.htmlunit.BrowserVersion;
 
 public class HtmlTagRemover {
     private WebClient webClient;
@@ -21,14 +25,16 @@ public class HtmlTagRemover {
 
     private void init() {
         domTagRemover = new DomTagRemover();
-        domTagRemover. setSupressWhiteSpaces(true);
+        domTagRemover.setSupressWhiteSpaces(true);
 
-        webClient = new WebClient();
+        webClient = new WebClient(BrowserVersion.FIREFOX_3);
         // Don't load external resources referenced in the loaded page
         webClient.setCssEnabled(false);
+        webClient.setTimeout(1000 *  20);
         webClient.setAppletEnabled(false);
         webClient.setPopupBlockerEnabled(true);
-        webClient.setCookiesEnabled(false);
+        // webClient.setCookiesEnabled(false);
+        webClient.getCookieManager().setCookiesEnabled(false);
         webClient.setJavaScriptEnabled(false);
     }
 
@@ -66,7 +72,14 @@ public class HtmlTagRemover {
 
     private String tagRemove(URL url) {
         try {
-            logger.info("URI is this:" + url);
+            // logger.info("URI is this: <" + this.getClass().getName() + "> " + url);
+            // WebConnection conn = webClient.getWebConnection();
+            // if (conn instanceof WebConnectionWrapperNoExternal) {
+            // } else {
+            //     WebConnectionWrapperNoExternal conn1 = new WebConnectionWrapperNoExternal(webClient);
+            //     conn1.setAllowedURL(url.toExternalForm());
+            //     webClient.setWebConnection(conn1);
+            // }
             Page page = webClient.getPage(url);
             if (page instanceof HtmlPage) {
                 return tagRemoveBody((HtmlPage)page);
@@ -76,6 +89,7 @@ public class HtmlTagRemover {
         } catch(Exception ex) {
             logger.severe("error in method " + this.getClass().getName() +
                     "#tagRemoveBody" + ex);
+            ex.printStackTrace();
         }
         return null;
     }
