@@ -1,0 +1,38 @@
+
+============================================================
+=====   Separate Independent Package Running            ====
+============================================================
+
+Each web page is stored in a separate file.
+A summary file is created to describe the relationship among these web pages.
+
+view help doc
+    java -jar docsim-data-0.1-jar-with-dependencies.jar -h
+
+Available options:
+ -c,--config <arg>             Specify the configuration file
+ -d,--output-directory <arg>   output directory
+ -h,--help                     display help document
+ -o,--output-file <arg>        output xml file
+
+Usually the command sequence should be:
+    mkdir pages
+    java -jar docsim-data-0.1-jar-with-dependencies.jar -c searchResult.txt -d pages
+
+Then all pages would be downloaded and stored in directory 'pages'.
+
+============================================================
+=====                   Running in maven                ====
+============================================================
+    mvn test
+    mvn -Pretrieve 
+      ( Equivalent to
+       mvn -Pretrieve -Dexec.args="-c src/main/resources/searchResult.txt -d . -o output.txt"
+       )
+
+view help doc:
+    mvn -Pretrieve -Dexec.args="-h"
+
+Sample:
+    mvn -Pretrieve -Dexec.args="-d pages -o output22.txt"
+    mvn -Pretrieve -Dexec.args="-c src/main/resources/searchResult.txt -d pages -o output22.txt"

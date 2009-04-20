@@ -38,6 +38,12 @@
 
   <dependencies>
     <dependency>
+      <groupId>edu.indiana.cs.docsim</groupId>
+      <artifactId>docsim-htmlproc</artifactId>
+      <version>0.1</version>
+    </dependency>
+
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.5</version>
@@ -534,6 +540,30 @@
   </repositories>
 
   <profiles>
+    <profile>
+      <id>retrieve</id>
+      <build>
+        <defaultGoal>exec:java</defaultGoal>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>java</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <mainClass>edu.indiana.cs.docsim.data.PageRetrieval</mainClass>
+              <classpathScope>compile</classpathScope>
+            </configuration>
+          </plugin> 
+        </plugins>
+      </build>
+    </profile>
+
     <profile>
       <id>release</id>
       <build>

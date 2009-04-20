@@ -5,11 +5,58 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
+
 public class QueryEntry {
     public static String keyQuery = "Query";
     public static String keyTotalResult = "TotalResult";
     public static String keyTitle = "Title";
     public static String keyUrl   = "Url";
+
+    private static String getTextInElement(Element element) {
+        NodeList nodeLs = element.getChildNodes();
+        for (int i = 0; i < nodeLs.getLength(); ++i) {
+            Node node = nodeLs.item(i);
+            if (node.getNodeType() == Node.TEXT_NODE) {
+                return ((Text)node).getWholeText();
+            }
+        }
+        return "";
+    }
+
+    public static QueryEntry buildQueryEntry(Element queryEle)
+      throws Exception {
+        QueryEntry qentry = new QueryEntry();
+        NodeList queryStringLs = queryEle.getElementsByTagName("querystring");
+        NodeList docsLs = queryEle.getElementsByTagName("docs");
+        Element queryStringEle = (Element)queryStringLs.item(0);
+        Element docsEle = (Element)docsLs.item(0);
+
+        qentry.setQuery(getTextInElement(queryStringEle));
+        qentry.setResultCount(-1);
+
+        NodeList docLs = docsEle.getElementsByTagName("doc");
+        for (int i = 0; i < docLs.getLength(); ++i) {
+            Node node = docLs.item(i);
+            if (node.getNodeType() == Node.ELEMENT_NODE) {
+                Element docEle = (Element)node;
+                NodeList urlLs = docEle.getElementsByTagName("url");
+                Element urlEle = (Element)urlLs.item(0);
+                NodeList fileLs = docEle.getElementsByTagName("file");
+                Element fileEle = (Element)fileLs.item(0);
+
+                String title = getTextInElement(urlEle);
+                String url = getTextInElement(fileEle);
+                SearchResultEntry sre = new SearchResultEntry(title, url);
+                qentry.addSearchResultEntry(sre);
+            }
+        }
+
+        return qentry;
+    }
 
     public static QueryEntry buildQueryEntry(String entryData)
       throws Exception {
@@ -45,6 +92,15 @@ public class QueryEntry {
                 qentry.addSearchResultEntry(sre);
             }
         }
+        int resultCount;
+        if (qentry.getResultCount() != -1) {
+            resultCount = qentry.getResultCount();
+            if (resultCount > qentry.getResults().size())
+                resultCount = qentry.getResults().size();
+        } else {
+            resultCount = qentry.getResults().size();
+        }
+        qentry.setResultCount(resultCount);
         return qentry;
     }
 
