@@ -1,0 +1,14 @@
+
+Analyze data:
+    mvn test
+    mvn -Panalyze
+    mvn -Panalyze -Dexec.args="-h"
+    mvn -Panalyze -Dexec.args="-i results_firsttwo.txt -o results_222.txt"
+
+Apply shingling algorithm:
+    mvn test
+    mvn -Pshingle
+
+    If you want to change configurations of shingling algorithm, modify file:
+        ./src/main/resources/training.config
+

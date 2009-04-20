@@ -2,6 +2,8 @@ package edu.indiana.cs.docsim;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
@@ -11,15 +13,15 @@ import org.apache.commons.io.IOUtils;
 
 import edu.indiana.cs.docsim.Shingle;
 import edu.indiana.cs.docsim.ShingleSet;
+import edu.indiana.cs.docsim.ShingleTextParser;
 import edu.indiana.cs.docsim.ShingleTextParserNoOrder;
 import edu.indiana.cs.docsim.ShingleUnit;
 import edu.indiana.cs.docsim.ShingleUnitBag;
-
 import edu.indiana.cs.docsim.data.PageRepository;
+import edu.indiana.cs.docsim.data.PageRepositoryShuffle;
 import edu.indiana.cs.docsim.data.QueryEntry;
 import edu.indiana.cs.docsim.data.SearchResultEntry;
 import edu.indiana.cs.docsim.data.SearchResultEntry;
-
 import edu.indiana.cs.docsim.htmlproc.DocFilterPipeLineDefault;
 import edu.indiana.cs.docsim.htmlproc.DomTagListener;
 import edu.indiana.cs.docsim.htmlproc.DomTagListenerEmphTags;
@@ -28,10 +30,12 @@ import edu.indiana.cs.docsim.htmlproc.DomTagListenerRegistry;
 import edu.indiana.cs.docsim.htmlproc.DomTagListenerTitleTag;
 import edu.indiana.cs.docsim.htmlproc.HtmlTagListenerFilter;
 import edu.indiana.cs.docsim.htmlproc.HtmlTagRemoverFilter;
+import edu.indiana.cs.docsim.htmlproc.stem.PaiceStemmerWrapper;
+import edu.indiana.cs.docsim.htmlproc.stem.PaiceStemmerWrapper;
 import edu.indiana.cs.docsim.htmlproc.stopword.PossessiveFilter;
 import edu.indiana.cs.docsim.htmlproc.stopword.StopWordFilter;
-import edu.indiana.cs.docsim.htmlproc.stem.PaiceStemmerWrapper;
-import java.net.MalformedURLException;
+import edu.indiana.cs.docsim.htmlproc.util.HttpUtil;
+import java.io.File;
 
 
 /**
@@ -44,29 +48,8 @@ public class DocSim {
 
     private static Logger logger = Logger.getLogger(DocSim.class.getName());
 
-    // private DocFilterPipeLineDefault docFilterPipeLine;
-
-    /*
-    public void testPipeLineAndShingleLocal() throws Exception {
-        String filename = "res://augmented_page.html";
-        // First apply pipe line of filters
-        String result = filter(filename);
-        assertNotNull(result);
-
-        ShingleTextParserNoOrder shingleTxtParser = new ShingleTextParserNoOrder();
-
-        // build shingle set
-        StringBuilder sb = new StringBuilder();
-        String charset = "UTF-8";
-        int shinglesize = 5;
-        ShingleSet shingleset = shingleTxtParser.parseText(result, shinglesize, charset);
-        int size = shingleset.sizeUnique();
-        sb.append("\nShingle size: " + shinglesize);
-        sb.append("\nSize of shingle set: " + size);
-        logger.info(sb.toString());
-    }*/
-
-    public String preprocess(String src, DocSimTrainingConfig trainingConfig) throws Exception {
+    public String preprocess(String src, DocSimTrainingConfig trainingConfig, boolean isRealData)
+      throws Exception {
 
         final Config config = trainingConfig.getConfig();
 
@@ -130,20 +113,24 @@ public class DocSim {
         StringBuilder sb = new StringBuilder();
         String charset = "UTF-8";
         String result = null;
-        if (src.startsWith("res://")) {
-            String filename = src;
-            result = docFilterPipeLine.filter(filename, charset);
-            // sb.append("\nGet data from file \"" + filename + "\" result:\n" + result);
-        } else {
-            try {
-                URL url = new URL(src);
-                result = docFilterPipeLine.filter(url);
-                // sb.append("\nGet data from url \"" + url + "\" result:\n" + result);
-            } catch (MalformedURLException e) {
+        if (!isRealData) {
+            if (src.startsWith("res://")) {
                 String filename = src;
                 result = docFilterPipeLine.filter(filename, charset);
-                sb.append("\nGet data from file \"" + filename + "\" result:\n" + result);
+                // sb.append("\nGet data from file \"" + filename + "\" result:\n" + result);
+            } else {
+                try {
+                    URL url = new URL(src);
+                    result = docFilterPipeLine.filter(url);
+                    // sb.append("\nGet data from url \"" + url + "\" result:\n" + result);
+                } catch (MalformedURLException e) {
+                    String filename = src;
+                    result = docFilterPipeLine.filter(new File(filename), charset);
+                    sb.append("\nGet data from file \"" + filename + "\" result:\n" + result);
+                }
             }
+        } else {
+            result = docFilterPipeLine.filter(src);
         }
 
 
@@ -159,7 +146,7 @@ public class DocSim {
         // output = "Emph listener:\n" + seralizeList(dataobj);
         // sb.append("\n" + output);
 
-        logger.info("after preprocess:\n" + sb.toString());
+        // logger.info("after preprocess:\n" + sb.toString());
         return result;
     }
 
@@ -171,22 +158,28 @@ public class DocSim {
             new DocSimTrainingConfig(true, null);
         DocSimLatticeStatistics statistics = applyShingling(trainingConfig);
         BasicStatisticsFormatter formatter = new BasicStatisticsFormatter();
-        String result = formatter.format(statistics);
-        logger.info("--------   result  ---------\n" +
-                    result +
-                    "-------    result end  ---------");
+        String outputFileName = "results.txt";
+        formatter.format(statistics, outputFileName);
+        // String result = formatter.format(statistics);
+        // logger.info("--------   result  ---------\n" +
+        //             result +
+        //             "-------    result end  ---------");
     }
 
-    private DocSimLatticeStatistics applyShingling(DocSimTrainingConfig trainingConfig)
+    /**
+     * combo: 1: just select first two docs in each entry.
+     *        2: select all pairs of docs in each entry.
+     */
+    private DocSimLatticeStatistics applyShingling(PageRepository pageRepo,
+            DocSimTrainingConfig trainingConfig, boolean isPositive, int combo)
       throws UnsupportedShinglingAlgorithmException, Exception{
-        Config config = trainingConfig.getConfig();
-        PageRepository pageRepo = trainingConfig.getPageRepo();
         List<QueryEntry> queryEntries = pageRepo.getQueryEntries();
-        ShingleAlgorithm shingleAlg = config.getShingleAlg();
+        // ShingleAlgorithm shingleAlg = config.getShingleAlg();
+        // Config config = trainingConfig.getConfig();
 
-        int shingleSizeStart = config.getSizeStart();
-        int shingleSizeStep  = config.getSizeStep();
-        int shingleSizeStop  = config.getSizeStop();
+        // int shingleSizeStart = config.getSizeStart();
+        // int shingleSizeStep  = config.getSizeStep();
+        // int shingleSizeStop  = config.getSizeStop();
 
         DocSimLatticeStatistics allStat = new DocSimLatticeStatistics();
 
@@ -196,41 +189,114 @@ public class DocSim {
             String query = entry.getQuery();
             int resultCount = entry.getResultCount();
             List<SearchResultEntry> results = entry.getResults();
+            resultCount = resultCount > results.size() ? results.size() : resultCount;
             if (resultCount < 2 ) { //not enough docs in this query entry
                 continue;
             }
-            SearchResultEntry result1 = results.get(0);
-            SearchResultEntry result2 = results.get(1);
-            for (int shinglesize = shingleSizeStart;
-                 shinglesize <= shingleSizeStop;
-                 shinglesize += shingleSizeStep){
 
-                try {
-                    DocSimPairStatistics statistics =
-                        applyShingle(result1.getUrl(), result2.getUrl(), shinglesize, trainingConfig);
-
-                    allStat.add(statistics);
-                } catch(Exception ex) {
-                    logger.warning("Exception was thrown during processing " +
-                            " this pair of documents: \n" +
-                            "\t" + result1.getUrl() +
-                            "\n\t" + result2.getUrl());
-                }
+            SearchResultEntry result1 = null;
+            SearchResultEntry result2 = null;
+            switch (combo) {
+                case Combo_FirstTwo:
+                    result1 = results.get(0);
+                    result2 = results.get(1);
+                    applyShingling(result1, result2, trainingConfig,
+                            isPositive, allStat);
+                    break;
+                case Combo_AllPairs:
+                    for (int i = 0; i < resultCount-1; ++i) {
+                        for (int j = i+1 ; j < resultCount; ++j) {
+                            result1 = results.get(i);;
+                            result2 = results.get(j);
+                            applyShingling(result1, result2, trainingConfig,
+                                    isPositive, allStat);
+                        }
+                    }
             }
         }
         return allStat;
     }
 
+    private void applyShingling(SearchResultEntry result1,
+            SearchResultEntry result2, DocSimTrainingConfig trainingConfig,
+            boolean isPositive, DocSimLatticeStatistics allStat) {
+
+        Config config = trainingConfig.getConfig();
+        int shingleSizeStart = config.getSizeStart();
+        int shingleSizeStep  = config.getSizeStep();
+        int shingleSizeStop  = config.getSizeStop();
+
+        logger.info("\n\turl 1:" + result1.getUrl() +
+                "\n\turl 2:" + result2.getUrl());
+
+        boolean isRealData = true;
+        String content1;
+        String content2;
+        try {
+            content1 = HttpUtil.fetchPageHTTP(new URL(result1.getUrl()));
+            content2 = HttpUtil.fetchPageHTTP(new URL(result2.getUrl()));
+        } catch(Exception ex) {
+            logger.severe(ex.toString());
+            return;
+        }
+
+        for (int shinglesize = shingleSizeStart;
+             shinglesize <= shingleSizeStop;
+             shinglesize += shingleSizeStep){
+
+            try {
+                List<ShingleAlgorithm> shingleAlgs = config.getShingleAlgLs();
+                for (Iterator<ShingleAlgorithm> it2 = shingleAlgs.iterator();
+                     it2.hasNext() ; ){
+                    ShingleAlgorithm shingleAlg = it2.next();
+                    DocSimPairStatistics statistics =
+                        applyShingle(content1, content2, shinglesize,
+                                shingleAlg, trainingConfig, isRealData);
+                        statistics.setDocSrc1(result1.getUrl());
+                        statistics.setDocSrc2(result2.getUrl());
+                        // applyShingle(result1.getUrl(), result2.getUrl(),
+                        //         shinglesize, shingleAlg, trainingConfig, isRealData);
+                    if (statistics != null) {
+                        statistics.setPositive(isPositive);
+                        allStat.add(statistics);
+                    }
+                }
+            } catch(Exception ex) {
+                logger.warning("Exception was thrown during processing " +
+                        " this pair of documents: \n" +
+                        "\t" + result1.getUrl() +
+                        "\n\t" + result2.getUrl());
+            }
+        }
+    }
+
+    private static final int Combo_FirstTwo = 1;
+    private static final int Combo_AllPairs = 2;
+
+    private DocSimLatticeStatistics applyShingling(DocSimTrainingConfig trainingConfig)
+      throws UnsupportedShinglingAlgorithmException, Exception{
+        Config config = trainingConfig.getConfig();
+        PageRepository pageRepo = trainingConfig.getPageRepo();
+        DocSimLatticeStatistics stat1 = applyShingling(pageRepo,
+                trainingConfig, true, Combo_AllPairs);
+        PageRepositoryShuffle.shuffle(pageRepo);
+        DocSimLatticeStatistics stat2 = applyShingling(pageRepo,
+                trainingConfig, false, Combo_AllPairs);
+        return stat1.merge(stat2);
+    }
+
     public DocSimPairStatistics applyShingle (
-        String strUrl1, String strUrl2, int shinglesize, DocSimTrainingConfig trainingConfig)
+        String strUrl1, String strUrl2, int shinglesize,
+        ShingleAlgorithm shingleAlg, DocSimTrainingConfig trainingConfig,
+        boolean isRealData)
         throws UnsupportedShinglingAlgorithmException, Exception{
 
-        ShingleAlgorithm shingleAlg = trainingConfig.getShingleAlg();
-
         if (shingleAlg == ShingleAlgorithm.IgnoreOrder) {
-            return applyShingleNoOrderRemote(strUrl1, strUrl2, shinglesize, trainingConfig);
+            return applyShingleNoOrderRemote(strUrl1, strUrl2, shinglesize, trainingConfig, isRealData);
         } else if (shingleAlg == ShingleAlgorithm.Original) {
-            return applyShingleOriginalRemote(strUrl1, strUrl2, shinglesize, trainingConfig);
+            return applyShingleOriginalRemote(strUrl1, strUrl2, shinglesize, trainingConfig, isRealData);
+        } else if (shingleAlg == ShingleAlgorithm.None) {
+            return null;
         } else {
             throw new UnsupportedShinglingAlgorithmException("shingling algotirhtm " +
                     shingleAlg.toString() + " is not supported");
@@ -247,7 +313,11 @@ public class DocSim {
      * @throws Exception
      */
     public DocSimPairStatistics applyShingleNoOrderRemote
-        (String strUrl1, String strUrl2, int shinglesize, DocSimTrainingConfig trainingConfig)
+        (String strUrl1,
+         String strUrl2,
+         int shinglesize,
+         DocSimTrainingConfig trainingConfig,
+         boolean isRealData)
         throws Exception {
 
         DocSimPairStatistics statistics = new DocSimPairStatistics();
@@ -255,8 +325,52 @@ public class DocSim {
 
         // String strUrl1 = "http://cs.indiana.edu";
         // String strUrl2 = "http://www.informatics.indiana.edu/";
-        String result1 = preprocess(strUrl1, trainingConfig);
-        String result2 = preprocess(strUrl2, trainingConfig);
+        String result1 = preprocess(strUrl1, trainingConfig, isRealData).trim();
+        String result2 = preprocess(strUrl2, trainingConfig, isRealData).trim();
+
+        if (result1 == null || result1.length() == 0 ||
+            result2 == null || result2.length() == 0) {
+            return null;
+        }
+
+        String charset = "UTF-8";
+
+        ShingleSet shingleset1 = shingleTxtParser.parseText(result1, shinglesize, charset);
+        ShingleSet shingleset2 = shingleTxtParser.parseText(result2, shinglesize, charset);
+        ShingleSet union = shingleset1.union(shingleset2);
+        ShingleSet intersect = shingleset1.intersect(shingleset2);
+
+        int size1 = shingleset1.sizeUnique();
+        int size2 = shingleset2.sizeUnique();
+        int sizeunion = union.sizeUnique();
+        int sizeintersect = intersect.sizeUnique();
+
+        statistics.setShingleSize(shinglesize);
+        statistics.setDocShingleSetSizeUnique1(size1);
+        statistics.setDocShingleSetSizeUnique2(size2);
+        statistics.setDocShingleSetUnionSizeUnique(sizeunion);
+        statistics.setDocShingleSetIntersectSizeUnique(sizeintersect);
+        statistics.setShingleAlg(ShingleAlgorithm.IgnoreOrder);
+
+        return statistics;
+    }
+
+    public DocSimPairStatistics applyShingleOriginalRemote (
+            String strUrl1, String strUrl2, int shinglesize,
+            DocSimTrainingConfig trainingConfig, boolean isRealData)
+      throws Exception {
+        DocSimPairStatistics statistics = new DocSimPairStatistics();
+        ShingleTextParser shingleTxtParser = new ShingleTextParser();
+
+        // String strUrl1 = "http://cs.indiana.edu";
+        // String strUrl2 = "http://www.informatics.indiana.edu/";
+        String result1 = preprocess(strUrl1, trainingConfig, isRealData);
+        String result2 = preprocess(strUrl2, trainingConfig, isRealData);
+
+        if (result1 == null || result1.length() == 0 ||
+            result2 == null || result2.length() == 0) {
+            return null;
+        }
 
         String charset = "UTF-8";
 
@@ -277,48 +391,9 @@ public class DocSim {
         statistics.setDocShingleSetSizeUnique2(size2);
         statistics.setDocShingleSetUnionSizeUnique(sizeunion);
         statistics.setDocShingleSetIntersectSizeUnique(sizeintersect);
-        statistics.setShingleAlg(ShingleAlgorithm.IgnoreOrder);
+        statistics.setShingleAlg(ShingleAlgorithm.Original);
 
         return statistics;
-    }
-
-    public DocSimPairStatistics applyShingleOriginalRemote (
-            String strUrl1, String strUrl2, int shinglesize, DocSimTrainingConfig trainingConfig)
-      throws Exception {
-        return null;
-    }
-
-    /*
-    public void testPipeLineAndShingleRemote() throws Exception {
-        // String strUrl = "http://cs.indiana.edu";
-        String strUrl = "http://www.informatics.indiana.edu/";
-        String result = filter(strUrl);
-        ShingleTextParserNoOrder shingleTxtParser = new ShingleTextParserNoOrder();
-
-        // build shingle set
-        StringBuilder sb = new StringBuilder();
-        String charset = "UTF-8";
-        int shinglesize = 5;
-        ShingleSet shingleset = shingleTxtParser.parseText(result, shinglesize, charset);
-        int size = shingleset.sizeUnique();
-        sb.append("\nShingle size: " + shinglesize);
-        sb.append("\nSize of shingle set: " + size);
-        logger.info(sb.toString());
-    }
-    */
-
-    private String seralizeList(Object dataobj) {
-        StringBuilder sb = new StringBuilder();
-        if (dataobj instanceof List) {
-            List<String> datals = (List<String>)dataobj;
-            for (Iterator<String> it = datals.iterator(); it.hasNext();) {
-                sb.append(it.next() + "\n");
-            }
-        } else {
-            logger.severe("A list is expected!!!");
-            return "";
-        }
-        return sb.toString();
     }
 }
 
