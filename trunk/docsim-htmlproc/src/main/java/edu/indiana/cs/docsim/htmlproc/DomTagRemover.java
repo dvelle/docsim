@@ -59,19 +59,32 @@ class TagBlackList {
 
 class TagWhiteList {
     private List<String> tagls = new ArrayList<String>();
+    private List<String> intTagls = new ArrayList<String>();
 
     private static TagWhiteList instance  = null;
 
     public static TagWhiteList getInstance() {
         if (instance == null) {
-            String[] tags = {"p", "span", "a"};
+            String[] tags = {"span", "a"};
             instance = new TagWhiteList();
             // TODO: Add more tags in white list
             instance.add(tags);
+
+            String[] intTags = {"p"};
+            instance.addInt(intTags);
         }
         return instance;
     }
 
+    public void addInt(String tag) {
+        if (!containsInterestingRoot(tag))
+            intTagls.add(tag);
+    }
+    public void addInt(String[] tags) {
+        for (int i = 0 ; i < tags.length ; ++i) {
+            addInt(tags[i]);
+        }
+    }
     public void add(String tag) {
         if (!contains(tag))
             tagls.add(tag);
@@ -85,6 +98,16 @@ class TagWhiteList {
 
     public boolean contains(String tag) {
         for (Iterator<String>it = tagls.iterator(); it.hasNext(); ) {
+            String taginlist = (String)it.next();
+            if (tag.compareToIgnoreCase(taginlist) == 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean containsInterestingRoot(String tag) {
+        for (Iterator<String>it = intTagls.iterator(); it.hasNext(); ) {
             String taginlist = (String)it.next();
             if (tag.compareToIgnoreCase(taginlist) == 0) {
                 return true;
@@ -248,7 +271,7 @@ public class DomTagRemover {
             return;
         }
         boolean isInteresting = interesting;
-        if (tagWhiteList.contains(element.getTagName())) {
+        if (tagWhiteList.containsInterestingRoot(element.getTagName())) {
             if (!isInteresting)
                 isInteresting = true;
         }
@@ -263,7 +286,8 @@ public class DomTagRemover {
             switch (node.getNodeType()) {
 
                 case Node.ELEMENT_NODE:
-                    tagRemoveRecursive((Element)node, writer, sb, isInteresting);
+                    if ((!isInteresting) || tagWhiteList.contains(((Element)node).getTagName()))
+                        tagRemoveRecursive((Element)node, writer, sb, isInteresting);
                     break;
 
                 case Node.TEXT_NODE:
