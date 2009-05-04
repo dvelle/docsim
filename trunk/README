@@ -1,8 +1,27 @@
 
 This is for our course project.
 
-docsim-shingle:
-    Implementation of shingle algorithm
+- Directory layout
+*) docsim-data
+    Data collection. This package could be used to retrieve web pages and
+    generate summary files based on input file. See docsim-data/README for
+    more information.
 
-docsim-html-proc:
-    Html processing utilities.
+*) docsim-html-proc
+    Html processing utilities. See docsim-html-proc/README for more
+    information.
+
+*) docsim-shingle
+    Implementation of shingling algorithm
+
+*) docsim-integration
+
+*) docsim-util
+    This directory includes utility functions. Currently, news crawler is
+    there.
+*) lsa
+    LSA implementation.
+
+Most of the packages are managed using Maven 2. So you can use command
+    mvn package
+to compile, test and wrap it to a package.
