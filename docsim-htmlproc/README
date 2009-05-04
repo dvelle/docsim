@@ -1,0 +1,21 @@
+============================================================
+=====                   Introduction                    ====
+============================================================
+This package provides lots of utility funtions to process html documents. 
+Sample funtions include:
+    remove tags
+    extract information in some tags (extract heading tags, emphasis tags...)
+    stop word removal
+    stemming (Paice Stemmer and Porter Stemmer)
+    ...
+
+These utility function can be used to construct a pipe:
+    
+    input text -> html process 1 -> html process 2 -> html process3 -> output text
+
+Users can easily add more processing function, remove a processing function...
+
+TODO:
+    After I changed the main code, the test code has not been changed
+    accordingly. So I rename src/test to src/test2. In the future,
+    the test code should be modified.
