@@ -1,0 +1,13 @@
+Query:Trial of Mumbai gunman delayed
+TotalResult:5
+Title:Mumbai gunman's trial delayed
+Url:104.html
+Title:Mumbai attack trial delayed after lawyer for suspect dismissed
+Url:105.html
+Title:Mumbai terror trial delayed by lawyer's axing
+Url:106.html
+Title:Lawyer for surviving Mumbai attack gunman barred from court at start of trial
+Url:107.html
+Title:Mumbai terror trial delayed by lawyer's axing
+Url:108.html
+

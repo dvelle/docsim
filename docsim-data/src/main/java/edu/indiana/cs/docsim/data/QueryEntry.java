@@ -119,8 +119,8 @@ public class QueryEntry {
     Title: Conquest Vacations shuts down
     Url: http://www.globaltv.com/globaltv/national/story.html?id=1499209
     */
-    private String  query;
-    private int     resultCount;
+    private String  query = "";
+    private int     resultCount = -1;
     // private Set<SearchResultEntry> results = new HashSet<SearchResultEntry>();
     private List<SearchResultEntry> results = new ArrayList<SearchResultEntry>();
 
@@ -137,6 +137,7 @@ public class QueryEntry {
      */
     public void setResults(List<SearchResultEntry> results) {
         this.results=results;
+        this.resultCount = results.size();
     }
     /**
      * get the value of resultCount
@@ -168,7 +169,9 @@ public class QueryEntry {
     }
 
     public void addSearchResultEntry(SearchResultEntry entry) {
-        if (!results.contains(entry))
+        if (!results.contains(entry)) {
             results.add(entry);
+            this.setResultCount(results.size());
+        }
     }
 }

@@ -26,6 +26,7 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.FilenameUtils;
 
 import edu.indiana.cs.docsim.htmlproc.DocFilterPipeLineDefault;
 import edu.indiana.cs.docsim.htmlproc.DomTagListener;
@@ -70,11 +71,19 @@ public class PageRetrieval {
 
     public void retrieve() {
         Config config = buildDefaultConfig();
-        String result = serialize2XML(config);
+        StringBuilder lsaData = new StringBuilder();    //for Jiayi's LSA prog
+        StringBuilder integrateData = new StringBuilder();//for shingling algorithms
+        String result = serialize2XML(config, lsaData, integrateData);
         write2File(result, outputDir + outputXmlFile);
+        String baseName = FilenameUtils.removeExtension(outputXmlFile);
+        write2File(lsaData.toString(), outputDir + baseName + ".lsa");
+        write2File(integrateData.toString(), outputDir + baseName + ".shingle");
     }
 
-    public String serialize2XML(Config config) {
+    public String serialize2XML(Config config,
+            StringBuilder sb1,
+            StringBuilder sb2) {
+
         if (pageRepo == null)
             return "";
         List<QueryEntry> qEntries = pageRepo.getQueryEntries();
@@ -90,21 +99,27 @@ public class PageRetrieval {
             // sb.append("\t\t<Doc>\n");
             List<SearchResultEntry> results = entry.getResults();
             Iterator<SearchResultEntry> it2 = results.iterator();
+            StringBuilder buf2 = new StringBuilder();
+            int count = 0;
             while (it2.hasNext()) {
                 StringBuilder buf = new StringBuilder();
                 buf.append("\t\t<Doc>\n");
                 SearchResultEntry srentry = it2.next();
                 buf.append("\t\t\t<Url>\n");
                 String strUrl = srentry.getUrl();
+                String strTitle = srentry.getTitle();
                 String baseName = (++cursor) + ".html";
                 String fileName = outputDir + baseName;
                 File file = new File(fileName);
                 logger.info("\nurl:"+ strUrl +
                         "\nabs path:" + file.getAbsolutePath());
                 fileName = file.getAbsolutePath();
-                if (!preprocessAndWrite2File(strUrl, fileName, config))
+                if (!preprocessAndWrite2File(strUrl, fileName, config)) {
+                    --cursor;
                     continue;
+                }
 
+                ++count;
                 // String content;
                 // try {
                 //     content = preprocess(strUrl, config);
@@ -121,7 +136,17 @@ public class PageRetrieval {
                 buf.append("\t\t\t</Data>\n");
                 buf.append("\t\t</Doc>\n");
                 sb.append(buf);
+
+                sb1.append("Url:" + strUrl);
+                sb1.append("\nDoc:" + baseName + "\n\n");
+
+                buf2.append("\nTitle:" + strTitle);
+                buf2.append("\nUrl:" + baseName);
             }
+            sb2.append("Query:" + entry.getQuery());
+            sb2.append("\nTotalResult:" + count);
+            sb2.append(buf2);
+            sb2.append("\n\n");
             // sb.append("\t</Docs>\n");
             sb.append("\t</Result>\n\n");
         }

@@ -9,7 +9,13 @@ import java.util.Set;
 
 public class PageRepositoryShuffle {
 
-    public static void shuffle(PageRepository pageRepo) {
+    /**
+     * This shuffling algorithm has pitfall that the same search result can be
+     * selected multiple times.
+     *
+     * @param pageRepo
+     */
+    public static void shuffleBad(PageRepository pageRepo) {
         List<QueryEntry> queryEntries = pageRepo.getQueryEntries();
         int nQEntries = queryEntries.size();
         Iterator<QueryEntry> it = queryEntries.iterator();
@@ -54,6 +60,58 @@ public class PageRepositoryShuffle {
             set.clear();
             ++curQuery;
         }
+    }
+
+    public static void shuffle(PageRepository pageRepo) {
+        List<QueryEntry> queryEntries = pageRepo.getQueryEntries();
+        List<QueryEntry> normQueryEntries = new ArrayList<QueryEntry>();
+        List<Integer> nResultLs = new ArrayList<Integer>();
+
+        for (Iterator<QueryEntry> it = queryEntries.iterator(); it.hasNext();) {
+            QueryEntry qentry = it.next();
+            List<SearchResultEntry> results = qentry.getResults();
+            if (results.size() > 0) {
+                nResultLs.add(results.size());
+                normQueryEntries.add(qentry);
+            }
+        }
+        int nQEntries = normQueryEntries.size();
+
+        // logger.info("nq:" + nQEntries);
+
+        Random generator = new Random();
+        List<QueryEntry> newQueryEntries = new ArrayList<QueryEntry>();
+        for (int i = 0 ; i <nQEntries; ++i) {
+            int size = nResultLs.get(i);
+            if (size > nQEntries) continue;
+
+            QueryEntry qentry = new QueryEntry();
+
+            Set<Integer> selected = new HashSet<Integer>();
+            int idx;
+            for (int j = 0 ; j < size; ++j) {
+                while (true) {
+                    idx = generator.nextInt(nQEntries);
+                    if (!selected.contains(idx)) {
+                        selected.add(idx);
+                        break;
+                    }
+                }
+            }
+
+            for (Iterator<Integer> it = selected.iterator(); it.hasNext();) {
+                int nidx = it.next();
+                QueryEntry qe = normQueryEntries.get(nidx);
+                List<SearchResultEntry> tmpQEntries = qe.getResults();
+                if (tmpQEntries.size() > 0) {
+                    SearchResultEntry tmpSRE = tmpQEntries.remove(0);
+                    qentry.addSearchResultEntry(tmpSRE);
+                }
+            }
+            if (qentry.getResultCount() > 0)
+                newQueryEntries.add(qentry);
+        }
+        pageRepo.setQueryEntries(newQueryEntries);
     }
 }
 

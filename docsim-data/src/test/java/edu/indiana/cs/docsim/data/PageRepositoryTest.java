@@ -39,6 +39,10 @@ public class PageRepositoryTest extends TestCase {
      */
     public void testWithLoadingDefaultData() throws Exception {
         pageRepo = new PageRepository(true); //don't use default stop word file
+        String result = dump(pageRepo);
+        logger.info(result);
+    }
+    private String dump(PageRepository pageRepo) throws Exception {
         StringBuilder sb = new StringBuilder();
         List<QueryEntry> queryEntries = pageRepo.getQueryEntries();
         for (Iterator<QueryEntry> it = queryEntries.iterator(); it.hasNext(); ) {
@@ -53,7 +57,14 @@ public class PageRepositoryTest extends TestCase {
                 sb.append("\n" + result.getUrl());
             }
         }
-        logger.info(sb.toString());
+        return sb.toString();
+    }
+
+    public void testWithLoadingDefaultDataShuffle() throws Exception {
+        pageRepo = new PageRepository(true); //don't use default stop word file
+        PageRepositoryShuffle.shuffle(pageRepo);
+        String str = dump(pageRepo);
+        logger.info(str);
     }
 }
 

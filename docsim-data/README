@@ -1,25 +1,50 @@
-
 ============================================================
-=====   Separate Independent Package Running            ====
+=====                   Introduction                    ====
 ============================================================
+This package retrieves web pages from remote search engines.
 
-Each web page is stored in a separate file.
-A summary file is created to describe the relationship among these web pages.
+User should provide a file containing URLs of web pages to be retrieved. A
+sample file is located at src/main/resources/searchResult.txt.
 
-view help doc
-    java -jar docsim-data-0.1-jar-with-dependencies.jar -h
+Here is sample content:
+    Query: French warship captures pirates
+    TotalResult: 2
+    Title: French warship captures pirates
+    Url: http://news.bbc.co.uk/go/rss/-/1/hi/world/africa/8000447.stm
+    Title: French warship captures pirates
+    Url: http://www.kbc.co.ke/story.asp?ID=56801
 
-Available options:
+    Query: anti tax tea party
+    TotalResult: 2
+    Title: Anti-Tax 'Tea Party' Protesters Rally On Capitol Steps In Olympia
+    Url: http://opbnews.org/article/4776-anti-tax-tea-party-protesters-rally-capitol-steps-olympia/
+    Title: Anti-tax tea party rallies draw crowds despite rain, setbacks
+    Url: http://www.washingtonexaminer.com/politics/43051552.html
+
+Query: this is the query keywords that are sent to search engine.
+TotalResult: this is number of returned results from search engine.
+Title: title of a search result returned from search engine.
+Url: url of a web page returned from search engine.
+
+Each web page is stored in a separate file. It is named <number>.html.
+
+This program accepts following options:
  -c,--config <arg>             Specify the configuration file
  -d,--output-directory <arg>   output directory
  -h,--help                     display help document
  -o,--output-file <arg>        output xml file
 
-Usually the command sequence should be:
-    mkdir pages
-    java -jar docsim-data-0.1-jar-with-dependencies.jar -c searchResult.txt -d pages
+For example, for command
+  mvn -Pretrieve -Dexec.args="-c src/main/resources/searchResult.txt -d pages -o output"
+  The input file is src/main/resources/searchResult.txt; results would be
+written to directory pages and the output file prefix is output. 
 
-Then all pages would be downloaded and stored in directory 'pages'.
+Three summary files are generated to describe the relationship among these web pages.
+  <base-name>.shingle: used by Zhenhua's shingleing algorithm
+  <base-name>.lsa:  used by JiaYi's LSA program.
+  <base-name>.txt:  human-readable output for debuggin purpose.
+
+Sample output is stored in directory "pages" in current directory.
 
 ============================================================
 =====                   Running in maven                ====
@@ -36,3 +61,20 @@ view help doc:
 Sample:
     mvn -Pretrieve -Dexec.args="-d pages -o output22.txt"
     mvn -Pretrieve -Dexec.args="-c src/main/resources/searchResult.txt -d pages -o output22.txt"
+
+============================================================
+=====   Separate Independent Package Running            ====
+============================================================
+First a independent jar should be built.
+    mvn package
+    mvn assembly:assembly
+
+view help doc
+    java -jar docsim-data-0.1-jar-with-dependencies.jar -h
+
+Usually the command sequence should be:
+    mkdir pages
+    java -jar docsim-data-0.1-jar-with-dependencies.jar -c searchResult.txt -d pages
+
+Then all pages would be downloaded and stored in directory 'pages'.
+
