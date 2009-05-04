@@ -18,19 +18,34 @@ public class DocSimTrainingConfig {
     private static String defaultConfigFile = "res://training.config";
     private String configFile;
     private Config config;
-    private PageRepository pageRepo;
+    private PageRepository pageRepo = null;
+    private String dataFileName;
 
-    private void load() throws IOException, InvalidConfigFormatException, Exception {
+
+    private void load(boolean loadData) throws IOException, InvalidConfigFormatException, Exception {
         if (configFile != null) {
             Properties properties = new Properties();
             InputStream is = ResourceLoader.open(configFile);
             properties.load(is);
             config = new Config(properties);
-            pageRepo = new PageRepository(getDataFile());
+            if (loadData) {
+                dataFileName = getDataFile();
+                pageRepo = new PageRepository(dataFileName);
+            }
         }
     }
 
-    private void init(boolean useDefault, String fileName) {
+    /**
+     * Initilization.
+     *
+     * @param useDefault indicates whether to use default configuration file.
+     * @param fileName configuration file.
+     *
+     * Note: if <code>useDefault</code> is false, and <code>fileName</code> is
+     * null, still use default configuration file.
+     */
+    private void init(boolean useDefault, String fileName, boolean loadData)
+      throws Exception {
         if (useDefault) {
             configFile = defaultConfigFile;
         } else if (fileName != null) {
@@ -38,12 +53,17 @@ public class DocSimTrainingConfig {
         } else {
             configFile = defaultConfigFile;
         }
+        load(loadData);
+    }
+
+    public DocSimTrainingConfig(boolean useDefault, String fileName, boolean loadData)
+      throws IOException, InvalidConfigFormatException, Exception {
+      init(useDefault, fileName, loadData);
     }
 
     public DocSimTrainingConfig(boolean useDefault, String fileName)
       throws IOException, InvalidConfigFormatException, Exception {
-        init(useDefault, fileName);
-        load();
+        init(useDefault, fileName, true);
     }
 
     public String getDataFile() {
@@ -81,6 +101,20 @@ public class DocSimTrainingConfig {
      */
     public void setConfig(Config config) {
         this.config=config;
+    }
+    /**
+     * get the value of dataFileName
+     * @return the value of dataFileName
+     */
+    public String getDataFileName(){
+        return this.dataFileName;
+    }
+    /**
+     * set a new value to dataFileName
+     * @param dataFileName the new value to be used
+     */
+    public void setDataFileName(String dataFileName) {
+        this.dataFileName=dataFileName;
     }
 }
 

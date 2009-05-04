@@ -1,10 +1,18 @@
 package edu.indiana.cs.docsim;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 public class DocSimPairStatistics {
 
     private String docSrc1;
     private String docSrc2;
     private ShingleAlgorithm shingleAlg;
+
+    public static String doubleFormat = "0.000000";
+    DecimalFormat doubleFormatter = new DecimalFormat(doubleFormat);
 
     private int     shingleSize                         = -1;
     private int     docShingleSetSize1                  = -1;
@@ -16,6 +24,27 @@ public class DocSimPairStatistics {
     private int     docShingleSetIntersectSize          = -1;
     private int     docShingleSetIntersectSizeUnique    = -1;
     private boolean positive                            = true;
+
+    private List<Double> additionalSimilarity = new ArrayList<Double>();
+
+    public void addAdditionalSimilarity(double value) {
+        additionalSimilarity.add(value);
+    }
+
+    /**
+     * get the value of additionalSimilarity
+     * @return the value of additionalSimilarity
+     */
+    public List<Double> getAdditionalSimilarity(){
+        return this.additionalSimilarity;
+    }
+    /**
+     * set a new value to additionalSimilarity
+     * @param additionalSimilarity the new value to be used
+     */
+    public void setAdditionalSimilarity(List<Double> additionalSimilarity) {
+        this.additionalSimilarity=additionalSimilarity;
+    }
 
     // private Double  docShinglingRatio;
 

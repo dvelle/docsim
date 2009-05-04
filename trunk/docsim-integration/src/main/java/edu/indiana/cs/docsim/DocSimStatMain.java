@@ -5,10 +5,6 @@ import java.util.logging.Logger;
 import java.util.Iterator;
 import java.util.List;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.HelpFormatter;
@@ -16,34 +12,11 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.PosixParser;
 
-public class DocSimStatTest extends TestCase {
+public class DocSimStatMain {
 
     private static Logger logger =
-        Logger.getLogger(DocSimStatTest.class.getName());
+        Logger.getLogger(DocSimStatMain.class.getName());
 
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public DocSimStatTest(String testName) {
-        super(testName);
-    }
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite() {
-        return new TestSuite(DocSimStatTest.class);
-    }
-    public void testDummy() {
-    }
-    // public void notestSummary() throws Exception {
-    //     String inputDataFile = "/u/zhguo/courses/b652/project/code/docsim/docsim-integration/results_allpairs.txt";
-    //     String outputDataFile = "/u/zhguo/courses/b652/project/code/docsim/docsim-integration/results_summary.txt";
-    //     DocSimLatticeStatistics stat =
-    //         BasicStatisticsFormatter.getStatFromFile(inputDataFile);
-    //     BasicStatisticsFormatter.avgCalcBySize2File(stat, outputDataFile);
-    // }
     public static void main(String[] args) throws Exception {
         Options options = new Options();
         options.addOption("i", "input-file", true,
