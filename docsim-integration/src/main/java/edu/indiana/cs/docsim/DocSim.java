@@ -1,14 +1,16 @@
 package edu.indiana.cs.docsim;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 
 import edu.indiana.cs.docsim.Shingle;
@@ -31,11 +33,9 @@ import edu.indiana.cs.docsim.htmlproc.DomTagListenerTitleTag;
 import edu.indiana.cs.docsim.htmlproc.HtmlTagListenerFilter;
 import edu.indiana.cs.docsim.htmlproc.HtmlTagRemoverFilter;
 import edu.indiana.cs.docsim.htmlproc.stem.PaiceStemmerWrapper;
-import edu.indiana.cs.docsim.htmlproc.stem.PaiceStemmerWrapper;
 import edu.indiana.cs.docsim.htmlproc.stopword.PossessiveFilter;
 import edu.indiana.cs.docsim.htmlproc.stopword.StopWordFilter;
 import edu.indiana.cs.docsim.htmlproc.util.HttpUtil;
-import java.io.File;
 
 
 /**
@@ -47,6 +47,11 @@ import java.io.File;
 public class DocSim {
 
     private static Logger logger = Logger.getLogger(DocSim.class.getName());
+
+    private static final int Combo_FirstTwo = 1;
+    private static final int Combo_AllPairs = 2;
+
+    private static LSASim lsaSim = new LSASim();
 
     public String preprocess(String src, DocSimTrainingConfig trainingConfig, boolean isRealData)
       throws Exception {
@@ -150,36 +155,138 @@ public class DocSim {
         return result;
     }
 
-    public void applyShingling (String trainingConfigFile)
-      throws IOException, InvalidConfigFormatException,
-        UnsupportedShinglingAlgorithmException, Exception {
+    private String dataSumFile;
 
-        DocSimTrainingConfig trainingConfig =
-            new DocSimTrainingConfig(true, null);
-        DocSimLatticeStatistics statistics = applyShingling(trainingConfig);
+    public void applyShinglingOutFile(URL url1, URL url2,
+            String  trainingConfigFile, String outputFile) throws Exception {
+        String output = applyShinglingOutString(url1, url2, trainingConfigFile);
+        FileUtils.writeStringToFile(new File(outputFile), output);
+        // DocSimLatticeStatistics statistics = applyShingling(url1, url2, trainingConfigFile);
+        // BasicStatisticsFormatter formatter = new BasicStatisticsFormatter();
+        // formatter.format(statistics, outputFile);
+    }
+
+    public String applyShinglingOutString(URL url1, URL url2,
+            String  trainingConfigFile) throws Exception {
+        DocSimLatticeStatistics statistics = applyShingling(url1, url2, trainingConfigFile);
+
         BasicStatisticsFormatter formatter = new BasicStatisticsFormatter();
-        String outputFileName = "results.txt";
-        formatter.format(statistics, outputFileName);
-        // String result = formatter.format(statistics);
-        // logger.info("--------   result  ---------\n" +
-        //             result +
-        //             "-------    result end  ---------");
+        String readable = formatter.format(statistics);
+
+        StringBuilder originalSb = new StringBuilder();
+        StringBuilder ignoreOrderSb = new StringBuilder();
+        StringBuilder mixSb = new StringBuilder();
+        BasicStatisticsFormatter.toArffFormatString(
+                statistics, originalSb, ignoreOrderSb, mixSb);
+
+        StringBuilder resultSb = new StringBuilder();
+        resultSb.append(readable);
+        resultSb.append("\n\n original shingling:\n\t" + originalSb);
+        resultSb.append("\n\n ignore-order shingling:\n\t" + ignoreOrderSb);
+        resultSb.append("\n\n mix:\n\t" + mixSb);
+
+        return resultSb.toString();
+    }
+
+    public DocSimLatticeStatistics applyShingling(URL url1, URL url2,
+            String  trainingConfigFile) throws Exception {
+        DocSimTrainingConfig trainingConfig =
+            new DocSimTrainingConfig(false, trainingConfigFile, false);
+        return applyShingling(url1, url2, trainingConfig);
+    }
+
+    public DocSimLatticeStatistics applyShingling(URL url1, URL url2,
+            DocSimTrainingConfig trainingConfig)
+      throws Exception {
+
+        boolean isRealData = false;
+        DocSimLatticeStatistics allStat = new DocSimLatticeStatistics();
+
+        Config config = trainingConfig.getConfig();
+        int shingleSizeStart = config.getSizeStart();
+        int shingleSizeStep  = config.getSizeStep();
+        int shingleSizeStop  = config.getSizeStop();
+
+        DocSimPairStatistics stat = null;
+        for (int shinglesize = shingleSizeStart;
+             shinglesize <= shingleSizeStop;
+             shinglesize += shingleSizeStep){
+
+             logger.info("shingle size :" + shinglesize);
+             stat = applyShingleOriginalRemote(url1.toString(),
+                     url2.toString(), shinglesize, trainingConfig,
+                     isRealData);
+             allStat.add(stat);
+
+             stat = applyShingleNoOrderRemote(url1.toString(),
+                     url2.toString(), shinglesize, trainingConfig,
+                     isRealData);
+             allStat.add(stat);
+
+        }
+        return allStat;
     }
 
     /**
-     * combo: 1: just select first two docs in each entry.
-     *        2: select all pairs of docs in each entry.
+     * Apply shingling algorithm and options are specified in
+     * trainingConfigFile.
+     *
+     * @param trainingConfigFile
+     *      pass null to use default configuration file.
      */
-    private DocSimLatticeStatistics applyShingling(PageRepository pageRepo,
-            DocSimTrainingConfig trainingConfig, boolean isPositive, int combo)
-      throws UnsupportedShinglingAlgorithmException, Exception{
-        List<QueryEntry> queryEntries = pageRepo.getQueryEntries();
-        // ShingleAlgorithm shingleAlg = config.getShingleAlg();
-        // Config config = trainingConfig.getConfig();
+    public void applyShingling (String trainingConfigFile, String outputFileName)
+      throws IOException, InvalidConfigFormatException,
+      UnsupportedShinglingAlgorithmException, Exception {
+        DocSimTrainingConfig trainingConfig =
+            new DocSimTrainingConfig(false, trainingConfigFile);
+        dataSumFile = trainingConfig.getDataFileName();
+        DocSimLatticeStatistics statistics = applyShingling(trainingConfig);
+        BasicStatisticsFormatter formatter = new BasicStatisticsFormatter();
+        if (outputFileName == null)
+            outputFileName = "results.txt";
+        formatter.format(statistics, outputFileName);
+    }
 
-        // int shingleSizeStart = config.getSizeStart();
-        // int shingleSizeStep  = config.getSizeStep();
-        // int shingleSizeStop  = config.getSizeStop();
+    private DocSimLatticeStatistics applyShingling(DocSimTrainingConfig trainingConfig)
+      throws UnsupportedShinglingAlgorithmException, Exception{
+        Config config = trainingConfig.getConfig();
+
+        // calculate results using positive data points
+        PageRepository pageRepo = trainingConfig.getPageRepo();
+        DocSimLatticeStatistics stat1 = applyShingling(pageRepo,
+                trainingConfig, true, Combo_AllPairs);
+
+        // shuffle the original data set to get negative data points.
+        // calculate results using generated negative data points
+        PageRepositoryShuffle.shuffle(pageRepo);
+        DocSimLatticeStatistics stat2 = applyShingling(pageRepo,
+                trainingConfig, false, Combo_AllPairs);
+
+        // results from both positive data set and negative data set are
+        // merged
+        return stat1.merge(stat2);
+    }
+
+    /**
+     * @param pageRepo
+     *      page repository. It is the data set used.
+     * @param trainingConfig
+     *      Configuration of the processing.
+     * @param isPositive
+     *      whether the data points in data set are positive or negative.
+     * @param combo
+     *        1: just select first two docs in each entry.
+     *        2: select all pairs of docs in each entry.
+     * @return
+     *      results of running shingling algorithm.
+     */
+    private DocSimLatticeStatistics applyShingling(
+            PageRepository pageRepo,
+            DocSimTrainingConfig trainingConfig,
+            boolean isPositive,
+            int combo) throws UnsupportedShinglingAlgorithmException, Exception{
+
+        List<QueryEntry> queryEntries = pageRepo.getQueryEntries();
 
         DocSimLatticeStatistics allStat = new DocSimLatticeStatistics();
 
@@ -196,6 +303,12 @@ public class DocSim {
 
             SearchResultEntry result1 = null;
             SearchResultEntry result2 = null;
+
+            // Two strategies are supported here
+            //   1) pick the first two data points in a query result set.
+            //   2) pick all pairs of data points in a query result set.
+            //      So, assume the number of data points is N, the number of
+            //      generated pairs would be N*(N-1)/2.
             switch (combo) {
                 case Combo_FirstTwo:
                     result1 = results.get(0);
@@ -217,9 +330,24 @@ public class DocSim {
         return allStat;
     }
 
-    private void applyShingling(SearchResultEntry result1,
-            SearchResultEntry result2, DocSimTrainingConfig trainingConfig,
-            boolean isPositive, DocSimLatticeStatistics allStat) {
+    /**
+     *
+     *
+     * @param result1
+     *      one search result entry. (basically one web page).
+     * @param result2
+     *      one search result entry. (basically one web page).
+     * @param trainingConfig
+     * @param isPositive
+     *      whether the two data points are positive or negative.
+     * @param allStat
+     *      where the results would be written.
+     */
+    private void applyShingling( SearchResultEntry result1,
+            SearchResultEntry result2,
+            DocSimTrainingConfig trainingConfig,
+            boolean isPositive,
+            DocSimLatticeStatistics allStat) {
 
         Config config = trainingConfig.getConfig();
         int shingleSizeStart = config.getSizeStart();
@@ -229,17 +357,47 @@ public class DocSim {
         logger.info("\n\turl 1:" + result1.getUrl() +
                 "\n\turl 2:" + result2.getUrl());
 
+        //tell whether variables content1 and content2 contain url/path of
+        //the data file where the data is stored, or the real data
         boolean isRealData = true;
-        String content1;
-        String content2;
-        try {
-            content1 = HttpUtil.fetchPageHTTP(new URL(result1.getUrl()));
-            content2 = HttpUtil.fetchPageHTTP(new URL(result2.getUrl()));
-        } catch(Exception ex) {
-            logger.severe(ex.toString());
-            return;
+        String content1 = null;
+        String content2 = null;
+        String src1 = result1.getUrl();
+        String src2 = result2.getUrl();
+
+        // Get content of the data points
+        // Currently, two sources are supported:
+        //  remote http URL and local file.
+        if (src1.toLowerCase().startsWith("http:")) {
+            try {
+                content1 = HttpUtil.fetchPageHTTP(new URL(src1));
+                content2 = HttpUtil.fetchPageHTTP(new URL(src2));
+            } catch(Exception ex) {
+                logger.severe(ex.toString());
+                return;
+            }
+        } else {
+            try {
+                String path = "pages";
+                if (dataSumFile != null)
+                    path =FilenameUtils.getFullPath(dataSumFile); //with ending '/'
+                content1 = FileUtils.readFileToString(new File(path + src1), "UTF-8") ;
+                content2 = FileUtils.readFileToString(new File(path + src2), "UTF-8") ;
+            } catch(Exception ex) {
+                logger.severe(ex.toString());
+                return;
+            }
         }
 
+        // ==========   for LSA   ==============
+        double lsascore = lsaCalc(content1, content2);
+        double lsascorecos = lsaCosCalc(content1, content2);
+        if (Double.isNaN(lsascorecos))
+            lsascorecos = 1.0;
+        // logger.info("cos score: " + lsascorecos);
+        // ==========   for LSA end  ==============
+
+        // apply shingling algorithm using different shingle size
         for (int shinglesize = shingleSizeStart;
              shinglesize <= shingleSizeStop;
              shinglesize += shingleSizeStep){
@@ -252,49 +410,86 @@ public class DocSim {
                     DocSimPairStatistics statistics =
                         applyShingle(content1, content2, shinglesize,
                                 shingleAlg, trainingConfig, isRealData);
+                    if (isRealData) {
                         statistics.setDocSrc1(result1.getUrl());
                         statistics.setDocSrc2(result2.getUrl());
-                        // applyShingle(result1.getUrl(), result2.getUrl(),
-                        //         shinglesize, shingleAlg, trainingConfig, isRealData);
+                    }
                     if (statistics != null) {
                         statistics.setPositive(isPositive);
+
+                        // ==========   for LSA   ==============
+                        statistics.addAdditionalSimilarity(lsascore);
+                        statistics.addAdditionalSimilarity(lsascorecos);
+                        // ==========   for LSA end ==============
+
                         allStat.add(statistics);
                     }
                 }
             } catch(Exception ex) {
                 logger.warning("Exception was thrown during processing " +
-                        " this pair of documents: \n" +
-                        "\t" + result1.getUrl() +
-                        "\n\t" + result2.getUrl());
+                        "this pair of documents: \n" +
+                        "\t" + src1 + "\n\t" + src2);
             }
         }
+
+        /*
+        if (lsaStat != null) {
+            lsaStat.setPositive(isPositive);
+            lsaStat.setDocSrc1(result1.getUrl());
+            lsaStat.setDocSrc2(result2.getUrl());
+            // TODO
+            lsaStat.setShingleAlg(TODO);
+            allStat.add(lsaStat);
+        }
+        */
     }
 
-    private static final int Combo_FirstTwo = 1;
-    private static final int Combo_AllPairs = 2;
-
-    private DocSimLatticeStatistics applyShingling(DocSimTrainingConfig trainingConfig)
-      throws UnsupportedShinglingAlgorithmException, Exception{
-        Config config = trainingConfig.getConfig();
-        PageRepository pageRepo = trainingConfig.getPageRepo();
-        DocSimLatticeStatistics stat1 = applyShingling(pageRepo,
-                trainingConfig, true, Combo_AllPairs);
-        PageRepositoryShuffle.shuffle(pageRepo);
-        DocSimLatticeStatistics stat2 = applyShingling(pageRepo,
-                trainingConfig, false, Combo_AllPairs);
-        return stat1.merge(stat2);
+    public double lsaCalc(String content1, String content2) {
+        // DocSimPairStatistics stat = new DocSimPairStatistics();
+        // double lsascore = 10.0;
+        double lsascore = lsaSim.LSAsimilarity(content1, content2);
+        return lsascore;
     }
 
+    public double lsaCosCalc(String content1, String content2) {
+        // DocSimPairStatistics stat = new DocSimPairStatistics();
+        // double lsascore = 10.0;
+        double lsascore = lsaSim.COSsimilarity(content1, content2);
+        return lsascore;
+    }
+
+    /**
+     *
+     *
+     * @param dataPoint1
+     *      one data point. It can be location of the data, or the real data.
+     *      It is indicated by parameter <code>isRealData</code>
+     * @param dataPoint2
+     *      one data point. It can be location of the data, or the real data.
+     *      It is indicated by parameter <code>isRealData</code>
+     * @param shinglesize
+     * @param shingleAlg
+     *      Shingle algorithm to be used
+     * @param trainingConfig
+     * @param isRealData
+     * @return
+     * @throws UnsupportedShinglingAlgorithmException
+     * @throws Exception
+     */
     public DocSimPairStatistics applyShingle (
-        String strUrl1, String strUrl2, int shinglesize,
-        ShingleAlgorithm shingleAlg, DocSimTrainingConfig trainingConfig,
-        boolean isRealData)
-        throws UnsupportedShinglingAlgorithmException, Exception{
+            String dataPoint1,
+            String dataPoint2,
+            int shinglesize,
+            ShingleAlgorithm shingleAlg,
+            DocSimTrainingConfig trainingConfig,
+            boolean isRealData) throws UnsupportedShinglingAlgorithmException, Exception{
 
         if (shingleAlg == ShingleAlgorithm.IgnoreOrder) {
-            return applyShingleNoOrderRemote(strUrl1, strUrl2, shinglesize, trainingConfig, isRealData);
+            return applyShingleNoOrderRemote(dataPoint1, dataPoint2,
+                    shinglesize, trainingConfig, isRealData);
         } else if (shingleAlg == ShingleAlgorithm.Original) {
-            return applyShingleOriginalRemote(strUrl1, strUrl2, shinglesize, trainingConfig, isRealData);
+            return applyShingleOriginalRemote(dataPoint1, dataPoint2,
+                    shinglesize, trainingConfig, isRealData);
         } else if (shingleAlg == ShingleAlgorithm.None) {
             return null;
         } else {
@@ -345,6 +540,10 @@ public class DocSim {
         int sizeunion = union.sizeUnique();
         int sizeintersect = intersect.sizeUnique();
 
+        if (!isRealData) {
+             statistics.setDocSrc1(strUrl1);
+             statistics.setDocSrc2(strUrl2);
+        }
         statistics.setShingleSize(shinglesize);
         statistics.setDocShingleSetSizeUnique1(size1);
         statistics.setDocShingleSetSizeUnique2(size2);
@@ -384,8 +583,10 @@ public class DocSim {
         int sizeunion = union.sizeUnique();
         int sizeintersect = intersect.sizeUnique();
 
-        statistics.setDocSrc1(strUrl1);
-        statistics.setDocSrc2(strUrl2);
+        if (!isRealData) {
+             statistics.setDocSrc1(strUrl1);
+             statistics.setDocSrc2(strUrl2);
+        }
         statistics.setShingleSize(shinglesize);
         statistics.setDocShingleSetSizeUnique1(size1);
         statistics.setDocShingleSetSizeUnique2(size2);

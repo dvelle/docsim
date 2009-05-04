@@ -273,6 +273,14 @@ public class DocSimLatticeStatistics {
         }
     }
 
+    /**
+     * sort by size.
+     * Note: The input paraemter is modified.
+     *
+     * @param statistics
+     * @param resultRangeIdx
+     * @return
+     */
     public static List<DocSimPairStatistics> sortBySize
       (List<DocSimPairStatistics> statistics, List<Range> resultRangeIdx) {
         Collections.sort(statistics, new Comparator<DocSimPairStatistics> () {

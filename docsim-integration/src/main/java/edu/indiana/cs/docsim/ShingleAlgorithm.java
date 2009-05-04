@@ -1,7 +1,7 @@
 package edu.indiana.cs.docsim;
 
 public enum ShingleAlgorithm {
-    Original, IgnoreOrder, Weighted, None;
+    Original, IgnoreOrder, Weighted, None, LSA;
 
     public static String original = "original";
     public static String none = "original";
